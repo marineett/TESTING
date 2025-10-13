@@ -86,4 +86,6 @@ const (
 	CHAT_GET_CHAT            = CHAT_API + "get_chat"
 	CHAT_SEND_MESSAGE        = CHAT_API + "send_message"
 	CHAT_GET_MESSAGES        = CHAT_API + "get_messages"
+	CHAT_DELETE_CHAT         = CHAT_API + "delete_chat"
+	CHAT_CLEAR_MESSAGES      = CHAT_API + "clear_messages"
 )

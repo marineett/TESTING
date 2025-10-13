@@ -19,6 +19,8 @@ type IChatService interface {
 	GetChatIdByCIDAndMID(clientID int64, moderatorID int64) (int64, error)
 	GetChatIdByCIDAndRID(clientID int64, repetitorID int64) (int64, error)
 	GetChatIdByMIDAndRID(moderatorID int64, repetitorID int64) (int64, error)
+	DeleteChat(chatID int64) error
+	ClearMessages(chatID int64) error
 }
 
 type ChatService struct {
@@ -156,4 +158,16 @@ func (s *ChatService) GetChatIdByCIDAndRID(clientID int64, repetitorID int64) (i
 
 func (s *ChatService) GetChatIdByMIDAndRID(moderatorID int64, repetitorID int64) (int64, error) {
 	return s.chatRepository.GetChatIdByMIDAndRID(moderatorID, repetitorID)
+}
+
+func (s *ChatService) DeleteChat(chatID int64) error {
+	err := s.messageRepository.DeleteMessages(chatID)
+	if err != nil {
+		return err
+	}
+	return s.chatRepository.DeleteChat(chatID)
+}
+
+func (s *ChatService) ClearMessages(chatID int64) error {
+	return s.messageRepository.DeleteMessages(chatID)
 }

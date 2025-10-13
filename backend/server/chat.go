@@ -23,6 +23,8 @@ func SetupChatRouter(
 	router.HandleFunc(CHAT_GET_CHAT, ChatGetChatHandler(chatService, logger))
 	router.HandleFunc(CHAT_SEND_MESSAGE, ChatSendMessageHandler(chatService, logger))
 	router.HandleFunc(CHAT_GET_MESSAGES, ChatGetChatMessagesHandler(chatService, logger))
+	router.HandleFunc(CHAT_DELETE_CHAT, ChatDeleteChatHandler(chatService, logger))
+	router.HandleFunc(CHAT_CLEAR_MESSAGES, ChatClearMessagesHandler(chatService, logger))
 	return router
 }
 
@@ -173,7 +175,7 @@ func ChatGetModeratorChatsHandler(chatService service_logic.IChatService, logger
 func ChatStartCMHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
-		if r.Method != "GET" {
+		if r.Method != "POST" {
 			logger.Printf("Method not allowed: %s", r.Method)
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -215,7 +217,7 @@ func ChatStartCMHandler(chatService service_logic.IChatService, logger *log.Logg
 func ChatStartRMHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
-		if r.Method != "GET" {
+		if r.Method != "POST" {
 			log.Printf("Method not allowed: %s", r.Method)
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -257,7 +259,7 @@ func ChatStartRMHandler(chatService service_logic.IChatService, logger *log.Logg
 func ChatStartCRHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
-		if r.Method != "GET" {
+		if r.Method != "POST" {
 			logger.Printf("Method not allowed: %s", r.Method)
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -327,7 +329,7 @@ func ChatGetChatHandler(chatService service_logic.IChatService, logger *log.Logg
 func ChatSendMessageHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
-		if r.Method != "POST" {
+		if r.Method != "PATCH" {
 			logger.Printf("Method not allowed: %s", r.Method)
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -411,5 +413,59 @@ func ChatGetChatMessagesHandler(chatService service_logic.IChatService, logger *
 		}
 		logger.Printf("Messages retrieved: %v", serverMessages)
 		json.NewEncoder(w).Encode(serverMessages)
+	}
+}
+
+func ChatDeleteChatHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
+		if r.Method != "DELETE" {
+			logger.Printf("Method not allowed: %s", r.Method)
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		chatIDStr := r.URL.Query().Get("id")
+		chatID, err := strconv.ParseInt(chatIDStr, 10, 64)
+		if err != nil {
+			logger.Printf("Error converting chatID to int: %v", err)
+			http.Error(w, "Invalid chatID", http.StatusBadRequest)
+			return
+		}
+		logger.Printf("Chat ID: %v", chatID)
+		err = chatService.DeleteChat(chatID)
+		if err != nil {
+			logger.Printf("Error deleting chat: %v", err)
+			http.Error(w, "Error deleting chat", http.StatusInternalServerError)
+			return
+		}
+		logger.Printf("Chat deleted")
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatClearMessagesHandler(chatService service_logic.IChatService, logger *log.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
+		if r.Method != "PUT" {
+			logger.Printf("Method not allowed: %s", r.Method)
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		chatIDStr := r.URL.Query().Get("id")
+		chatID, err := strconv.ParseInt(chatIDStr, 10, 64)
+		if err != nil {
+			logger.Printf("Error converting chatID to int: %v", err)
+			http.Error(w, "Invalid chatID", http.StatusBadRequest)
+			return
+		}
+		logger.Printf("Chat ID: %v", chatID)
+		err = chatService.DeleteChat(chatID)
+		if err != nil {
+			logger.Printf("Error clearing messages: %v", err)
+			http.Error(w, "Error clearing messages", http.StatusInternalServerError)
+			return
+		}
+		logger.Printf("Messages cleared")
+		w.WriteHeader(http.StatusOK)
 	}
 }

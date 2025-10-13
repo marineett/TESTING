@@ -9,6 +9,7 @@ import (
 	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/marcboeker/go-duckdb"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

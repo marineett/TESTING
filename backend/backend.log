@@ -1,0 +1,168 @@
+2025/10/12 16:38:21 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 16:38:21 Server starting on port 8000
+2025/10/12 17:24:38 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 17:24:38 Server starting on port 8000
+2025/10/12 17:48:57 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 17:48:57 Server starting on port 8000
+2025/10/12 17:49:10 Received request: GET /api/chat/get_client_chats
+2025/10/12 17:49:10 Client ID: 1
+2025/10/12 17:49:10 Chats offset: 0
+2025/10/12 17:49:10 Chats limit: 5
+2025/10/12 17:49:10 Chats retrieved: []
+2025/10/12 17:49:10 Received request: GET /api/chat/get_repetitor_chats
+2025/10/12 17:49:10 Repetitor ID: 1
+2025/10/12 17:49:10 Chats offset: 0
+2025/10/12 17:49:10 Chats limit: 5
+2025/10/12 17:49:10 Chats retrieved: []
+2025/10/12 17:49:10 Received request: GET /api/chat/get_moderator_chats
+2025/10/12 17:49:10 Moderator ID: 1
+2025/10/12 17:49:10 Chats offset: 0
+2025/10/12 17:49:10 Chats limit: 5
+2025/10/12 17:49:10 Chats retrieved: []
+2025/10/12 17:49:10 Received request: POST /api/chat/start_cr_chat
+2025/10/12 17:49:10 Method not allowed: POST
+2025/10/12 17:49:10 Received request: POST /api/chat/start_cm_chat
+2025/10/12 17:49:10 Method not allowed: POST
+2025/10/12 17:49:10 Received request: POST /api/chat/start_rm_chat
+2025/10/12 17:49:10 Method not allowed: POST
+2025/10/12 17:49:10 Received request: GET /api/chat/get_chat
+2025/10/12 17:49:10 Chat ID: 1
+2025/10/12 17:49:10 Error getting chat: sql: no rows in result set
+2025/10/12 17:49:10 Received request: POST /api/chat/send_message
+2025/10/12 17:49:10 Error decoding message: EOF
+2025/10/12 17:49:10 Received request: GET /api/chat/get_messages
+2025/10/12 17:49:10 Chat ID: 1
+2025/10/12 17:49:10 Messages offset: 0
+2025/10/12 17:49:10 Messages limit: 5
+2025/10/12 17:49:10 Messages retrieved: []
+2025/10/12 18:02:17 Received request: POST /api/registration/client
+2025/10/12 18:02:17 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:02:17 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 18:02:17 Client created successfully: client@test.com
+2025/10/12 18:02:17 Received request: POST /api/registration/repetitor
+2025/10/12 18:02:17 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:02:17 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 18:02:17 Repetitor created successfully: repetitor@test.com
+2025/10/12 18:02:37 Received request: POST /api/registration/client
+2025/10/12 18:02:37 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:02:37 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 18:02:37 User already exists: client@test.com
+2025/10/12 18:03:02 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 18:03:02 Server starting on port 8000
+2025/10/12 18:03:06 Received request: POST /api/registration/client
+2025/10/12 18:03:06 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:03:06 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 18:03:06 Client created successfully: client@test.com
+2025/10/12 18:03:06 Received request: POST /api/registration/repetitor
+2025/10/12 18:03:06 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:03:06 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 18:03:06 Repetitor created successfully: repetitor@test.com
+2025/10/12 18:03:06 Received request: POST /api/registration/moderator
+2025/10/12 18:03:06 Request body: {"first_name":"Иван","last_name":"Иванов","login":"moderator@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 18:03:06 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:moderator@test.com Password:password123}}}
+2025/10/12 18:03:06 Moderator created successfully: moderator@test.com
+2025/10/12 19:06:37 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 19:06:37 Server starting on port 8000
+2025/10/12 19:06:41 Received request: POST /api/registration/client
+2025/10/12 19:06:41 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:06:41 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 19:06:41 Client created successfully: client@test.com
+2025/10/12 19:06:41 Received request: POST /api/registration/repetitor
+2025/10/12 19:06:41 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:06:41 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 19:06:41 Repetitor created successfully: repetitor@test.com
+2025/10/12 19:06:41 Received request: POST /api/registration/moderator
+2025/10/12 19:06:41 Request body: {"first_name":"Иван","last_name":"Иванов","login":"moderator@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:06:41 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:moderator@test.com Password:password123}}}
+2025/10/12 19:06:41 Moderator created successfully: moderator@test.com
+2025/10/12 19:06:41 Received request: POST /api/auth/authorize
+2025/10/12 19:06:41 Authorized: {2 1}
+2025/10/12 19:10:38 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 19:10:38 Server starting on port 8000
+2025/10/12 19:10:41 Received request: POST /api/registration/client
+2025/10/12 19:10:41 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:10:41 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 19:10:41 Client created successfully: client@test.com
+2025/10/12 19:10:42 Received request: POST /api/registration/repetitor
+2025/10/12 19:10:42 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:10:42 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 19:10:42 Repetitor created successfully: repetitor@test.com
+2025/10/12 19:10:42 Received request: POST /api/registration/moderator
+2025/10/12 19:10:42 Request body: {"first_name":"Иван","last_name":"Иванов","login":"moderator@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:10:42 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:moderator@test.com Password:password123}}}
+2025/10/12 19:10:42 Moderator created successfully: moderator@test.com
+2025/10/12 19:10:42 Received request: POST /api/auth/authorize
+2025/10/12 19:10:42 Authorized: {2 1}
+2025/10/12 19:18:02 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 19:18:02 Server starting on port 8000
+2025/10/12 19:18:05 Received request: POST /api/registration/client
+2025/10/12 19:18:05 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:18:05 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 19:18:05 Client created successfully: client@test.com
+2025/10/12 19:18:06 Received request: POST /api/registration/repetitor
+2025/10/12 19:18:06 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:18:06 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 19:18:06 Repetitor created successfully: repetitor@test.com
+2025/10/12 19:18:06 Received request: POST /api/registration/moderator
+2025/10/12 19:18:06 Request body: {"first_name":"Иван","last_name":"Иванов","login":"moderator@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:18:06 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:moderator@test.com Password:password123}}}
+2025/10/12 19:18:06 Moderator created successfully: moderator@test.com
+2025/10/12 19:18:06 Received request: POST /api/auth/authorize
+2025/10/12 19:18:06 Authorized: {2 1}
+2025/10/12 19:18:06 Received request: POST /api/auth/authorize
+2025/10/12 19:18:06 Authorized: {5 2}
+2025/10/12 19:18:06 Received request: POST /api/auth/authorize
+2025/10/12 19:18:06 Authorized: {8 3}
+2025/10/12 19:18:06 Received request: POST /api/chat/start_cr_chat
+2025/10/12 19:18:06 Method not allowed: POST
+2025/10/12 19:21:21 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 19:21:21 Server starting on port 8000
+2025/10/12 19:21:22 Received request: POST /api/registration/client
+2025/10/12 19:21:22 Request body: {"first_name":"Иван","last_name":"Иванов","login":"client@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:21:22 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:client@test.com Password:password123}}}
+2025/10/12 19:21:22 Client created successfully: client@test.com
+2025/10/12 19:21:22 Received request: POST /api/registration/repetitor
+2025/10/12 19:21:22 Request body: {"first_name":"Иван","last_name":"Иванов","login":"repetitor@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:21:22 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:repetitor@test.com Password:password123}}}
+2025/10/12 19:21:22 Repetitor created successfully: repetitor@test.com
+2025/10/12 19:21:22 Received request: POST /api/registration/moderator
+2025/10/12 19:21:22 Request body: {"first_name":"Иван","last_name":"Иванов","login":"moderator@test.com","middle_name":"Иванович","passport":"1234 567890","password":"password123","phone_number":"+7-900-123-45-67"}
+2025/10/12 19:21:22 Parsed init data: {ServerInitUserData:{ServerPersonalData:{TelephoneNumber: Email: ServerPassportData:{PassportNumber: PassportSeries: PassportDate:0001-01-01 00:00:00 +0000 UTC PassportIssuedBy:} FirstName:Иван LastName:Иванов MiddleName:Иванович} ServerAuthData:{Login:moderator@test.com Password:password123}}}
+2025/10/12 19:21:22 Moderator created successfully: moderator@test.com
+2025/10/12 19:21:22 Received request: POST /api/auth/authorize
+2025/10/12 19:21:22 Authorized: {2 1}
+2025/10/12 19:21:22 Received request: POST /api/auth/authorize
+2025/10/12 19:21:22 Authorized: {5 2}
+2025/10/12 19:21:22 Received request: POST /api/auth/authorize
+2025/10/12 19:21:22 Authorized: {8 3}
+2025/10/12 19:21:22 Received request: POST /api/chat/start_cr_chat
+2025/10/12 19:21:22 Client ID: 0
+2025/10/12 19:21:22 Repetitor ID: 0
+2025/10/12 19:21:22 Chat created
+2025/10/12 19:21:22 Chat ID: 10
+2025/10/12 19:21:22 Received request: POST /api/chat/start_cm_chat
+2025/10/12 19:21:22 Client ID: 0
+2025/10/12 19:21:22 Moderator ID: 0
+2025/10/12 19:21:22 Chat created
+2025/10/12 19:21:22 Chat ID: 10
+2025/10/12 19:21:22 Received request: POST /api/chat/start_rm_chat
+2025/10/12 19:21:22 Repetitor ID: 0
+2025/10/12 19:21:22 Moderator ID: 0
+2025/10/12 19:21:22 Chat created
+2025/10/12 19:21:22 Chat ID: 10
+2025/10/12 22:57:01 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/12 22:57:01 Server starting on port 8000
+2025/10/13 18:14:01 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:14:01 Server starting on port 8000
+2025/10/13 18:16:43 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:16:43 Server starting on port 8000
+2025/10/13 18:16:47 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:16:47 Server starting on port 8000
+2025/10/13 18:17:38 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:17:38 Server starting on port 8000
+2025/10/13 18:17:51 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:17:51 Server starting on port 8000
+2025/10/13 18:17:57 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 18:17:57 Server starting on port 8000
+2025/10/13 21:09:27 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/13 21:09:27 Server starting on port 8000

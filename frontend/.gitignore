@@ -1,29 +1,17 @@
-# macOS system files
-.DS_Store
-*/.DS_Store
-**/.DS_Store
-.AppleDouble
-.LSOverride
-__MACOSX/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-__pycache__/
-*.pyc
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-.coverage
+# testing
+/coverage
 
-*.exe
-*.exe~
-*.out
-*.o
-*.pch
-*.gch
+# production
+/build
 
-*.swp
-*.bak
-*.tmp
-
-Dockerfile*
-
+# misc
 .DS_Store
 .env.local
 .env.development.local

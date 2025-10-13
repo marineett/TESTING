@@ -56,6 +56,12 @@ func SetupServer(service_module *service_logic.ServiceModule, port string, logge
 		service_module.RepetitorService,
 		logger,
 	))
+
+	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
+
 	logger.Printf("Server starting on port %s", port)
 	return &http.Server{
 		Addr:    ":" + port,

@@ -9,6 +9,7 @@ import (
 type IMessageRepository interface {
 	InsertMessage(message types.DBMessage) (int64, error)
 	GetMessages(chatID int64, from int64, size int64) ([]types.DBMessage, error)
+	DeleteMessages(chatID int64) error
 }
 
 func CreateSqlMessageTable(db *sql.DB, messageTableName string, chatTableName string, userTableName string) error {
@@ -80,4 +81,15 @@ func (r *SqlMessageRepository) GetMessages(chatID int64, from int64, size int64)
 		messages = append(messages, message)
 	}
 	return messages, nil
+}
+
+func (r *SqlMessageRepository) DeleteMessages(chatID int64) error {
+	query := `
+	DELETE FROM ` + r.messageTable + ` WHERE chat_id = $1
+	`
+	_, err := r.db.Exec(query, chatID)
+	if err != nil {
+		return err
+	}
+	return nil
 }

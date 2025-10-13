@@ -976,6 +976,14 @@ func CreateTestChatRepository() *TestChatRepository {
 	}
 }
 
+func (r *TestChatRepository) DeleteChat(id int64) error {
+	if _, ok := r.data[id]; !ok {
+		return errors.New("chat not found")
+	}
+	delete(r.data, id)
+	return nil
+}
+
 func (r *TestChatRepository) InsertChat(chat types.DBChat) (int64, error) {
 	chat.ID = int64(len(r.data) + 1)
 	r.data[chat.ID] = &chat
@@ -988,6 +996,14 @@ func (r *TestChatRepository) GetChat(id int64) (*types.DBChat, error) {
 		return nil, errors.New("chat not found")
 	}
 	return value, nil
+}
+
+func (r *TestMessageRepository) DeleteMessages(chatID int64) error {
+	if _, ok := r.data[chatID]; !ok {
+		return errors.New("messages not found")
+	}
+	delete(r.data, chatID)
+	return nil
 }
 
 func (r *TestChatRepository) GetChatListByClientID(clientID int64, from int64, size int64) ([]types.DBChat, error) {

@@ -5,15 +5,17 @@ import (
 	"data_base_project/server"
 	"data_base_project/service_logic"
 	"data_base_project/utility_module"
+	"database/sql"
 	"log"
 	"os"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/joho/godotenv"
+	_ "github.com/marcboeker/go-duckdb"
 )
 
 func main() {
-	logger, err := os.OpenFile("/build/logs/backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	logger, err := os.OpenFile("./backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("Error opening log file: %v", err)
 	}
@@ -26,7 +28,8 @@ func main() {
 	}
 	defer utility_module.UnsetEnv()
 	log.Printf("Connection string: %s", data_base.GetSqlConnectionString())
-	db, err := data_base.CreateSqlConnection(data_base.GetSqlConnectionString())
+	//db, err := data_base.CreateSqlConnection(data_base.GetSqlConnectionString())
+	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}

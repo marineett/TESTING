@@ -32,8 +32,8 @@ func TestCreateAdminCorrectLondon(t *testing.T) {
 		t.Fatalf("Error getting personal data: %v", err)
 	}
 	if personalData.TelephoneNumber != tu.TestPD.TelephoneNumber {
-			t.Fatalf("Personal data not updated: %v", personalData)
-		}
+		t.Fatalf("Personal data not updated: %v", personalData)
+	}
 	if personalData.Email != tu.TestPD.Email {
 		t.Fatalf("Personal data not updated: %v", personalData)
 	}
@@ -959,7 +959,7 @@ func TestUpdateAdminSalaryIncorrectLondon(t *testing.T) {
 		userRepository,
 	)
 	adminService := CreateAdminService(
-		adminRepository,	
+		adminRepository,
 		userRepository,
 		personalDataRepository,
 	)

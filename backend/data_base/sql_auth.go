@@ -22,7 +22,7 @@ func CreateSqlAuthTable(db *sql.DB, authTableName string, userTableName string, 
 		user_id INTEGER NOT NULL,
 		user_type INTEGER NOT NULL,
 		login VARCHAR(255) NOT NULL,
-		password VARCHAR(255) NOT NULL,
+		password VARCHAR(255) NOT NULL
 	)`
 	_, err := db.Exec(query)
 	if err != nil {

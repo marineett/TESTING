@@ -15,6 +15,7 @@ type IChatRepository interface {
 	GetChatIdByCIDAndMID(clientID int64, moderatorID int64) (int64, error)
 	GetChatIdByCIDAndRID(clientID int64, repetitorID int64) (int64, error)
 	GetChatIdByMIDAndRID(moderatorID int64, repetitorID int64) (int64, error)
+	DeleteChat(id int64) error
 }
 
 func CreateSqlChatTable(db *sql.DB, chatTableName string, userTableName string) error {
@@ -186,4 +187,15 @@ func (r *SqlChatRepository) GetChatIdByMIDAndRID(moderatorID int64, repetitorID 
 		return 0, err
 	}
 	return chatID, nil
+}
+
+func (r *SqlChatRepository) DeleteChat(id int64) error {
+	query := `
+	DELETE FROM ` + r.chatTable + ` WHERE id = $1
+	`
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

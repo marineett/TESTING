@@ -10,8 +10,9 @@ services:
       POSTGRES_DB: mydb
       POSTGRES_CLIENT_MIN_MESSAGES: notice
       POSTGRES_LOG_MIN_MESSAGES: notice
+      POSTGRES_PORT: 5433
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5433:5433"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -27,10 +28,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     environment:
       DATABASE_HOST: db
       DATABASE_NAME: mydb
@@ -41,29 +41,30 @@ services:
     volumes:
       - ./logs:/build/logs
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app:delegated
-      - /app/node_modules
-      - ./logs:/app/logs
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
-      - REACT_APP_BACKEND_URL=http://backend:8000
-      - WDS_SOCKET_PORT=3000
-      - NODE_OPTIONS=--openssl-legacy-provider
-      - CI=true
-      - NPM_CONFIG_LOGLEVEL=warn
-    command: sh -c "mkdir -p logs && npm start 2>&1 | tee logs/frontend.log"
-    stdin_open: true
-    tty: true
-    depends_on:
-      - backend
-    networks:
-      - app-network
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app:delegated
+  #     - /app/node_modules
+  #     - ./logs:/app/logs
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #     - WATCHPACK_POLLING=true
+  #     - REACT_APP_BACKEND_URL=http://backend:8000
+  #     - WDS_SOCKET_PORT=3000
+  #     - NODE_OPTIONS=--openssl-legacy-provider
+  #     - CI=true
+  #     - NPM_CONFIG_LOGLEVEL=warn
+  #   command: sh -c "mkdir -p logs && npm start 2>&1 | tee logs/frontend.log"
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app-network
 
 networks:
   app-network:
