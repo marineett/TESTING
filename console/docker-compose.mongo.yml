@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: data_base_project_db
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: mongosh --eval "db.runCommand('ping').ok" --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - mongo-network
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: data_base_project_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+networks:
+  mongo-network:
+    driver: bridge
+    name: mongo-network
+
+volumes:
+  mongodb_data:
+  postgres_data:

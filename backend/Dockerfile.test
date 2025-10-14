@@ -1,0 +1,11 @@
+# Используйте подходящий базовый образ, например, для Go:
+FROM golang:1.24-alpine
+
+# Установите зависимости, если они есть
+# RUN go get -d -v ./...
+
+# Копируйте исходный код в контейнер
+COPY . /app
+WORKDIR /app
+
+CMD ["go", "test", "-covermode=atomic", "./data_base/...", "-v"] 

@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=testdb
+      - DATABASE_USER=testuser
+      - DATABASE_PASSWORD=testpass
+    depends_on:
+      - db
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+    ports:
+      - "5432:5432" 

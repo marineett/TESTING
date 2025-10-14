@@ -1,0 +1,2211 @@
+2025/06/07 19:03:19 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/06/07 19:03:19 Attempting to connect to database...
+2025/06/07 19:03:19 Successfully connected to database!
+2025/06/07 19:03:19 Server starting on port 8000
+2025/06/07 19:04:19 Received request: GET /api/guest/get_repetitors
+2025/06/07 19:04:19 Repetitors offset: 0
+2025/06/07 19:04:19 Repetitors limit: 10
+2025/06/07 19:04:19 GetRepetitor 2
+2025/06/07 19:04:19 GetRepetitor 5
+2025/06/07 19:04:19 Repetitors retrieved: [0xc0001b8198 0xc0001b8240]
+2025/06/07 19:04:19 Received request: GET /api/guest/get_repetitors
+2025/06/07 19:04:19 Repetitors offset: 0
+2025/06/07 19:04:19 Repetitors limit: 10
+2025/06/07 19:04:19 GetRepetitor 2
+2025/06/07 19:04:19 GetRepetitor 5
+2025/06/07 19:04:19 Repetitors retrieved: [0xc00028c0a8 0xc00028c150]
+2025/06/07 19:04:25 Received request: POST /api/auth/authorize
+2025/06/07 19:04:25 Authorized: {1 1}
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 1
+2025/06/07 19:04:25 Received request: GET /api/chat/get_client_chats
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Chats offset: 0
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 2
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 4
+2025/06/07 19:04:25 Chats limit: 20
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 5
+2025/06/07 19:04:25 Status: 3
+2025/06/07 19:04:25 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Chats retrieved: [{2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/07 19:04:25 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Received request: GET /api/client/get_profile
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Reviews offset: 0
+2025/06/07 19:04:25 Reviews limit: 5
+2025/06/07 19:04:25 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 1
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 2
+2025/06/07 19:04:25 Received request: GET /api/chat/get_client_chats
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Chats offset: 0
+2025/06/07 19:04:25 Chats limit: 20
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 3
+2025/06/07 19:04:25 Chats retrieved: [{2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Status: 5
+2025/06/07 19:04:25 Received request: GET /api/client/get_contracts
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Offset: 0
+2025/06/07 19:04:25 Limit: 100
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Status: 4
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/07 19:04:25 Contracts retrieved: []
+2025/06/07 19:04:25 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/07 19:04:25 Received request: GET /api/client/get_profile
+2025/06/07 19:04:25 Client ID: 1
+2025/06/07 19:04:25 Reviews offset: 0
+2025/06/07 19:04:25 Reviews limit: 5
+2025/06/07 19:04:25 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 4
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 3
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 2
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 4
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 3
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Received request: GET /api/contract/get_lessons
+2025/06/07 19:04:26 Contract ID: 2
+2025/06/07 19:04:26 Offset: 0
+2025/06/07 19:04:26 Size: 5
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:26 Lessons retrieved: []
+2025/06/07 19:04:28 Received request: GET /api/chat/get_chat
+2025/06/07 19:04:28 Chat ID: 2
+2025/06/07 19:04:28 Chat retrieved: &{2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC}
+2025/06/07 19:04:28 Received request: GET /api/chat/get_chat
+2025/06/07 19:04:28 Chat ID: 2
+2025/06/07 19:04:28 Chat retrieved: &{2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC}
+2025/06/07 19:04:28 Received request: GET /api/chat/get_messages
+2025/06/07 19:04:28 Chat ID: 2
+2025/06/07 19:04:28 Messages offset: 0
+2025/06/07 19:04:28 Messages limit: 20
+2025/06/07 19:04:28 Messages retrieved: [{84 2 1 f,j,f 2025-05-18 19:06:47.277384 +0000 UTC} {83 2 1 абоба 2025-05-18 18:46:32.281504 +0000 UTC} {82 2 1 абоба 2025-05-18 18:46:08.78205 +0000 UTC} {81 2 1 абоба 2025-05-18 18:45:56.10813 +0000 UTC} {47 2 1 чё я тебе сделал гнида 2025-05-13 17:49:49.362662 +0000 UTC} {46 2 3 уёбище ты ебаное 2025-05-13 17:49:32.593024 +0000 UTC}]
+2025/06/07 19:04:28 Received request: GET /api/chat/get_messages
+2025/06/07 19:04:28 Chat ID: 2
+2025/06/07 19:04:28 Messages offset: 0
+2025/06/07 19:04:28 Messages limit: 20
+2025/06/07 19:04:28 Messages retrieved: [{84 2 1 f,j,f 2025-05-18 19:06:47.277384 +0000 UTC} {83 2 1 абоба 2025-05-18 18:46:32.281504 +0000 UTC} {82 2 1 абоба 2025-05-18 18:46:08.78205 +0000 UTC} {81 2 1 абоба 2025-05-18 18:45:56.10813 +0000 UTC} {47 2 1 чё я тебе сделал гнида 2025-05-13 17:49:49.362662 +0000 UTC} {46 2 3 уёбище ты ебаное 2025-05-13 17:49:32.593024 +0000 UTC}]
+2025/06/07 19:04:43 Received request: POST /api/chat/send_message
+2025/06/07 19:04:43 Message: надеюсь нихуя не уебалось
+2025/06/07 19:04:43 Sender ID: 1
+2025/06/07 19:04:43 Chat ID: 2
+2025/06/07 19:04:43 Message sent
+2025/06/07 19:04:43 Received request: GET /api/chat/get_messages
+2025/06/07 19:04:43 Chat ID: 2
+2025/06/07 19:04:43 Messages offset: 0
+2025/06/07 19:04:43 Messages limit: 20
+2025/06/07 19:04:43 Messages retrieved: [{89 2 1 надеюсь нихуя не уебалось 2025-06-07 19:04:43.693829 +0000 UTC} {84 2 1 f,j,f 2025-05-18 19:06:47.277384 +0000 UTC} {83 2 1 абоба 2025-05-18 18:46:32.281504 +0000 UTC} {82 2 1 абоба 2025-05-18 18:46:08.78205 +0000 UTC} {81 2 1 абоба 2025-05-18 18:45:56.10813 +0000 UTC} {47 2 1 чё я тебе сделал гнида 2025-05-13 17:49:49.362662 +0000 UTC} {46 2 3 уёбище ты ебаное 2025-05-13 17:49:32.593024 +0000 UTC}]
+2025/06/07 19:04:45 Received request: POST /api/chat/send_message
+2025/06/07 19:04:45 Message: збс
+2025/06/07 19:04:45 Sender ID: 1
+2025/06/07 19:04:45 Chat ID: 2
+2025/06/07 19:04:45 Message sent
+2025/06/07 19:04:46 Received request: GET /api/chat/get_messages
+2025/06/07 19:04:46 Chat ID: 2
+2025/06/07 19:04:46 Messages offset: 0
+2025/06/07 19:04:46 Messages limit: 20
+2025/06/07 19:04:46 Messages retrieved: [{90 2 1 збс 2025-06-07 19:04:45.977735 +0000 UTC} {89 2 1 надеюсь нихуя не уебалось 2025-06-07 19:04:43.693829 +0000 UTC} {84 2 1 f,j,f 2025-05-18 19:06:47.277384 +0000 UTC} {83 2 1 абоба 2025-05-18 18:46:32.281504 +0000 UTC} {82 2 1 абоба 2025-05-18 18:46:08.78205 +0000 UTC} {81 2 1 абоба 2025-05-18 18:45:56.10813 +0000 UTC} {47 2 1 чё я тебе сделал гнида 2025-05-13 17:49:49.362662 +0000 UTC} {46 2 3 уёбище ты ебаное 2025-05-13 17:49:32.593024 +0000 UTC}]
+2025/06/08 11:21:48 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/06/08 11:21:48 Attempting to connect to database...
+2025/06/08 11:21:48 Successfully connected to database!
+2025/06/08 11:21:48 Server starting on port 8000
+2025/06/08 11:27:41 Received request: GET /api/guest/get_repetitors
+2025/06/08 11:27:41 Repetitors offset: 0
+2025/06/08 11:27:41 Repetitors limit: 10
+2025/06/08 11:27:41 GetRepetitor 2
+2025/06/08 11:27:41 GetRepetitor 5
+2025/06/08 11:27:41 Repetitors retrieved: [0xc000011440 0xc0000114e8]
+2025/06/08 11:27:41 Received request: GET /api/guest/get_repetitors
+2025/06/08 11:27:41 Repetitors offset: 0
+2025/06/08 11:27:41 Repetitors limit: 10
+2025/06/08 11:27:41 GetRepetitor 2
+2025/06/08 11:27:41 GetRepetitor 5
+2025/06/08 11:27:41 Repetitors retrieved: [0xc0003320a8 0xc000332150]
+2025/06/08 11:34:00 Received request: GET /api/guest/get_repetitors
+2025/06/08 11:34:00 Repetitors offset: 0
+2025/06/08 11:34:00 Repetitors limit: 10
+2025/06/08 11:34:00 GetRepetitor 2
+2025/06/08 11:34:00 GetRepetitor 5
+2025/06/08 11:34:00 Repetitors retrieved: [0xc000332300 0xc0003323a8]
+2025/06/08 11:34:00 Received request: GET /api/guest/get_repetitors
+2025/06/08 11:34:00 Repetitors offset: 0
+2025/06/08 11:34:00 Repetitors limit: 10
+2025/06/08 11:34:00 GetRepetitor 2
+2025/06/08 11:34:00 GetRepetitor 5
+2025/06/08 11:34:00 Repetitors retrieved: [0xc000011bc0 0xc000011c68]
+2025/06/08 11:38:43 Received request: POST /api/registration/client
+2025/06/08 11:38:43 Request body: {"personal_data":{"telephone_number":"88805353535","email":"example7@gmail.com","first_name":"Daniil123","last_name":"Belyy123","middle_name":"Serg123","passport_number":"244235","passport_series":"44555","passport_date":"2025-06-24T00:00:00Z","passport_issued_by":"3223"},"auth_data":{"login":"aboba2","password":"1234"},"user_type":1}
+2025/06/08 11:38:43 Parsed init data: {InitUserData:{PersonalData:{ID:0 TelephoneNumber:88805353535 Email:example7@gmail.com PassportData:{PassportNumber:244235 PassportSeries:44555 PassportDate:2025-06-24 00:00:00 +0000 UTC PassportIssuedBy:3223} FirstName:Daniil123 LastName:Belyy123 MiddleName:Serg123} AuthData:{Login:aboba2 Password:1234}}}
+2025/06/08 11:38:43 Client created successfully: aboba2
+2025/06/08 11:39:21 Received request: POST /api/auth/authorize
+2025/06/08 11:39:21 Authorized: {7 1}
+2025/06/08 11:39:21 Received request: GET /api/chat/get_client_chats
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 1
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 3
+2025/06/08 11:39:21 Chats offset: 0
+2025/06/08 11:39:21 Chats limit: 20
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 4
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 5
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 2
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Chats retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Received request: GET /api/client/get_profile
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Reviews offset: 0
+2025/06/08 11:39:21 Reviews limit: 5
+2025/06/08 11:39:21 Client retrieved: &{Daniil123 Belyy123 Serg123 88805353535 example7@gmail.com 0 []}
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 1
+2025/06/08 11:39:21 Received request: GET /api/chat/get_client_chats
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Chats offset: 0
+2025/06/08 11:39:21 Chats limit: 20
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 2
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 4
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 3
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Chats retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Offset: 0
+2025/06/08 11:39:21 Limit: 100
+2025/06/08 11:39:21 Status: 5
+2025/06/08 11:39:21 Contracts retrieved: []
+2025/06/08 11:39:21 Received request: GET /api/client/get_profile
+2025/06/08 11:39:21 Client ID: 7
+2025/06/08 11:39:21 Reviews offset: 0
+2025/06/08 11:39:21 Reviews limit: 5
+2025/06/08 11:39:21 Client retrieved: &{Daniil123 Belyy123 Serg123 88805353535 example7@gmail.com 0 []}
+2025/06/08 11:39:48 Received request: POST /api/client/create_contract
+2025/06/08 11:39:48 Request body: {"title":"fdsfgdsgg","description":"dgdgdsgdsgdsg","price":20000,"start_date":"2025-06-28T00:00:00Z","contract_category":1,"commission":20,"duration":45,"client_id":7,"contract_subcategories":[]}
+2025/06/08 11:39:48 Contract init info: {7 1 [] dgdgdsgdsgdsg 20000 20 2025-06-28 00:00:00 +0000 UTC 45}
+2025/06/08 11:39:48 Contract created with ID: 37
+2025/06/08 11:39:48 http: superfluous response.WriteHeader call from data_base_project/server.SetupClientRouter.ClientCreateContractHandler.func2 (client.go:100)
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 2
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 4
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 5
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 3
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 1
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 5
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 2
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 4
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 3
+2025/06/08 11:39:48 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:48 Client ID: 7
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Limit: 100
+2025/06/08 11:39:48 Status: 1
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: []
+2025/06/08 11:39:48 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:48 Received request: GET /api/contract/get_lessons
+2025/06/08 11:39:48 Contract ID: 37
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Size: 5
+2025/06/08 11:39:48 Lessons retrieved: []
+2025/06/08 11:39:48 Received request: GET /api/contract/get_lessons
+2025/06/08 11:39:48 Contract ID: 37
+2025/06/08 11:39:48 Offset: 0
+2025/06/08 11:39:48 Size: 5
+2025/06/08 11:39:48 Lessons retrieved: []
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 1
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 2
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 3
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 5
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 4
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Status: 2
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 1
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 3
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 4
+2025/06/08 11:39:52 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:52 Client ID: 7
+2025/06/08 11:39:52 Offset: 0
+2025/06/08 11:39:52 Limit: 100
+2025/06/08 11:39:52 Status: 5
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:52 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:52 Contracts retrieved: []
+2025/06/08 11:39:53 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:53 Client ID: 7
+2025/06/08 11:39:53 Offset: 0
+2025/06/08 11:39:53 Limit: 100
+2025/06/08 11:39:53 Status: 1
+2025/06/08 11:39:53 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:53 Client ID: 7
+2025/06/08 11:39:53 Offset: 0
+2025/06/08 11:39:53 Limit: 100
+2025/06/08 11:39:53 Status: 2
+2025/06/08 11:39:53 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:53 Client ID: 7
+2025/06/08 11:39:53 Offset: 0
+2025/06/08 11:39:53 Limit: 100
+2025/06/08 11:39:53 Status: 3
+2025/06/08 11:39:53 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:53 Client ID: 7
+2025/06/08 11:39:53 Offset: 0
+2025/06/08 11:39:53 Limit: 100
+2025/06/08 11:39:53 Status: 4
+2025/06/08 11:39:53 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:53 Client ID: 7
+2025/06/08 11:39:53 Offset: 0
+2025/06/08 11:39:53 Limit: 100
+2025/06/08 11:39:53 Status: 5
+2025/06/08 11:39:53 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:53 Contracts retrieved: []
+2025/06/08 11:39:53 Contracts retrieved: []
+2025/06/08 11:39:53 Contracts retrieved: []
+2025/06/08 11:39:53 Contracts retrieved: []
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 1
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 2
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 3
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 4
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 5
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 1
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 3
+2025/06/08 11:39:54 Status: 2
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 4
+2025/06/08 11:39:54 Received request: GET /api/client/get_contracts
+2025/06/08 11:39:54 Client ID: 7
+2025/06/08 11:39:54 Offset: 0
+2025/06/08 11:39:54 Limit: 100
+2025/06/08 11:39:54 Status: 5
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:39:54 Contracts retrieved: []
+2025/06/08 11:40:00 Received request: POST /api/auth/authorize
+2025/06/08 11:40:00 Authorized: {2 2}
+2025/06/08 11:40:00 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Chats offset: 0
+2025/06/08 11:40:00 Chats limit: 20
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 1
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 1
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 2
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 3
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 4
+2025/06/08 11:40:00 Chats retrieved: [{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:00 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0} {4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 5
+2025/06/08 11:40:00 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 1
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 2
+2025/06/08 11:40:00 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Chats offset: 0
+2025/06/08 11:40:00 Chats limit: 20
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 3
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 1
+2025/06/08 11:40:00 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0} {4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:00 Chats retrieved: [{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 4
+2025/06/08 11:40:00 Contracts retrieved: []
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Limit: 100
+2025/06/08 11:40:00 Status: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 37
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 2
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 3
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 4
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:00 Repetitor ID: 2
+2025/06/08 11:40:00 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 4
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 37
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 3
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:00 Contract ID: 2
+2025/06/08 11:40:00 Offset: 0
+2025/06/08 11:40:00 Size: 5
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:00 Lessons retrieved: []
+2025/06/08 11:40:02 Received request: GET /api/chat/get_chat
+2025/06/08 11:40:02 Chat ID: 4
+2025/06/08 11:40:02 Chat retrieved: &{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC}
+2025/06/08 11:40:02 Received request: GET /api/chat/get_chat
+2025/06/08 11:40:02 Chat ID: 4
+2025/06/08 11:40:02 Chat retrieved: &{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC}
+2025/06/08 11:40:02 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:02 Chat ID: 4
+2025/06/08 11:40:02 Messages offset: 0
+2025/06/08 11:40:02 Messages limit: 20
+2025/06/08 11:40:02 Messages retrieved: [{87 4 1 ffff 2025-05-31 13:17:47.432605 +0000 UTC} {49 4 2 да я ебать как рад тоже 2025-05-13 18:02:14.83737 +0000 UTC} {48 4 3 ну наконец то сука 2025-05-13 18:02:02.422332 +0000 UTC}]
+2025/06/08 11:40:02 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:02 Chat ID: 4
+2025/06/08 11:40:02 Messages offset: 0
+2025/06/08 11:40:02 Messages limit: 20
+2025/06/08 11:40:02 Messages retrieved: [{87 4 1 ffff 2025-05-31 13:17:47.432605 +0000 UTC} {49 4 2 да я ебать как рад тоже 2025-05-13 18:02:14.83737 +0000 UTC} {48 4 3 ну наконец то сука 2025-05-13 18:02:02.422332 +0000 UTC}]
+2025/06/08 11:40:03 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Chats offset: 0
+2025/06/08 11:40:03 Chats limit: 20
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 1
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 1
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 2
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 3
+2025/06/08 11:40:03 Chats retrieved: [{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 4
+2025/06/08 11:40:03 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0} {4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 5
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:03 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Chats offset: 0
+2025/06/08 11:40:03 Chats limit: 20
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 2
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 1
+2025/06/08 11:40:03 Status: 1
+2025/06/08 11:40:03 Contracts retrieved: [{37 7 0 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 1 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0} {4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Chats retrieved: [{4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:03 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 3
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:03 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 5
+2025/06/08 11:40:03 Repetitor ID: 2
+2025/06/08 11:40:03 Limit: 100
+2025/06/08 11:40:03 Status: 4
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:03 Contracts retrieved: []
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 4
+2025/06/08 11:40:03 Contract ID: 37
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 3
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 2
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 37
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 3
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 2
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:03 Contract ID: 4
+2025/06/08 11:40:03 Offset: 0
+2025/06/08 11:40:03 Size: 5
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:03 Lessons retrieved: []
+2025/06/08 11:40:07 Received request: POST /api/repetitor/accept_contract
+2025/06/08 11:40:07 Contract ID: 37
+2025/06/08 11:40:07 Repetitor ID: 2
+2025/06/08 11:40:07 GetRepetitor 2
+2025/06/08 11:40:07 Repetitor ID: 2
+2025/06/08 11:40:07 Contract 37 updated with repetitor 2
+2025/06/08 11:40:07 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Limit: 100
+2025/06/08 11:40:07 Status: 1
+2025/06/08 11:40:07 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 3
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 4
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 2
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 4
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 3
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:07 Contract ID: 2
+2025/06/08 11:40:07 Offset: 0
+2025/06/08 11:40:07 Size: 5
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:07 Lessons retrieved: []
+2025/06/08 11:40:13 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:13 Repetitor ID: 2
+2025/06/08 11:40:13 Limit: 100
+2025/06/08 11:40:13 Status: 1
+2025/06/08 11:40:13 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:13 Repetitor ID: 2
+2025/06/08 11:40:13 Limit: 100
+2025/06/08 11:40:13 Status: 2
+2025/06/08 11:40:13 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:13 Repetitor ID: 2
+2025/06/08 11:40:13 Limit: 100
+2025/06/08 11:40:13 Status: 3
+2025/06/08 11:40:13 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:13 Repetitor ID: 2
+2025/06/08 11:40:13 Limit: 100
+2025/06/08 11:40:13 Status: 4
+2025/06/08 11:40:13 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:13 Repetitor ID: 2
+2025/06/08 11:40:13 Limit: 100
+2025/06/08 11:40:13 Status: 5
+2025/06/08 11:40:13 Contracts retrieved: []
+2025/06/08 11:40:13 Contracts retrieved: []
+2025/06/08 11:40:13 Contracts retrieved: [{37 7 2 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 2 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:13 Contracts retrieved: []
+2025/06/08 11:40:13 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:13 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:13 Contract ID: 37
+2025/06/08 11:40:13 Offset: 0
+2025/06/08 11:40:13 Size: 5
+2025/06/08 11:40:13 Lessons retrieved: []
+2025/06/08 11:40:13 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:13 Contract ID: 37
+2025/06/08 11:40:13 Offset: 0
+2025/06/08 11:40:13 Size: 5
+2025/06/08 11:40:13 Lessons retrieved: []
+2025/06/08 11:40:18 Received request: GET /api/chat/start_cr_chat
+2025/06/08 11:40:18 Client ID: 7
+2025/06/08 11:40:18 Repetitor ID: 2
+2025/06/08 11:40:18 Chat created
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Received request: GET /api/chat/get_chat
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Chat retrieved: &{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC}
+2025/06/08 11:40:18 Received request: GET /api/chat/get_chat
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Chat retrieved: &{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC}
+2025/06/08 11:40:18 Received request: GET /api/chat/get_chat
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Chat retrieved: &{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC}
+2025/06/08 11:40:18 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Messages offset: 0
+2025/06/08 11:40:18 Messages limit: 20
+2025/06/08 11:40:18 Messages retrieved: []
+2025/06/08 11:40:18 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:18 Chat ID: 37
+2025/06/08 11:40:18 Messages offset: 0
+2025/06/08 11:40:18 Messages limit: 20
+2025/06/08 11:40:18 Messages retrieved: []
+2025/06/08 11:40:20 Received request: POST /api/chat/send_message
+2025/06/08 11:40:20 Message: fdsdfdsgd
+2025/06/08 11:40:20 Sender ID: 2
+2025/06/08 11:40:20 Chat ID: 37
+2025/06/08 11:40:20 Message sent
+2025/06/08 11:40:20 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:20 Chat ID: 37
+2025/06/08 11:40:20 Messages offset: 0
+2025/06/08 11:40:20 Messages limit: 20
+2025/06/08 11:40:20 Messages retrieved: [{91 37 2 fdsdfdsgd 2025-06-08 11:40:20.227634 +0000 UTC}]
+2025/06/08 11:40:22 Received request: POST /api/chat/send_message
+2025/06/08 11:40:22 Message: dgsdgds
+2025/06/08 11:40:22 Sender ID: 2
+2025/06/08 11:40:22 Chat ID: 37
+2025/06/08 11:40:22 Message sent
+2025/06/08 11:40:22 Received request: GET /api/chat/get_messages
+2025/06/08 11:40:22 Chat ID: 37
+2025/06/08 11:40:22 Messages offset: 0
+2025/06/08 11:40:22 Messages limit: 20
+2025/06/08 11:40:22 Messages retrieved: [{92 37 2 dgsdgds 2025-06-08 11:40:22.147005 +0000 UTC} {91 37 2 fdsdfdsgd 2025-06-08 11:40:20.227634 +0000 UTC}]
+2025/06/08 11:40:32 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Chats offset: 0
+2025/06/08 11:40:32 Chats limit: 20
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 1
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 1
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 3
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 4
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 2
+2025/06/08 11:40:32 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Chats retrieved: [{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC} {4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Contracts retrieved: [{37 7 2 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 2 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 5
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 1
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 2
+2025/06/08 11:40:32 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Chats offset: 0
+2025/06/08 11:40:32 Chats limit: 20
+2025/06/08 11:40:32 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Chats retrieved: [{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC} {4 0 2 3 2025-05-13 18:01:55.561907 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 11:40:32 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Contracts retrieved: [{37 7 2 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 2 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 1
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 3
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 4
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:32 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:32 Repetitor ID: 2
+2025/06/08 11:40:32 Limit: 100
+2025/06/08 11:40:32 Status: 5
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Contracts retrieved: []
+2025/06/08 11:40:32 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 4
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 3
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 2
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 4
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 3
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:32 Contract ID: 2
+2025/06/08 11:40:32 Offset: 0
+2025/06/08 11:40:32 Size: 5
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:32 Lessons retrieved: []
+2025/06/08 11:40:45 Received request: POST /api/auth/authorize
+2025/06/08 11:40:45 Authorized: {7 1}
+2025/06/08 11:40:45 Received request: GET /api/chat/get_client_chats
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Chats offset: 0
+2025/06/08 11:40:45 Chats limit: 20
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 1
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 2
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 3
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 5
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 4
+2025/06/08 11:40:45 Chats retrieved: [{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC}]
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Contracts retrieved: [{37 7 2 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 2 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Received request: GET /api/client/get_profile
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Reviews offset: 0
+2025/06/08 11:40:45 Reviews limit: 5
+2025/06/08 11:40:45 Received request: GET /api/chat/get_client_chats
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Chats offset: 0
+2025/06/08 11:40:45 Chats limit: 20
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 2
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 1
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Status: 4
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 3
+2025/06/08 11:40:45 Chats retrieved: [{37 7 2 0 2025-06-08 11:40:18.110544 +0000 UTC}]
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Contracts retrieved: [{37 7 2 0 2025-06-08 11:39:48.189801 +0000 UTC dgdgdsgdsgdsg 2 0 0 0 20000 20 2025-06-28 00:00:00 +0000 UTC 2025-08-12 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Client retrieved: &{Daniil123 Belyy123 Serg123 88805353535 example7@gmail.com 0 []}
+2025/06/08 11:40:45 Received request: GET /api/client/get_contracts
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Offset: 0
+2025/06/08 11:40:45 Limit: 100
+2025/06/08 11:40:45 Status: 5
+2025/06/08 11:40:45 Received request: GET /api/client/get_profile
+2025/06/08 11:40:45 Client ID: 7
+2025/06/08 11:40:45 Reviews offset: 0
+2025/06/08 11:40:45 Reviews limit: 5
+2025/06/08 11:40:45 Contracts retrieved: []
+2025/06/08 11:40:45 Client retrieved: &{Daniil123 Belyy123 Serg123 88805353535 example7@gmail.com 0 []}
+2025/06/08 11:40:55 Received request: POST /api/auth/authorize
+2025/06/08 11:40:55 Authorized: {5 2}
+2025/06/08 11:40:55 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 1
+2025/06/08 11:40:55 Chats offset: 0
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 3
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 2
+2025/06/08 11:40:55 Chats limit: 20
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 1
+2025/06/08 11:40:55 Status: 4
+2025/06/08 11:40:55 Chats retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 5
+2025/06/08 11:40:55 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 1
+2025/06/08 11:40:55 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 1
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 2
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Chats offset: 0
+2025/06/08 11:40:55 Chats limit: 20
+2025/06/08 11:40:55 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Chats retrieved: []
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 3
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 4
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Limit: 100
+2025/06/08 11:40:55 Status: 5
+2025/06/08 11:40:55 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:40:55 Repetitor ID: 5
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Contract ID: 4
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Error converting reviewsOffset to int: strconv.ParseInt: parsing "": invalid syntax
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Contract ID: 3
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Contracts retrieved: []
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Contract ID: 2
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Contract ID: 4
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Contract ID: 3
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:40:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:40:55 Contract ID: 2
+2025/06/08 11:40:55 Offset: 0
+2025/06/08 11:40:55 Size: 5
+2025/06/08 11:40:55 Lessons retrieved: []
+2025/06/08 11:45:54 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Chats offset: 0
+2025/06/08 11:45:54 Chats limit: 20
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 4
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 3
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 1
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 1
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 2
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Chats retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:45:54 Contracts retrieved: []
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 2
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 3
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 4
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Limit: 100
+2025/06/08 11:45:54 Status: 5
+2025/06/08 11:45:54 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:45:54 Repetitor ID: 5
+2025/06/08 11:45:54 Error converting reviewsOffset to int: strconv.ParseInt: parsing "undefined": invalid syntax
+2025/06/08 11:45:54 Contracts retrieved: []
+2025/06/08 11:45:54 Contracts retrieved: []
+2025/06/08 11:45:54 Contracts retrieved: []
+2025/06/08 11:45:54 Contracts retrieved: []
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 3
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 2
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 4
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 4
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 3
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Received request: GET /api/contract/get_lessons
+2025/06/08 11:45:54 Contract ID: 2
+2025/06/08 11:45:54 Offset: 0
+2025/06/08 11:45:54 Size: 5
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:45:54 Lessons retrieved: []
+2025/06/08 11:46:03 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:46:03 Repetitor ID: 5
+2025/06/08 11:46:03 Reviews Offset: 0
+2025/06/08 11:46:03 Reviews Limit: 5
+2025/06/08 11:46:03 GetRepetitor 5
+2025/06/08 11:46:03 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:46:23 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Chats offset: 0
+2025/06/08 11:46:23 Chats limit: 20
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 1
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 1
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 2
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 4
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 3
+2025/06/08 11:46:23 Chats retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 5
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Reviews Offset: 0
+2025/06/08 11:46:23 Reviews Limit: 5
+2025/06/08 11:46:23 GetRepetitor 5
+2025/06/08 11:46:23 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Chats offset: 0
+2025/06/08 11:46:23 Chats limit: 20
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 1
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 1
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 2
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Chats retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 4
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 3
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Limit: 100
+2025/06/08 11:46:23 Status: 5
+2025/06/08 11:46:23 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:46:23 Repetitor ID: 5
+2025/06/08 11:46:23 Reviews Offset: 0
+2025/06/08 11:46:23 Reviews Limit: 5
+2025/06/08 11:46:23 GetRepetitor 5
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Contracts retrieved: []
+2025/06/08 11:46:23 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 4
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 3
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 2
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 4
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 2
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Received request: GET /api/contract/get_lessons
+2025/06/08 11:46:23 Contract ID: 3
+2025/06/08 11:46:23 Offset: 0
+2025/06/08 11:46:23 Size: 5
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:46:23 Lessons retrieved: []
+2025/06/08 11:47:28 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Chats offset: 0
+2025/06/08 11:47:28 Chats limit: 20
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Chats retrieved: []
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 1
+2025/06/08 11:47:28 Status: 1
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 2
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 3
+2025/06/08 11:47:28 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 4
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 5
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Reviews Offset: 0
+2025/06/08 11:47:28 Reviews Limit: 5
+2025/06/08 11:47:28 GetRepetitor 5
+2025/06/08 11:47:28 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Chats offset: 0
+2025/06/08 11:47:28 Chats limit: 20
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 1
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 1
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 2
+2025/06/08 11:47:28 Chats retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0} {2 1 0 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 1 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 3
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 4
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Reviews Offset: 0
+2025/06/08 11:47:28 Reviews Limit: 5
+2025/06/08 11:47:28 GetRepetitor 5
+2025/06/08 11:47:28 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:28 Repetitor ID: 5
+2025/06/08 11:47:28 Limit: 100
+2025/06/08 11:47:28 Status: 5
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Contracts retrieved: []
+2025/06/08 11:47:28 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 4
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 3
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 2
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 4
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 3
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:28 Contract ID: 2
+2025/06/08 11:47:28 Offset: 0
+2025/06/08 11:47:28 Size: 5
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:28 Lessons retrieved: []
+2025/06/08 11:47:41 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:41 Repetitor ID: 5
+2025/06/08 11:47:41 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:41 Repetitor ID: 5
+2025/06/08 11:47:41 Limit: 100
+2025/06/08 11:47:41 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:41 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:41 Repetitor ID: 5
+2025/06/08 11:47:41 Status: 2
+2025/06/08 11:47:41 Limit: 100
+2025/06/08 11:47:41 Status: 4
+2025/06/08 11:47:41 Repetitor ID: 5
+2025/06/08 11:47:41 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:41 Repetitor ID: 5
+2025/06/08 11:47:41 Limit: 100
+2025/06/08 11:47:41 Status: 5
+2025/06/08 11:47:41 Limit: 100
+2025/06/08 11:47:41 Status: 3
+2025/06/08 11:47:41 Limit: 100
+2025/06/08 11:47:41 Status: 1
+2025/06/08 11:47:41 Contracts retrieved: []
+2025/06/08 11:47:41 Contracts retrieved: []
+2025/06/08 11:47:41 Contracts retrieved: []
+2025/06/08 11:47:41 Contracts retrieved: []
+2025/06/08 11:47:41 Contracts retrieved: []
+2025/06/08 11:47:44 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:44 Repetitor ID: 5
+2025/06/08 11:47:44 Limit: 100
+2025/06/08 11:47:44 Status: 2
+2025/06/08 11:47:44 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:44 Repetitor ID: 5
+2025/06/08 11:47:44 Limit: 100
+2025/06/08 11:47:44 Status: 1
+2025/06/08 11:47:44 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:44 Repetitor ID: 5
+2025/06/08 11:47:44 Limit: 100
+2025/06/08 11:47:44 Status: 3
+2025/06/08 11:47:44 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:44 Repetitor ID: 5
+2025/06/08 11:47:44 Limit: 100
+2025/06/08 11:47:44 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:44 Repetitor ID: 5
+2025/06/08 11:47:44 Limit: 100
+2025/06/08 11:47:44 Status: 5
+2025/06/08 11:47:44 Status: 4
+2025/06/08 11:47:44 Contracts retrieved: []
+2025/06/08 11:47:44 Contracts retrieved: []
+2025/06/08 11:47:44 Contracts retrieved: []
+2025/06/08 11:47:44 Contracts retrieved: []
+2025/06/08 11:47:44 Contracts retrieved: []
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 1
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 2
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 4
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 3
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 5
+2025/06/08 11:47:45 Contracts retrieved: []
+2025/06/08 11:47:45 Contracts retrieved: []
+2025/06/08 11:47:45 Contracts retrieved: []
+2025/06/08 11:47:45 Contracts retrieved: []
+2025/06/08 11:47:45 Contracts retrieved: []
+2025/06/08 11:47:45 Received request: POST /api/repetitor/accept_contract
+2025/06/08 11:47:45 Contract ID: 2
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 GetRepetitor 5
+2025/06/08 11:47:45 Repetitor ID: 5
+2025/06/08 11:47:45 Contract 2 updated with repetitor 5
+2025/06/08 11:47:45 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:47:45 Offset: 0
+2025/06/08 11:47:45 Limit: 100
+2025/06/08 11:47:45 Status: 1
+2025/06/08 11:47:45 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:45 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:45 Contract ID: 4
+2025/06/08 11:47:45 Offset: 0
+2025/06/08 11:47:45 Size: 5
+2025/06/08 11:47:45 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:45 Contract ID: 3
+2025/06/08 11:47:45 Offset: 0
+2025/06/08 11:47:45 Size: 5
+2025/06/08 11:47:45 Lessons retrieved: []
+2025/06/08 11:47:45 Lessons retrieved: []
+2025/06/08 11:47:45 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:45 Contract ID: 3
+2025/06/08 11:47:45 Offset: 0
+2025/06/08 11:47:45 Size: 5
+2025/06/08 11:47:45 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:45 Contract ID: 4
+2025/06/08 11:47:45 Offset: 0
+2025/06/08 11:47:45 Size: 5
+2025/06/08 11:47:45 Lessons retrieved: []
+2025/06/08 11:47:45 Lessons retrieved: []
+2025/06/08 11:47:51 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:51 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:51 Repetitor ID: 5
+2025/06/08 11:47:51 Limit: 100
+2025/06/08 11:47:51 Repetitor ID: 5
+2025/06/08 11:47:51 Limit: 100
+2025/06/08 11:47:51 Status: 1
+2025/06/08 11:47:51 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:51 Repetitor ID: 5
+2025/06/08 11:47:51 Limit: 100
+2025/06/08 11:47:51 Status: 2
+2025/06/08 11:47:51 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:51 Repetitor ID: 5
+2025/06/08 11:47:51 Status: 4
+2025/06/08 11:47:51 Limit: 100
+2025/06/08 11:47:51 Status: 3
+2025/06/08 11:47:51 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:51 Repetitor ID: 5
+2025/06/08 11:47:51 Limit: 100
+2025/06/08 11:47:51 Status: 5
+2025/06/08 11:47:51 Contracts retrieved: []
+2025/06/08 11:47:51 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:51 Contracts retrieved: []
+2025/06/08 11:47:51 Contracts retrieved: []
+2025/06/08 11:47:51 Contracts retrieved: []
+2025/06/08 11:47:52 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:52 Contract ID: 2
+2025/06/08 11:47:52 Offset: 0
+2025/06/08 11:47:52 Size: 5
+2025/06/08 11:47:52 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:52 Repetitor ID: 5
+2025/06/08 11:47:52 Limit: 100
+2025/06/08 11:47:52 Status: 3
+2025/06/08 11:47:52 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:52 Repetitor ID: 5
+2025/06/08 11:47:52 Limit: 100
+2025/06/08 11:47:52 Status: 4
+2025/06/08 11:47:52 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:52 Repetitor ID: 5
+2025/06/08 11:47:52 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:52 Repetitor ID: 5
+2025/06/08 11:47:52 Limit: 100
+2025/06/08 11:47:52 Status: 2
+2025/06/08 11:47:52 Limit: 100
+2025/06/08 11:47:52 Status: 1
+2025/06/08 11:47:52 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:52 Repetitor ID: 5
+2025/06/08 11:47:52 Limit: 100
+2025/06/08 11:47:52 Status: 5
+2025/06/08 11:47:52 Lessons retrieved: []
+2025/06/08 11:47:52 Contracts retrieved: []
+2025/06/08 11:47:52 Contracts retrieved: []
+2025/06/08 11:47:52 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:52 Contracts retrieved: []
+2025/06/08 11:47:52 Contracts retrieved: []
+2025/06/08 11:47:52 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:52 Contract ID: 2
+2025/06/08 11:47:52 Offset: 0
+2025/06/08 11:47:52 Size: 5
+2025/06/08 11:47:52 Lessons retrieved: []
+2025/06/08 11:47:52 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:52 Contract ID: 2
+2025/06/08 11:47:52 Offset: 0
+2025/06/08 11:47:52 Size: 5
+2025/06/08 11:47:52 Lessons retrieved: []
+2025/06/08 11:47:52 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:52 Contract ID: 2
+2025/06/08 11:47:52 Offset: 0
+2025/06/08 11:47:52 Size: 5
+2025/06/08 11:47:52 Lessons retrieved: []
+2025/06/08 11:47:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:54 Repetitor ID: 5
+2025/06/08 11:47:54 Limit: 100
+2025/06/08 11:47:54 Status: 1
+2025/06/08 11:47:54 Repetitor ID: 5
+2025/06/08 11:47:54 Limit: 100
+2025/06/08 11:47:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:54 Repetitor ID: 5
+2025/06/08 11:47:54 Limit: 100
+2025/06/08 11:47:54 Status: 4
+2025/06/08 11:47:54 Status: 2
+2025/06/08 11:47:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:54 Repetitor ID: 5
+2025/06/08 11:47:54 Limit: 100
+2025/06/08 11:47:54 Status: 5
+2025/06/08 11:47:54 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:54 Repetitor ID: 5
+2025/06/08 11:47:54 Limit: 100
+2025/06/08 11:47:54 Status: 3
+2025/06/08 11:47:54 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:54 Contracts retrieved: []
+2025/06/08 11:47:54 Contracts retrieved: []
+2025/06/08 11:47:54 Contracts retrieved: []
+2025/06/08 11:47:54 Contracts retrieved: []
+2025/06/08 11:47:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:55 Contract ID: 2
+2025/06/08 11:47:55 Offset: 0
+2025/06/08 11:47:55 Size: 5
+2025/06/08 11:47:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:55 Repetitor ID: 5
+2025/06/08 11:47:55 Limit: 100
+2025/06/08 11:47:55 Status: 1
+2025/06/08 11:47:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:55 Repetitor ID: 5
+2025/06/08 11:47:55 Limit: 100
+2025/06/08 11:47:55 Status: 3
+2025/06/08 11:47:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:55 Repetitor ID: 5
+2025/06/08 11:47:55 Limit: 100
+2025/06/08 11:47:55 Status: 2
+2025/06/08 11:47:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:55 Repetitor ID: 5
+2025/06/08 11:47:55 Limit: 100
+2025/06/08 11:47:55 Status: 5
+2025/06/08 11:47:55 Lessons retrieved: []
+2025/06/08 11:47:55 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:47:55 Repetitor ID: 5
+2025/06/08 11:47:55 Limit: 100
+2025/06/08 11:47:55 Status: 4
+2025/06/08 11:47:55 Contracts retrieved: []
+2025/06/08 11:47:55 Contracts retrieved: []
+2025/06/08 11:47:55 Contracts retrieved: []
+2025/06/08 11:47:55 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:47:55 Contracts retrieved: []
+2025/06/08 11:47:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:55 Contract ID: 2
+2025/06/08 11:47:55 Offset: 0
+2025/06/08 11:47:55 Size: 5
+2025/06/08 11:47:55 Lessons retrieved: []
+2025/06/08 11:47:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:55 Contract ID: 2
+2025/06/08 11:47:55 Offset: 0
+2025/06/08 11:47:55 Size: 5
+2025/06/08 11:47:55 Lessons retrieved: []
+2025/06/08 11:47:55 Received request: GET /api/contract/get_lessons
+2025/06/08 11:47:55 Contract ID: 2
+2025/06/08 11:47:55 Offset: 0
+2025/06/08 11:47:55 Size: 5
+2025/06/08 11:47:55 Lessons retrieved: []
+2025/06/08 11:47:57 Received request: GET /api/chat/start_cr_chat
+2025/06/08 11:47:57 Client ID: 1
+2025/06/08 11:47:57 Repetitor ID: 5
+2025/06/08 11:47:57 Chat created
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Received request: GET /api/chat/get_chat
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Chat retrieved: &{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}
+2025/06/08 11:47:57 Received request: GET /api/chat/get_chat
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Chat retrieved: &{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}
+2025/06/08 11:47:57 Received request: GET /api/chat/get_chat
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Chat retrieved: &{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}
+2025/06/08 11:47:57 Received request: GET /api/chat/get_messages
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Messages offset: 0
+2025/06/08 11:47:57 Messages limit: 20
+2025/06/08 11:47:57 Messages retrieved: []
+2025/06/08 11:47:57 Received request: GET /api/chat/get_messages
+2025/06/08 11:47:57 Chat ID: 38
+2025/06/08 11:47:57 Messages offset: 0
+2025/06/08 11:47:57 Messages limit: 20
+2025/06/08 11:47:57 Messages retrieved: []
+2025/06/08 11:48:00 Received request: POST /api/chat/send_message
+2025/06/08 11:48:00 Message: ивитивти
+2025/06/08 11:48:00 Sender ID: 5
+2025/06/08 11:48:00 Chat ID: 38
+2025/06/08 11:48:00 Message sent
+2025/06/08 11:48:00 Received request: GET /api/chat/get_messages
+2025/06/08 11:48:00 Chat ID: 38
+2025/06/08 11:48:00 Messages offset: 0
+2025/06/08 11:48:00 Messages limit: 20
+2025/06/08 11:48:00 Messages retrieved: [{93 38 5 ивитивти 2025-06-08 11:48:00.121381 +0000 UTC}]
+2025/06/08 11:48:01 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Chats offset: 0
+2025/06/08 11:48:01 Chats limit: 20
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 1
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 1
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 2
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 3
+2025/06/08 11:48:01 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}]
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 4
+2025/06/08 11:48:01 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Reviews Offset: 0
+2025/06/08 11:48:01 Reviews Limit: 5
+2025/06/08 11:48:01 GetRepetitor 5
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_available_contracts
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 1
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 5
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 1
+2025/06/08 11:48:01 Received request: GET /api/chat/get_repetitor_chats
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Chats offset: 0
+2025/06/08 11:48:01 Chats limit: 20
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 2
+2025/06/08 11:48:01 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}]
+2025/06/08 11:48:01 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Received request: GET /api/contract/get_lessons
+2025/06/08 11:48:01 Contract ID: 4
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Size: 5
+2025/06/08 11:48:01 Status: 4
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 3
+2025/06/08 11:48:01 Lessons retrieved: []
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Received request: GET /api/contract/get_lessons
+2025/06/08 11:48:01 Contract ID: 3
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Size: 5
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_contracts
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Limit: 100
+2025/06/08 11:48:01 Status: 5
+2025/06/08 11:48:01 Lessons retrieved: []
+2025/06/08 11:48:01 Contracts retrieved: []
+2025/06/08 11:48:01 Received request: GET /api/repetitor/get_profile
+2025/06/08 11:48:01 Repetitor ID: 5
+2025/06/08 11:48:01 Reviews Offset: 0
+2025/06/08 11:48:01 Reviews Limit: 5
+2025/06/08 11:48:01 GetRepetitor 5
+2025/06/08 11:48:01 Repetitor retrieved: &{Daniil5 Belyy5 Serg5 88005353535 example5@gmail.com 0 Very good Title Very good Description map[dBeaver:300 go:100 sql:200] []}
+2025/06/08 11:48:01 Received request: GET /api/contract/get_lessons
+2025/06/08 11:48:01 Contract ID: 4
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Size: 5
+2025/06/08 11:48:01 Received request: GET /api/contract/get_lessons
+2025/06/08 11:48:01 Contract ID: 3
+2025/06/08 11:48:01 Offset: 0
+2025/06/08 11:48:01 Size: 5
+2025/06/08 11:48:01 Lessons retrieved: []
+2025/06/08 11:48:01 Lessons retrieved: []
+2025/06/08 22:36:06 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/06/08 22:36:06 Attempting to connect to database...
+2025/06/08 22:36:06 Successfully connected to database!
+2025/06/08 22:36:06 Server starting on port 8000
+2025/06/08 22:36:15 Received request: GET /api/guest/get_repetitors
+2025/06/08 22:36:15 Repetitors offset: 0
+2025/06/08 22:36:15 Repetitors limit: 10
+2025/06/08 22:36:15 GetRepetitor 2
+2025/06/08 22:36:15 GetRepetitor 5
+2025/06/08 22:36:15 Repetitors retrieved: [0xc00021e180 0xc00021e228]
+2025/06/08 22:36:15 Received request: GET /api/guest/get_repetitors
+2025/06/08 22:36:15 Repetitors offset: 0
+2025/06/08 22:36:15 Repetitors limit: 10
+2025/06/08 22:36:15 GetRepetitor 2
+2025/06/08 22:36:15 GetRepetitor 5
+2025/06/08 22:36:15 Repetitors retrieved: [0xc0000a40c0 0xc0000a4168]
+2025/06/08 22:36:20 Received request: POST /api/auth/authorize
+2025/06/08 22:36:20 Authorized: {1 1}
+2025/06/08 22:36:20 Received request: GET /api/chat/get_client_chats
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 1
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Chats offset: 0
+2025/06/08 22:36:20 Chats limit: 20
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 3
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 2
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 4
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 5
+2025/06/08 22:36:20 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC} {2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 22:36:20 Contracts retrieved: []
+2025/06/08 22:36:20 Contracts retrieved: []
+2025/06/08 22:36:20 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Received request: GET /api/client/get_profile
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Reviews offset: 0
+2025/06/08 22:36:20 Reviews limit: 5
+2025/06/08 22:36:20 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 1
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 2
+2025/06/08 22:36:20 Received request: GET /api/chat/get_client_chats
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Chats offset: 0
+2025/06/08 22:36:20 Chats limit: 20
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 3
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 4
+2025/06/08 22:36:20 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Contracts retrieved: []
+2025/06/08 22:36:20 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC} {2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 22:36:20 Contracts retrieved: []
+2025/06/08 22:36:20 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Limit: 100
+2025/06/08 22:36:20 Status: 5
+2025/06/08 22:36:20 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:20 Received request: GET /api/client/get_profile
+2025/06/08 22:36:20 Client ID: 1
+2025/06/08 22:36:20 Reviews offset: 0
+2025/06/08 22:36:20 Reviews limit: 5
+2025/06/08 22:36:20 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/08 22:36:20 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:20 Contract ID: 4
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Size: 5
+2025/06/08 22:36:20 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:20 Contract ID: 3
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Size: 5
+2025/06/08 22:36:20 Lessons retrieved: []
+2025/06/08 22:36:20 Lessons retrieved: []
+2025/06/08 22:36:20 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:20 Contract ID: 4
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Size: 5
+2025/06/08 22:36:20 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:20 Contract ID: 3
+2025/06/08 22:36:20 Offset: 0
+2025/06/08 22:36:20 Size: 5
+2025/06/08 22:36:20 Lessons retrieved: []
+2025/06/08 22:36:20 Lessons retrieved: []
+2025/06/08 22:36:22 Received request: GET /api/chat/get_chat
+2025/06/08 22:36:22 Chat ID: 38
+2025/06/08 22:36:22 Chat retrieved: &{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}
+2025/06/08 22:36:22 Received request: GET /api/chat/get_chat
+2025/06/08 22:36:22 Chat ID: 38
+2025/06/08 22:36:22 Chat retrieved: &{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC}
+2025/06/08 22:36:22 Received request: GET /api/chat/get_messages
+2025/06/08 22:36:22 Chat ID: 38
+2025/06/08 22:36:22 Messages offset: 0
+2025/06/08 22:36:22 Messages limit: 20
+2025/06/08 22:36:22 Messages retrieved: [{93 38 5 ивитивти 2025-06-08 11:48:00.121381 +0000 UTC}]
+2025/06/08 22:36:22 Received request: GET /api/chat/get_messages
+2025/06/08 22:36:22 Chat ID: 38
+2025/06/08 22:36:22 Messages offset: 0
+2025/06/08 22:36:22 Messages limit: 20
+2025/06/08 22:36:22 Messages retrieved: [{93 38 5 ивитивти 2025-06-08 11:48:00.121381 +0000 UTC}]
+2025/06/08 22:36:24 Received request: POST /api/chat/send_message
+2025/06/08 22:36:24 Message: dggdgdg
+2025/06/08 22:36:24 Sender ID: 1
+2025/06/08 22:36:24 Chat ID: 38
+2025/06/08 22:36:24 Message sent
+2025/06/08 22:36:24 Received request: GET /api/chat/get_messages
+2025/06/08 22:36:24 Chat ID: 38
+2025/06/08 22:36:24 Messages offset: 0
+2025/06/08 22:36:24 Messages limit: 20
+2025/06/08 22:36:24 Messages retrieved: [{94 38 1 dggdgdg 2025-06-08 22:36:24.77204 +0000 UTC} {93 38 5 ивитивти 2025-06-08 11:48:00.121381 +0000 UTC}]
+2025/06/08 22:36:26 Received request: POST /api/chat/send_message
+2025/06/08 22:36:26 Message: sfsfsf
+2025/06/08 22:36:26 Sender ID: 1
+2025/06/08 22:36:26 Chat ID: 38
+2025/06/08 22:36:26 Message sent
+2025/06/08 22:36:26 Received request: GET /api/chat/get_messages
+2025/06/08 22:36:26 Chat ID: 38
+2025/06/08 22:36:26 Messages offset: 0
+2025/06/08 22:36:26 Messages limit: 20
+2025/06/08 22:36:26 Messages retrieved: [{95 38 1 sfsfsf 2025-06-08 22:36:26.638274 +0000 UTC} {94 38 1 dggdgdg 2025-06-08 22:36:24.77204 +0000 UTC} {93 38 5 ивитивти 2025-06-08 11:48:00.121381 +0000 UTC}]
+2025/06/08 22:36:27 Received request: GET /api/chat/get_client_chats
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Chats offset: 0
+2025/06/08 22:36:27 Chats limit: 20
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 1
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 3
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 2
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 4
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 5
+2025/06/08 22:36:27 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC} {2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 22:36:27 Contracts retrieved: []
+2025/06/08 22:36:27 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Contracts retrieved: []
+2025/06/08 22:36:27 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Received request: GET /api/client/get_profile
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Reviews offset: 0
+2025/06/08 22:36:27 Reviews limit: 5
+2025/06/08 22:36:27 Received request: GET /api/chat/get_client_chats
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Chats offset: 0
+2025/06/08 22:36:27 Chats limit: 20
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 3
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 1
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 2
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 4
+2025/06/08 22:36:27 Chats retrieved: [{38 1 5 0 2025-06-08 11:47:57.776691 +0000 UTC} {2 1 0 3 2025-05-13 17:49:24.893768 +0000 UTC} {1 1 2 0 2025-05-13 14:57:32.961817 +0000 UTC}]
+2025/06/08 22:36:27 Contracts retrieved: []
+2025/06/08 22:36:27 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Contracts retrieved: []
+2025/06/08 22:36:27 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/08 22:36:27 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Limit: 100
+2025/06/08 22:36:27 Status: 5
+2025/06/08 22:36:27 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:27 Contract ID: 4
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Size: 5
+2025/06/08 22:36:27 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:27 Contract ID: 3
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Size: 5
+2025/06/08 22:36:27 Received request: GET /api/client/get_profile
+2025/06/08 22:36:27 Client ID: 1
+2025/06/08 22:36:27 Reviews offset: 0
+2025/06/08 22:36:27 Reviews limit: 5
+2025/06/08 22:36:27 Lessons retrieved: []
+2025/06/08 22:36:27 Lessons retrieved: []
+2025/06/08 22:36:27 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:27 Client retrieved: &{Daniil Belyy Serg 88005253535 example@gmail.com 0 []}
+2025/06/08 22:36:27 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:27 Contract ID: 4
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Size: 5
+2025/06/08 22:36:27 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:27 Contract ID: 3
+2025/06/08 22:36:27 Offset: 0
+2025/06/08 22:36:27 Size: 5
+2025/06/08 22:36:27 Lessons retrieved: []
+2025/06/08 22:36:27 Lessons retrieved: []
+2025/06/08 22:36:29 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:29 Contract ID: 2
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Size: 5
+2025/06/08 22:36:29 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:29 Client ID: 1
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Limit: 100
+2025/06/08 22:36:29 Status: 1
+2025/06/08 22:36:29 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:29 Client ID: 1
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Limit: 100
+2025/06/08 22:36:29 Status: 2
+2025/06/08 22:36:29 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:29 Client ID: 1
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Limit: 100
+2025/06/08 22:36:29 Status: 3
+2025/06/08 22:36:29 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:29 Client ID: 1
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Limit: 100
+2025/06/08 22:36:29 Status: 4
+2025/06/08 22:36:29 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:29 Client ID: 1
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Limit: 100
+2025/06/08 22:36:29 Status: 5
+2025/06/08 22:36:29 Lessons retrieved: []
+2025/06/08 22:36:29 Contracts retrieved: []
+2025/06/08 22:36:29 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:29 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:29 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:29 Contracts retrieved: []
+2025/06/08 22:36:29 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:29 Contract ID: 2
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Size: 5
+2025/06/08 22:36:29 Lessons retrieved: []
+2025/06/08 22:36:29 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:29 Contract ID: 2
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Size: 5
+2025/06/08 22:36:29 Lessons retrieved: []
+2025/06/08 22:36:29 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:29 Contract ID: 2
+2025/06/08 22:36:29 Offset: 0
+2025/06/08 22:36:29 Size: 5
+2025/06/08 22:36:29 Lessons retrieved: []
+2025/06/08 22:36:33 Received request: POST /api/contract/add_lesson
+2025/06/08 22:36:33 Lesson: {0 2 3 2025-06-08 22:36:33.633980025 +0000 UTC m=+27.083117681}
+2025/06/08 22:36:33 Lesson created with ID: 39
+2025/06/08 22:36:33 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:33 Client ID: 1
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Limit: 100
+2025/06/08 22:36:33 Status: 1
+2025/06/08 22:36:33 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:33 Client ID: 1
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Limit: 100
+2025/06/08 22:36:33 Status: 2
+2025/06/08 22:36:33 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:33 Client ID: 1
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Limit: 100
+2025/06/08 22:36:33 Status: 4
+2025/06/08 22:36:33 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:33 Client ID: 1
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Limit: 100
+2025/06/08 22:36:33 Status: 3
+2025/06/08 22:36:33 Received request: GET /api/client/get_contracts
+2025/06/08 22:36:33 Client ID: 1
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Limit: 100
+2025/06/08 22:36:33 Status: 5
+2025/06/08 22:36:33 Contracts retrieved: [{4 1 0 0 2025-06-03 09:56:12.535866 +0000 UTC 2asdfsdgdsg 1 0 0 0 2000 5 2025-06-26 00:00:00 +0000 UTC 2025-07-26 00:00:00 +0000 UTC 0 0 0} {3 1 0 0 2025-05-31 13:19:28.792918 +0000 UTC fdsggsdg 1 0 0 0 2000 5 2025-05-08 00:00:00 +0000 UTC 2025-06-07 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:33 Contracts retrieved: []
+2025/06/08 22:36:33 Contracts retrieved: []
+2025/06/08 22:36:33 Contracts retrieved: [{1 1 2 0 2025-05-13 13:54:47.580454 +0000 UTC вппыпвып 5 0 0 0 2000 5 2025-05-22 00:00:00 +0000 UTC 2025-06-21 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:33 Contracts retrieved: [{2 1 5 0 2025-05-31 07:50:09.814308 +0000 UTC hfhfdhdfh 2 0 0 0 2000 5 2025-05-14 00:00:00 +0000 UTC 2025-06-13 00:00:00 +0000 UTC 0 0 0}]
+2025/06/08 22:36:33 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:33 Contract ID: 2
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Size: 5
+2025/06/08 22:36:33 Lessons retrieved: [{39 2 3 2025-06-08 22:36:33.63398 +0000 UTC}]
+2025/06/08 22:36:33 Received request: GET /api/contract/get_lessons
+2025/06/08 22:36:33 Contract ID: 2
+2025/06/08 22:36:33 Offset: 0
+2025/06/08 22:36:33 Size: 5
+2025/06/08 22:36:33 Lessons retrieved: [{39 2 3 2025-06-08 22:36:33.63398 +0000 UTC}]
