@@ -35,8 +35,8 @@ services:
       DATABASE_PASSWORD: pass
     networks:
       - app-network
-    volumes:
-      - ./logs:/build/logs
+    # volumes:
+    #   - ./logs:/build/logs
 
 
   # frontend:
