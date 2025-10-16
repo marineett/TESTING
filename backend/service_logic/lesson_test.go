@@ -1,184 +1,147 @@
 package service_logic
 
 import (
+	"data_base_project/data_base"
 	tu "data_base_project/test_service_utility"
 	"data_base_project/types"
 	"database/sql"
 	"testing"
 	"time"
+
+	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
 
-func TestCreateLessonCorrectLondon(t *testing.T) {
-	lessonRepository := tu.CreateTestLessonRepository()
-	lessonService := CreateLessonService(lessonRepository)
-	tu.TestLesson.ContractID = 1
-	_, err := lessonService.CreateLesson(tu.TestLesson)
-	if err != nil {
-		t.Fatalf("error creating lesson: %v", err)
-	}
-	lesson, err := lessonRepository.GetLesson(1)
-	if err != nil {
-		t.Fatalf("error getting lesson: %v", err)
-	}
-	if lesson.Duration != tu.TestLesson.Duration {
-		t.Fatalf("lesson duration is not correct: %v", lesson.Duration)
-	}
+type LessonSuite struct {
+	suite.Suite
 }
 
-func TestCreateLessonCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up lesson tables: %v", err)
-	}
-	lessonRepository := module.LessonRepository
-	contractRepository := module.ContractRepository
-	lessonService := CreateLessonService(lessonRepository)
-	clientRepository := module.ClientRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	reviewRepository := module.ReviewRepository
-	authRepository := module.AuthRepository
-	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
-	if err != nil {
-		t.Fatalf("error creating client: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+func TestRunLessonSuite(t *testing.T) {
+	suite.RunSuite(t, new(LessonSuite))
+}
+
+func (s *LessonSuite) TestCreateLessonCorrectLondon(t provider.T) {
+	var repo = tu.CreateTestLessonRepository()
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		ts := CreateLessonService(repo)
+		tu.TestLesson.ContractID = 1
+		_, err := ts.CreateLesson(tu.TestLesson)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("error authorizing: %v", err)
-	}
-	contractID, err := contractRepository.InsertContract(types.DBContract{
-		ClientID:      result.UserID,
-		Status:        types.ContractStatusActive,
-		PaymentStatus: types.PaymentStatusPaid,
-		CreatedAt:     time.Now(),
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		lesson, err := repo.GetLesson(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(tu.TestLesson.Duration, lesson.Duration)
 	})
-	if err != nil {
-		t.Fatalf("error inserting contract: %v", err)
-	}
-	tu.TestLesson.ContractID = contractID
-	_, err = lessonService.CreateLesson(tu.TestLesson)
-	if err != nil {
-		t.Fatalf("error creating lesson: %v", err)
-	}
-	lesson, err := lessonRepository.GetLessons(contractID, 0, 10)
-	if err != nil {
-		t.Fatalf("error getting lesson: %v", err)
-	}
-	if lesson[0].Duration != tu.TestLesson.Duration {
-		t.Fatalf("lesson duration is not correct: %v", lesson[0].Duration)
-	}
 }
 
-func TestCreateLessonIncorrectLondon(t *testing.T) {
-	lessonRepository := tu.CreateTestLessonRepository()
-	lessonService := CreateLessonService(lessonRepository)
-	tu.TestLesson.ContractID = 0
-	_, err := lessonService.CreateLesson(tu.TestLesson)
-	if err == nil {
-		t.Fatalf("No error creating lesson: %v", err)
-	}
-}
-
-func TestCreateLessonIncorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up lesson tables: %v", err)
-	}
-	lessonRepository := module.LessonRepository
-	lessonService := CreateLessonService(lessonRepository)
-	_, err = lessonService.CreateLesson(tu.TestLesson)
-	if err == nil {
-		t.Fatalf("No error creating lesson: %v", err)
-	}
-}
-
-func TestGetLessonsCorrectLondon(t *testing.T) {
-	lessonRepository := tu.CreateTestLessonRepository()
-	lessonService := CreateLessonService(lessonRepository)
-	lessons, err := lessonService.GetLessons(1, 0, 10)
-	if err != nil {
-		t.Fatalf("error getting lessons: %v", err)
-	}
-	if len(lessons) != 0 {
-		t.Fatalf("lessons list is not correct: %v", lessons)
-	}
-	tu.TestLesson.ContractID = 1
-	_, err = lessonRepository.InsertLesson(*types.MapperLessonServiceToDB(&tu.TestLesson))
-	if err != nil {
-		t.Fatalf("error inserting lesson: %v", err)
-	}
-	lessons, err = lessonService.GetLessons(1, 0, 10)
-	if err != nil {
-		t.Fatalf("error getting lessons: %v", err)
-	}
-	if len(lessons) != 1 {
-		t.Fatalf("lessons list is not correct: %v", lessons)
-	}
-}
-
-func TestGetLessonsCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up lesson tables: %v", err)
-	}
-	lessonRepository := module.LessonRepository
-	contractRepository := module.ContractRepository
-	lessonService := CreateLessonService(lessonRepository)
-	clientRepository := module.ClientRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	reviewRepository := module.ReviewRepository
-	authRepository := module.AuthRepository
-	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
-	if err != nil {
-		t.Fatalf("error creating client: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+func (s *LessonSuite) TestCreateLessonCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		cid int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		cs := CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
+		sx.Assert().NoError(cs.CreateClient(tu.TestInitClientData))
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		cID, err := mod.ContractRepository.InsertContract(types.DBContract{ClientID: res.UserID, Status: types.ContractStatusActive, PaymentStatus: types.PaymentStatusPaid, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+		cid = cID
 	})
-	if err != nil {
-		t.Fatalf("error authorizing: %v", err)
-	}
-	contractID, err := contractRepository.InsertContract(types.DBContract{
-		ClientID:      result.UserID,
-		Status:        types.ContractStatusActive,
-		PaymentStatus: types.PaymentStatusPaid,
-		CreatedAt:     time.Now(),
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ls := CreateLessonService(mod.LessonRepository)
+		tu.TestLesson.ContractID = cid
+		_, err := ls.CreateLesson(tu.TestLesson)
+		sx.Assert().NoError(err)
+		lessons, err := mod.LessonRepository.GetLessons(cid, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Require().True(len(lessons) >= 1)
+		sx.Assert().Equal(tu.TestLesson.Duration, lessons[0].Duration)
 	})
-	if err != nil {
-		t.Fatalf("error inserting contract: %v", err)
-	}
-	tu.TestLesson.ContractID = contractID
-	_, err = lessonService.CreateLesson(tu.TestLesson)
-	if err != nil {
-		t.Fatalf("error creating lesson: %v", err)
-	}
-	lesson, err := lessonService.GetLessons(contractID, 0, 10)
-	if err != nil {
-		t.Fatalf("error getting lesson: %v", err)
-	}
-	if lesson[0].Duration != tu.TestLesson.Duration {
-		t.Fatalf("lesson duration is not correct: %v", lesson[0].Duration)
-	}
+}
+
+func (s *LessonSuite) TestCreateLessonIncorrectLondon(t provider.T) {
+	var repo = tu.CreateTestLessonRepository()
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ls := CreateLessonService(repo)
+		tu.TestLesson.ContractID = 0
+		_, err := ls.CreateLesson(tu.TestLesson)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *LessonSuite) TestCreateLessonIncorrectClassic(t provider.T) {
+	var db *sql.DB
+	var mod *data_base.DataBaseModule
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		_, err := CreateLessonService(mod.LessonRepository).CreateLesson(tu.TestLesson)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *LessonSuite) TestGetLessonsCorrectLondon(t provider.T) {
+	var repo = tu.CreateTestLessonRepository()
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		_, err := CreateLessonService(repo).GetLessons(1, 0, 10)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		tu.TestLesson.ContractID = 1
+		_, err := repo.InsertLesson(*types.MapperLessonServiceToDB(&tu.TestLesson))
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		lessons, err := CreateLessonService(repo).GetLessons(1, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(1, len(lessons))
+	})
+}
+
+func (s *LessonSuite) TestGetLessonsCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		cid int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		cs := CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
+		sx.Assert().NoError(cs.CreateClient(tu.TestInitClientData))
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		cID, err := mod.ContractRepository.InsertContract(types.DBContract{ClientID: res.UserID, Status: types.ContractStatusActive, PaymentStatus: types.PaymentStatusPaid, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+		cid = cID
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ts := CreateLessonService(mod.LessonRepository)
+		tu.TestLesson.ContractID = cid
+		_, err := ts.CreateLesson(tu.TestLesson)
+		sx.Assert().NoError(err)
+		lessons, err := ts.GetLessons(cid, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Require().True(len(lessons) >= 1)
+		sx.Assert().Equal(tu.TestLesson.Duration, lessons[0].Duration)
+	})
 }

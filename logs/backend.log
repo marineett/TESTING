@@ -2209,3 +2209,27 @@
 2025/06/08 22:36:33 Offset: 0
 2025/06/08 22:36:33 Size: 5
 2025/06/08 22:36:33 Lessons retrieved: [{39 2 3 2025-06-08 22:36:33.63398 +0000 UTC}]
+2025/10/12 12:39:23 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 12:39:23 Attempting to connect to database...
+2025/10/12 12:39:23 Successfully connected to database!
+2025/10/12 12:39:23 Server starting on port 8000
+2025/10/12 12:40:57 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 12:40:57 Attempting to connect to database...
+2025/10/12 12:40:57 Successfully connected to database!
+2025/10/12 12:40:57 Server starting on port 8000
+2025/10/12 13:21:18 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 13:21:18 Attempting to connect to database...
+2025/10/12 13:21:18 Successfully connected to database!
+2025/10/12 13:21:18 Error creating tables: error creating table auth: ERROR: syntax error at or near ")" (SQLSTATE 42601)
+2025/10/12 13:22:02 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 13:22:02 Attempting to connect to database...
+2025/10/12 13:22:02 Successfully connected to database!
+2025/10/12 13:22:02 Error creating tables: error creating table auth: ERROR: syntax error at or near ")" (SQLSTATE 42601)
+2025/10/12 13:24:15 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 13:24:15 Attempting to connect to database...
+2025/10/12 13:24:15 Successfully connected to database!
+2025/10/12 13:24:15 Error creating tables: ERROR: syntax error at or near "1" (SQLSTATE 42601)
+2025/10/12 13:29:10 Connection string: postgres://user:pass@db/mydb?sslmode=disable
+2025/10/12 13:29:10 Attempting to connect to database...
+2025/10/12 13:29:10 Successfully connected to database!
+2025/10/12 13:29:10 Error creating tables: ERROR: syntax error at or near "1" (SQLSTATE 42601)

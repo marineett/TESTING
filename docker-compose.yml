@@ -8,15 +8,17 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: mydb
-    ports:
-      - "5433:5432"             # наружу 5433, внутри всегда 5432
-    volumes:
-      - db_data:/var/lib/postgresql/data
+      POSTGRES_CLIENT_MIN_MESSAGES: notice
+      POSTGRES_LOG_MIN_MESSAGES: notice
+      POSTGRES_PORT: 5433
+    # No host port publish to avoid collisions across parallel runs
+    tmpfs:
+      - /var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 5
     networks:
       - app-network
 
@@ -24,26 +26,45 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8001:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     environment:
-      DATABASE_HOST: db          # сервисное имя
-      DATABASE_PORT: "5432"      # внутри сети docker-compose
+      DATABASE_HOST: db
       DATABASE_NAME: mydb
       DATABASE_USER: user
       DATABASE_PASSWORD: pass
     networks:
       - app-network
-    # volumes:
-    #   - ./logs:/build/logs    # если понадобится — расшарь путь в Docker Desktop (File Sharing)
+    volumes:
+      - ./logs:/build/logs
+
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app:delegated
+  #     - /app/node_modules
+  #     - ./logs:/app/logs
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #     - WATCHPACK_POLLING=true
+  #     - REACT_APP_BACKEND_URL=http://backend:8000
+  #     - WDS_SOCKET_PORT=3000
+  #     - NODE_OPTIONS=--openssl-legacy-provider
+  #     - CI=true
+  #     - NPM_CONFIG_LOGLEVEL=warn
+  #   command: sh -c "mkdir -p logs && npm start 2>&1 | tee logs/frontend.log"
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app-network
 
 networks:
   app-network:
     driver: bridge
-    name: app-network
+    # No hardcoded name; Compose will create <project>_app-network per run
 
-volumes:
-  db_data:

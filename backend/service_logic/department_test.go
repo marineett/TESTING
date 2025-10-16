@@ -1,523 +1,381 @@
 package service_logic
 
 import (
+	"data_base_project/data_base"
 	tu "data_base_project/test_service_utility"
 	"data_base_project/types"
 	"database/sql"
 	"testing"
+
+	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
 
-func TestCreateDepartmentCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
-	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(1)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.Name != tu.TestInitDepartmentData.Name {
-		t.Fatalf("Department not found: %v", department)
-	}
-	if department.HeadID != tu.TestInitDepartmentData.HeadID {
-		t.Fatalf("Department not found: %v", department)
-	}
+type DepartmentSuite struct {
+	suite.Suite
 }
 
-func TestCreateDepartmentCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	authRepository := module.AuthRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+func TestRunDepartmentSuite(t *testing.T) {
+	suite.RunSuite(t, new(DepartmentSuite))
+}
+
+func (s *DepartmentSuite) TestCreateDepartmentCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	tu.TestInitDepartmentData.HeadID = result.UserID
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-}
-
-func TestGetDepartmentsByHeadIDCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
-	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	departments, err := departmentService.GetDepartmentsByHeadID(tu.TestInitDepartmentData.HeadID)
-	if err != nil {
-		t.Fatalf("Error getting departments by head id: %v", err)
-	}
-	if len(departments) != 1 {
-		t.Fatalf("Departments not found: %v", departments)
-	}
-	if departments[0].Name != tu.TestInitDepartmentData.Name {
-		t.Fatalf("Department not found: %v", departments)
-	}
-}
-
-func TestGetDepartmentsByHeadIDCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	authRepository := module.AuthRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		dep, err := depRepo.GetDepartment(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(tu.TestInitDepartmentData.Name, dep.Name)
+		sx.Assert().Equal(tu.TestInitDepartmentData.HeadID, dep.HeadID)
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	tu.TestInitDepartmentData.HeadID = result.UserID
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	departments, err := departmentService.GetDepartmentsByHeadID(tu.TestInitDepartmentData.HeadID)
-	if err != nil {
-		t.Fatalf("Error getting departments by head id: %v", err)
-	}
-	if len(departments) != 2 {
-		t.Fatalf("Departments not found: %v", departments)
-	}
-	if departments[0].HeadID != tu.TestInitDepartmentData.HeadID || departments[1].HeadID != tu.TestInitDepartmentData.HeadID {
-		t.Fatalf("Department not found: %v", departments)
-	}
 }
 
-func TestGetDepartmentCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
+func (s *DepartmentSuite) TestCreateDepartmentCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		uid int64
 	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	department, err := departmentService.GetDepartment(1)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.Name != tu.TestInitDepartmentData.Name {
-		t.Fatalf("Department not found: %v", department)
-	}
-	if department.HeadID != tu.TestInitDepartmentData.HeadID {
-		t.Fatalf("Department not found: %v", department)
-	}
-}
-
-func TestGetDepartmentCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	authRepository := module.AuthRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		err = CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData)
+		sx.Assert().NoError(err)
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		uid = res.UserID
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	tu.TestInitDepartmentData.HeadID = result.UserID
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	departments, err := departmentService.GetDepartmentsByHeadID(tu.TestInitDepartmentData.HeadID)
-	if err != nil {
-		t.Fatalf("Error getting departments by head id: %v", err)
-	}
-	if len(departments) != 1 {
-		t.Fatalf("Departments not found: %v", departments)
-	}
-	department, err := departmentService.GetDepartment(departments[0].ID)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.Name != tu.TestInitDepartmentData.Name {
-		t.Fatalf("Department not found: %v", department)
-	}
-	if department.HeadID != tu.TestInitDepartmentData.HeadID {
-		t.Fatalf("Department not found: %v", department)
-	}
-}
-
-func TestAssignAdminToDepartmentCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
-	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	initData := tu.TestInitDepartmentData
-	initData.HeadID = 0
-	err := departmentService.CreateDepartment(initData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	err = departmentService.AssignAdminToDepartment(1, 1)
-	if err != nil {
-		t.Fatalf("Error assigning admin to department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(1)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.HeadID != 1 {
-		t.Fatalf("head id not updated: %v", department)
-	}
-}
-
-func TestAssignAdminToDepartmentCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	authRepository := module.AuthRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		init := tu.TestInitDepartmentData
+		init.HeadID = uid
+		err := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository).CreateDepartment(init)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	tu.TestInitDepartmentData.HeadID = 0
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	departments, err := departmentService.GetDepartmentsByHeadID(0)
-	if err != nil {
-		t.Fatalf("Error getting departments by head id: %v", err)
-	}
-	if len(departments) != 1 {
-		t.Fatalf("Departments not found: %v", departments)
-	}
-	err = departmentService.AssignAdminToDepartment(result.UserID, departments[0].ID)
-	if err != nil {
-		t.Fatalf("Error assigning admin to department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(departments[0].ID)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.HeadID != result.UserID {
-		t.Fatalf("Department not found: %v", department)
-	}
 }
 
-func TestAssignAdminToDepartmentIncorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
+func (s *DepartmentSuite) TestGetDepartmentsByHeadIDCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	err = departmentService.AssignAdminToDepartment(1, 2)
-	if err == nil {
-		t.Fatalf("No error assigning admin to department with wrong head id: %v", err)
-	}
-}
-
-func TestAssignAdminToDepartmentIncorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.AssignAdminToDepartment(1, 2)
-	if err == nil {
-		t.Fatalf("No error assigning admin to department: %v", err)
-	}
-}
-
-func TestFireAdminFromDepartmentCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
-	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	err = departmentService.FireAdminFromDepartment(tu.TestInitDepartmentData.HeadID, 1)
-	if err != nil {
-		t.Fatalf("Error firing admin from department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(1)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.HeadID != 0 {
-		t.Fatalf("wrong head id: %v", department)
-	}
-}
-
-func TestFireAdminFromDepartmentCorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	moderatorRepository := module.ModeratorRepository
-	adminRepository := module.AdminRepository
-	authRepository := module.AuthRepository
-	adminService := CreateAdminService(adminRepository, userRepository, personalDataRepository)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	tu.TestInitDepartmentData.HeadID = result.UserID
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	departments, err := departmentService.GetDepartmentsByHeadID(result.UserID)
-	if err != nil {
-		t.Fatalf("Error getting departments by head id: %v", err)
-	}
-	if len(departments) != 1 {
-		t.Fatalf("Departments not found: %v", departments)
-	}
-	err = departmentService.FireAdminFromDepartment(result.UserID, departments[0].ID)
-	if err != nil {
-		t.Fatalf("Error firing admin from department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(departments[0].ID)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.HeadID != 0 {
-		t.Fatalf("wrong head id: %v", department)
-	}
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		list, err := CreateDepartmentService(depRepo, modRepo).GetDepartmentsByHeadID(tu.TestInitDepartmentData.HeadID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(1, len(list))
+		sx.Assert().Equal(tu.TestInitDepartmentData.Name, list[0].Name)
+	})
 }
 
-func TestFireAdminFromDepartmentIncorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
+func (s *DepartmentSuite) TestGetDepartmentsByHeadIDCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		uid int64
 	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.FireAdminFromDepartment(tu.TestInitDepartmentData.HeadID+1, tu.TestInitDepartmentData.ID)
-	if err == nil {
-		t.Fatalf("No error firing admin from department: %v", err)
-	}
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		err = CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData)
+		sx.Assert().NoError(err)
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		uid = res.UserID
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		init := tu.TestInitDepartmentData
+		init.HeadID = uid
+		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
+		sx.Assert().NoError(ds.CreateDepartment(init))
+		sx.Assert().NoError(ds.CreateDepartment(init))
+		list, err := ds.GetDepartmentsByHeadID(uid)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(2, len(list))
+		sx.Assert().Equal(uid, list[0].HeadID)
+		sx.Assert().Equal(uid, list[1].HeadID)
+	})
 }
 
-func TestFireAdminFromDepartmentIncorrectClassic(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up department tables: %v", err)
-	}
-	departmentRepository := module.DepartmentRepository
-	moderatorRepository := module.ModeratorRepository
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err = departmentService.FireAdminFromDepartment(1, 2)
-	if err == nil {
-		t.Fatalf("No error firing admin from department: %v", err)
-	}
-}
-
-func TestFireModeratorFromDepartmentCorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
+func (s *DepartmentSuite) TestGetDepartmentCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	err := departmentService.CreateDepartment(tu.TestInitDepartmentData)
-	if err != nil {
-		t.Fatalf("Error creating department: %v", err)
-	}
-	err = departmentService.FireModeratorFromDepartment(tu.TestInitDepartmentData.HeadID, 1)
-	if err != nil {
-		t.Fatalf("Error firing moderator from department: %v", err)
-	}
-	department, err := departmentRepository.GetDepartment(1)
-	if err != nil {
-		t.Fatalf("Error getting department: %v", err)
-	}
-	if department.HeadID != tu.TestInitDepartmentData.HeadID {
-		t.Fatalf("Department not found: %v", department)
-	}
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		dep, err := CreateDepartmentService(depRepo, modRepo).GetDepartment(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(tu.TestInitDepartmentData.Name, dep.Name)
+		sx.Assert().Equal(tu.TestInitDepartmentData.HeadID, dep.HeadID)
+	})
 }
 
-func TestGetDepartmentUsersIDsIncorrectLondon(t *testing.T) {
-	departmentRepository := tu.CreateTestDepartmentRepository()
-	personalDataRepository := tu.CreateTestPersonalDataRepository()
-	authRepository := tu.CreateTestAuthRepository()
-	userRepository := tu.CreateTestUserRepository()
-	moderatorRepository := tu.CreateTestModeratorRepository(
-		personalDataRepository,
-		authRepository,
-		userRepository,
+func (s *DepartmentSuite) TestGetDepartmentCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		uid int64
 	)
-	departmentService := CreateDepartmentService(departmentRepository, moderatorRepository)
-	_, err := departmentService.GetDepartmentUsersIDs(tu.TestInitDepartmentData.ID + 1)
-	if err == nil {
-		t.Fatalf("No error getting department users ids: %v", err)
-	}
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		sx.Assert().NoError(CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData))
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		uid = res.UserID
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		init := tu.TestInitDepartmentData
+		init.HeadID = uid
+		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
+		sx.Assert().NoError(ds.CreateDepartment(init))
+		list, err := ds.GetDepartmentsByHeadID(uid)
+		sx.Assert().NoError(err)
+		sx.Require().Equal(1, len(list))
+		dep, err := ds.GetDepartment(list[0].ID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(init.Name, dep.Name)
+		sx.Assert().Equal(uid, dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestAssignAdminToDepartmentCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		init := tu.TestInitDepartmentData
+		init.HeadID = 0
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(init))
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ds := CreateDepartmentService(depRepo, modRepo)
+		sx.Assert().NoError(ds.AssignAdminToDepartment(1, 1))
+		dep, err := depRepo.GetDepartment(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(1), dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestAssignAdminToDepartmentCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		uid int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		sx.Assert().NoError(CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData))
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		uid = res.UserID
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
+		init := tu.TestInitDepartmentData
+		init.HeadID = 0
+		sx.Assert().NoError(ds.CreateDepartment(init))
+		list, err := ds.GetDepartmentsByHeadID(0)
+		sx.Assert().NoError(err)
+		sx.Require().Equal(1, len(list))
+		sx.Assert().NoError(ds.AssignAdminToDepartment(uid, list[0].ID))
+		dep, err := mod.DepartmentRepository.GetDepartment(list[0].ID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(uid, dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestAssignAdminToDepartmentIncorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(depRepo, modRepo).AssignAdminToDepartment(1, 2)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *DepartmentSuite) TestAssignAdminToDepartmentIncorrectClassic(t provider.T) {
+	var db *sql.DB
+	var mod *data_base.DataBaseModule
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		// create admin to ensure auth table is not empty (mimic original)
+		sx.Assert().NoError(CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData))
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository).AssignAdminToDepartment(1, 2)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *DepartmentSuite) TestFireAdminFromDepartmentCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ds := CreateDepartmentService(depRepo, modRepo)
+		sx.Assert().NoError(ds.FireAdminFromDepartment(tu.TestInitDepartmentData.HeadID, 1))
+		dep, err := depRepo.GetDepartment(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(0), dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestFireAdminFromDepartmentCorrectClassic(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+		uid int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		sx.Assert().NoError(CreateAdminService(mod.AdminRepository, mod.UserRepository, mod.PersonalDataRepository).CreateAdmin(tu.TestInitAdminData))
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		uid = res.UserID
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
+		init := tu.TestInitDepartmentData
+		init.HeadID = uid
+		sx.Assert().NoError(ds.CreateDepartment(init))
+		list, err := ds.GetDepartmentsByHeadID(uid)
+		sx.Assert().NoError(err)
+		sx.Require().Equal(1, len(list))
+		sx.Assert().NoError(ds.FireAdminFromDepartment(uid, list[0].ID))
+		dep, err := mod.DepartmentRepository.GetDepartment(list[0].ID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(0), dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestFireAdminFromDepartmentIncorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(depRepo, modRepo).FireAdminFromDepartment(tu.TestInitDepartmentData.HeadID+1, tu.TestInitDepartmentData.ID)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *DepartmentSuite) TestFireAdminFromDepartmentIncorrectClassic(t provider.T) {
+	var db *sql.DB
+	var mod *data_base.DataBaseModule
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		var e error
+		mod, e = tu.SetupModule(db)
+		sx.Assert().NoError(e)
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		err := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository).FireAdminFromDepartment(1, 2)
+		sx.Assert().Error(err)
+	})
+}
+
+func (s *DepartmentSuite) TestFireModeratorFromDepartmentCorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+	})
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).FireModeratorFromDepartment(tu.TestInitDepartmentData.HeadID, 1))
+		dep, err := depRepo.GetDepartment(1)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(tu.TestInitDepartmentData.HeadID, dep.HeadID)
+	})
+}
+
+func (s *DepartmentSuite) TestGetDepartmentUsersIDsIncorrectLondon(t provider.T) {
+	var (
+		depRepo = tu.CreateTestDepartmentRepository()
+		pdRepo  = tu.CreateTestPersonalDataRepository()
+		aRepo   = tu.CreateTestAuthRepository()
+		uRepo   = tu.CreateTestUserRepository()
+		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
+	)
+	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
+		_, err := CreateDepartmentService(depRepo, modRepo).GetDepartmentUsersIDs(tu.TestInitDepartmentData.ID + 1)
+		sx.Assert().Error(err)
+	})
 }

@@ -1,545 +1,438 @@
-package integrationtests
+package integration_tests
 
 import (
+	"data_base_project/data_base"
 	"data_base_project/service_logic"
 	tu "data_base_project/test_service_utility"
 	"data_base_project/types"
 	"database/sql"
 	"testing"
 	"time"
+
+	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
 
-func TestCreateCRChatCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatService.CreateCRChat(1, 2)
-	if err != nil {
-		t.Fatalf("Error creating chat: %v", err)
-	}
-	if chatID != 1 {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
-	chat, err := chatRepository.GetChat(chatID)
-	if err != nil {
-		t.Fatalf("Error getting chat: %v", err)
-	}
-	if chat.ClientID != 1 {
-		t.Fatalf("Client id not updated: %v", chat)
-	}
-	if chat.RepetitorID != 2 {
-		t.Fatalf("Repetitor id not updated: %v", chat)
-	}
-	if chat.ModeratorID != 0 {
-		t.Fatalf("Moderator id not null: %v", chat)
+type ChatSuite struct {
+	suite.Suite
+	db  *sql.DB
+	mod *data_base.DataBaseModule
+}
+
+func (s *ChatSuite) BeforeAll(t provider.T) {
+	var err error
+	s.db, err = sql.Open("duckdb", ":memory:")
+	t.Assert().NoError(err)
+	s.mod, err = tu.SetupModule(s.db)
+	t.Assert().NoError(err)
+}
+
+func (s *ChatSuite) AfterAll(t provider.T) {
+	if s.db != nil {
+		_ = s.db.Close()
 	}
 }
 
-func TestCreateRMChatCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatService.CreateRMChat(1, 2)
-	if err != nil {
-		t.Fatalf("Error creating chat: %v", err)
-	}
-	if chatID != 1 {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
-	chat, err := chatRepository.GetChat(chatID)
-	if err != nil {
-		t.Fatalf("Error getting chat: %v", err)
-	}
-	if chat.RepetitorID != 1 {
-		t.Fatalf("Repetitor id not updated: %v", chat)
-	}
-	if chat.ModeratorID != 2 {
-		t.Fatalf("Moderator id not updated: %v", chat)
-	}
-	if chat.ClientID != 0 {
-		t.Fatalf("Client id not null: %v", chat)
-	}
+func TestRunChatSuite(t *testing.T) {
+	suite.RunSuite(t, new(ChatSuite))
 }
 
-func TestCreateCMChatCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatService.CreateCMChat(1, 2)
-	if err != nil {
-		t.Fatalf("Error creating chat: %v", err)
-	}
-	if chatID != 1 {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
-	chat, err := chatRepository.GetChat(chatID)
-	if err != nil {
-		t.Fatalf("Error getting chat: %v", err)
-	}
-	if chat.ClientID != 1 {
-		t.Fatalf("Client id not updated: %v", chat)
-	}
-	if chat.ModeratorID != 2 {
-		t.Fatalf("Moderator id not updated: %v", chat)
-	}
-	if chat.RepetitorID != 0 {
-		t.Fatalf("Repetitor id not null: %v", chat)
-	}
+func (s *ChatSuite) TestCreateCRChatCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+	})
+
+	var chatID int64
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		cs := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository)
+		var err error
+		chatID, err = cs.CreateCRChat(1, 2)
+		sx.Assert().NoError(err)
+	})
+
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(int64(1), chatID)
+		chat, err := mod.ChatRepository.GetChat(chatID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(1), chat.ClientID)
+		sx.Assert().Equal(int64(2), chat.RepetitorID)
+		sx.Assert().Equal(int64(0), chat.ModeratorID)
+	})
 }
 
-func TestGetChatListByClientIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestCreateRMChatCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 0,
-		RepetitorID: 3,
-		CreatedAt:   time.Now(),
+	var chatID int64
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		cs := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository)
+		var err error
+		chatID, err = cs.CreateRMChat(1, 2)
+		sx.Assert().NoError(err)
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    2,
-		ModeratorID: 4,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(int64(1), chatID)
+		chat, err := mod.ChatRepository.GetChat(chatID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(1), chat.RepetitorID)
+		sx.Assert().Equal(int64(2), chat.ModeratorID)
+		sx.Assert().Equal(int64(0), chat.ClientID)
 	})
-	chatList, err := chatService.GetChatListByClientID(1, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 2 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-	if chatList[0].ClientID != 1 || chatList[1].ClientID != 1 {
-		t.Fatalf("Client id not updated: %v", chatList[0])
-	}
-	chatList, err = chatService.GetChatListByClientID(5, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 0 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
 }
 
-func TestGetChatListByRepetitorIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 0,
-		RepetitorID: 3,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestCreateCMChatCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    2,
-		ModeratorID: 0,
-		RepetitorID: 3,
-		CreatedAt:   time.Now(),
+	var chatID int64
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		cs := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository)
+		var err error
+		chatID, err = cs.CreateCMChat(1, 2)
+		sx.Assert().NoError(err)
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    2,
-		ModeratorID: 0,
-		RepetitorID: 4,
-		CreatedAt:   time.Now(),
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(int64(1), chatID)
+		chat, err := mod.ChatRepository.GetChat(chatID)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(int64(1), chat.ClientID)
+		sx.Assert().Equal(int64(2), chat.ModeratorID)
+		sx.Assert().Equal(int64(0), chat.RepetitorID)
 	})
-	chatList, err := chatService.GetChatListByRepetitorID(3, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 2 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-	if chatList[0].RepetitorID != 3 || chatList[1].RepetitorID != 3 {
-		t.Fatalf("Repetitor id not updated: %v", chatList[0])
-	}
-	chatList, err = chatService.GetChatListByRepetitorID(5, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 0 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
 }
 
-func TestGetChatListByModeratorIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestGetChatListByClientIDCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 0, RepetitorID: 3, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 2, ModeratorID: 4, RepetitorID: 0, CreatedAt: time.Now()})
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    0,
-		ModeratorID: 2,
-		RepetitorID: 4,
-		CreatedAt:   time.Now(),
+	var list []types.ServiceChat
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		cs := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository)
+		var err error
+		list, err = cs.GetChatListByClientID(1, 0, 10)
+		sx.Assert().NoError(err)
 	})
-	chatRepository.InsertChat(types.DBChat{
-		ClientID:    7,
-		ModeratorID: 3,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(2, len(list))
+		sx.Assert().Equal(int64(1), list[0].ClientID)
+		sx.Assert().Equal(int64(1), list[1].ClientID)
+		list2, err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatListByClientID(5, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(0, len(list2))
 	})
-	chatList, err := chatService.GetChatListByModeratorID(2, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 2 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-	if chatList[0].ModeratorID != 2 || chatList[1].ModeratorID != 2 {
-		t.Fatalf("Moderator id not updated: %v", chatList[0])
-	}
-	chatList, err = chatService.GetChatListByModeratorID(5, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting chat list: %v", err)
-	}
-	if len(chatList) != 0 {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
 }
 
-func TestGetChatCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestGetChatListByRepetitorIDCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 0, RepetitorID: 3, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 2, ModeratorID: 0, RepetitorID: 3, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 2, ModeratorID: 0, RepetitorID: 4, CreatedAt: time.Now()})
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	chat, err := chatService.GetChat(chatID)
-	if err != nil {
-		t.Fatalf("Error getting chat: %v", err)
-	}
-	if chat.ClientID != 1 {
-		t.Fatalf("Client id not updated: %v", chat)
-	}
-	if chat.ModeratorID != 2 {
-		t.Fatalf("Moderator id not updated: %v", chat)
-	}
-	if chat.RepetitorID != 0 {
-		t.Fatalf("Repetitor id not null: %v", chat)
-	}
+	var list []types.ServiceChat
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		list, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatListByRepetitorID(3, 0, 10)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(2, len(list))
+		sx.Assert().Equal(int64(3), list[0].RepetitorID)
+		sx.Assert().Equal(int64(3), list[1].RepetitorID)
+		list2, err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatListByRepetitorID(5, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(0, len(list2))
+	})
 }
 
-func TestSendMessageCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	clientRepository := module.ClientRepository
-	personalDataRepository := module.PersonalDataRepository
-	userRepository := module.UserRepository
-	reviewRepository := module.ReviewRepository
-	authRepository := module.AuthRepository
-	clientService := service_logic.CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-
-	if err != nil {
-		t.Fatalf("Error inserting auth: %v", err)
-	}
-	err = clientService.CreateClient(tu.TestInitClientData)
-	if err != nil {
-		t.Fatalf("Error inserting client: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+func (s *ChatSuite) TestGetChatListByModeratorIDCorrect(t provider.T) {
+	var (
+		db  *sql.DB
+		mod *data_base.DataBaseModule
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 0, ModeratorID: 2, RepetitorID: 4, CreatedAt: time.Now()})
+		_, _ = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 7, ModeratorID: 3, RepetitorID: 0, CreatedAt: time.Now()})
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    result.UserID,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+	var list []types.ServiceChat
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		list, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatListByModeratorID(2, 0, 10)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	err = chatService.SendMessage(chatID, result.UserID, "Hello")
-	if err != nil {
-		t.Fatalf("Error sending message: %v", err)
-	}
-	message, err := messageRepository.GetMessages(chatID, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting messages: %v", err)
-	}
-	if len(message) != 1 {
-		t.Fatalf("Message not updated: %v", message)
-	}
-	if message[0].SenderID != result.UserID {
-		t.Fatalf("Sender id not updated: %v", message[0])
-	}
-	if message[0].Content != "Hello" {
-		t.Fatalf("Content not updated: %v", message[0])
-	}
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(2, len(list))
+		sx.Assert().Equal(int64(2), list[0].ModeratorID)
+		sx.Assert().Equal(int64(2), list[1].ModeratorID)
+		list2, err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatListByModeratorID(5, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Assert().Equal(0, len(list2))
+	})
 }
 
-func TestGetMessagesCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	clientRepository := module.ClientRepository
-	personalDataRepository := module.PersonalDataRepository
-	authRepository := module.AuthRepository
-	userRepository := module.UserRepository
-	reviewRepository := module.ReviewRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	clientService := service_logic.CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
-	if err != nil {
-		t.Fatalf("Error inserting client: %v", err)
-	}
-	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestAuth.Login,
-		Password: tu.TestAuth.Password,
+func (s *ChatSuite) TestGetChatCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error authorizing: %v", err)
-	}
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    result.UserID,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+	var chat *types.ServiceChat
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		chat, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChat(chatID)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	messageID, err := messageRepository.InsertMessage(types.DBMessage{
-		ChatID:    chatID,
-		SenderID:  result.UserID,
-		Content:   "Hello",
-		CreatedAt: time.Now(),
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(int64(1), chat.ClientID)
+		sx.Assert().Equal(int64(2), chat.ModeratorID)
+		sx.Assert().Equal(int64(0), chat.RepetitorID)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting message: %v", err)
-	}
-	message, err := chatService.GetMessages(chatID, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting messages: %v", err)
-	}
-	if len(message) != 1 {
-		t.Fatalf("Message not updated: %v", message)
-	}
-	if message[0].ID != messageID {
-		t.Fatalf("Message id not updated: %v", message[0])
-	}
-	if message[0].SenderID != result.UserID {
-		t.Fatalf("Sender id not updated: %v", message[0])
-	}
-	if message[0].Content != "Hello" {
-		t.Fatalf("Content not updated: %v", message[0])
-	}
 }
 
-func TestGetMessagesIncorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	message, err := chatService.GetMessages(1, 0, 10)
-	if err != nil {
-		t.Fatalf("Error getting messages: %v", err)
-	}
-	if len(message) != 0 {
-		t.Fatalf("Message not updated: %v", message)
-	}
+func (s *ChatSuite) TestSendMessageCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+		userID int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		cs := service_logic.CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
+		err = cs.CreateClient(tu.TestInitClientData)
+		sx.Assert().NoError(err)
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		userID = res.UserID
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: userID, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).SendMessage(chatID, userID, "Hello")
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		msgs, err := mod.MessageRepository.GetMessages(chatID, 0, 10)
+		sx.Assert().NoError(err)
+		sx.Require().Equal(1, len(msgs))
+		sx.Assert().Equal(userID, msgs[0].SenderID)
+		sx.Assert().Equal("Hello", msgs[0].Content)
+	})
 }
 
-func TestGetChatIdByCIDAndMIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 2,
-		RepetitorID: 0,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestGetMessagesCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+		msgID  int64
+		userID int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		cs := service_logic.CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
+		err = cs.CreateClient(tu.TestInitClientData)
+		sx.Assert().NoError(err)
+		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
+		userID = res.UserID
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: userID, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+		msgID, err = mod.MessageRepository.InsertMessage(types.DBMessage{ChatID: chatID, SenderID: userID, Content: "Hello", CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	resultChatID, err := chatService.GetChatIdByCIDAndMID(1, 2)
-	if err != nil {
-		t.Fatalf("Error getting chat id: %v", err)
-	}
-	if chatID != resultChatID {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
+	var msgs []types.ServiceMessage
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		msgs, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetMessages(chatID, 0, 10)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Require().Equal(1, len(msgs))
+		sx.Assert().Equal(msgID, msgs[0].ID)
+		sx.Assert().Equal(userID, msgs[0].SenderID)
+		sx.Assert().Equal("Hello", msgs[0].Content)
+	})
 }
 
-func TestGetChatIdByCIDAndRIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    1,
-		ModeratorID: 0,
-		RepetitorID: 2,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestGetMessagesIncorrect(t provider.T) {
+	var (
+		db   *sql.DB
+		mod  *data_base.DataBaseModule
+		msgs []types.ServiceMessage
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	resultChatID, err := chatService.GetChatIdByCIDAndRID(1, 2)
-	if err != nil {
-		t.Fatalf("Error getting chat id: %v", err)
-	}
-	if chatID != resultChatID {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		msgs, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetMessages(1, 0, 10)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(0, len(msgs))
+	})
 }
 
-func TestGetChatIdByMIDAndRIDCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	module, err := tu.SetupModule(db)
-	if err != nil {
-		t.Fatalf("Error setting up chat tables: %v", err)
-	}
-	chatRepository := module.ChatRepository
-	messageRepository := module.MessageRepository
-	chatService := service_logic.CreateChatService(chatRepository, messageRepository)
-	chatID, err := chatRepository.InsertChat(types.DBChat{
-		ClientID:    0,
-		ModeratorID: 1,
-		RepetitorID: 2,
-		CreatedAt:   time.Now(),
+func (s *ChatSuite) TestGetChatIdByCIDAndMIDCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+		resID  int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 2, RepetitorID: 0, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	resultChatID, err := chatService.GetChatIdByMIDAndRID(1, 2)
-	if err != nil {
-		t.Fatalf("Error getting chat id: %v", err)
-	}
-	if chatID != resultChatID {
-		t.Fatalf("Chat id not updated: %v", chatID)
-	}
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		resID, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatIdByCIDAndMID(1, 2)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(chatID, resID)
+	})
+}
+
+func (s *ChatSuite) TestGetChatIdByCIDAndRIDCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+		resID  int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 1, ModeratorID: 0, RepetitorID: 2, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		resID, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatIdByCIDAndRID(1, 2)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(chatID, resID)
+	})
+}
+
+func (s *ChatSuite) TestGetChatIdByMIDAndRIDCorrect(t provider.T) {
+	var (
+		db     *sql.DB
+		mod    *data_base.DataBaseModule
+		chatID int64
+		resID  int64
+	)
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
+		var err error
+		db, err = sql.Open("duckdb", ":memory:")
+		sx.Assert().NoError(err)
+		t.Cleanup(func() { _ = db.Close() })
+		mod, err = tu.SetupModule(db)
+		sx.Assert().NoError(err)
+		chatID, err = mod.ChatRepository.InsertChat(types.DBChat{ClientID: 0, ModeratorID: 1, RepetitorID: 2, CreatedAt: time.Now()})
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		var err error
+		resID, err = service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).GetChatIdByMIDAndRID(1, 2)
+		sx.Assert().NoError(err)
+	})
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {
+		sx.Assert().Equal(chatID, resID)
+	})
 }

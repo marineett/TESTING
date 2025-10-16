@@ -9,6 +9,9 @@ import (
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
 
 type APIClient struct {
@@ -48,173 +51,110 @@ func (c *APIClient) makeRequestWithBody(ctx context.Context, method, endpoint st
 	return c.makeRequest(ctx, method, endpoint, bodyReader)
 }
 
-func TestCreateUsersAndChats(t *testing.T) {
-	ctx := context.Background()
-	c := NewAPIClient("http://backend:8000")
+type APISuite struct {
+	suite.Suite
+	c *APIClient
+}
 
-	clientRegistrationResp, err := c.makeRequestWithBody(ctx, "POST", "/api/registration/client", testClientData)
-	if err != nil {
-		t.Fatalf("Failed to create client: %v", err)
-	}
-	clientRegistrationResp.Body.Close()
+func (s *APISuite) BeforeAll(t provider.T) {
+	s.c = NewAPIClient("http://backend:8000")
+}
 
-	if clientRegistrationResp.StatusCode != http.StatusCreated {
-		t.Fatalf("Expected status %d for client creation, got %d", http.StatusCreated, clientRegistrationResp.StatusCode)
-	}
+func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
+	var (
+		ctx         = context.Background()
+		clientID    int
+		repetitorID int
+		moderatorID int
+	)
 
-	repetitorRegistrationResp, err := c.makeRequestWithBody(ctx, "POST", "/api/registration/repetitor", testRepetitorData)
-	if err != nil {
-		t.Fatalf("Failed to create repetitor: %v", err)
-	}
-	repetitorRegistrationResp.Body.Close()
+	t.WithNewStep("Arrange", func(sx provider.StepCtx) {})
 
-	if repetitorRegistrationResp.StatusCode != http.StatusCreated {
-		t.Fatalf("Expected status %d for repetitor creation, got %d", http.StatusCreated, repetitorRegistrationResp.StatusCode)
-	}
+	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/registration/client", testClientData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
 
-	moderatorRegistrationResp, err := c.makeRequestWithBody(ctx, "POST", "/api/registration/moderator", testModeratorData)
-	if err != nil {
-		t.Fatalf("Failed to create moderator: %v", err)
-	}
-	moderatorRegistrationResp.Body.Close()
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/registration/repetitor", testRepetitorData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
 
-	if moderatorRegistrationResp.StatusCode != http.StatusCreated {
-		t.Fatalf("Expected status %d for moderator creation, got %d", http.StatusCreated, moderatorRegistrationResp.StatusCode)
-	}
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/registration/moderator", testModeratorData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
 
-	clientAuthLoginResp, err := c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testClientAuthData)
-	if err != nil {
-		t.Fatalf("Failed to login client: %v", err)
-	}
-	defer clientAuthLoginResp.Body.Close()
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testClientAuthData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		b, err := io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		var auth struct {
+			ID int `json:"id"`
+		}
+		sx.Require().NoError(json.Unmarshal(b, &auth))
+		clientID = auth.ID
 
-	if clientAuthLoginResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for client login, got %d", http.StatusOK, clientAuthLoginResp.StatusCode)
-	}
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testRepetitorAuthData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		b, err = io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		sx.Require().NoError(json.Unmarshal(b, &auth))
+		repetitorID = auth.ID
 
-	body, err := io.ReadAll(clientAuthLoginResp.Body)
-	if err != nil {
-		t.Fatalf("Failed to read response body: %v", err)
-	}
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testModeratorAuthData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		b, err = io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		sx.Require().NoError(json.Unmarshal(b, &auth))
+		moderatorID = auth.ID
 
-	var authResponse struct {
-		ID int `json:"id"`
-	}
-	if err := json.Unmarshal(body, &authResponse); err != nil {
-		t.Fatalf("Failed to parse auth response: %v", err)
-	}
+		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cr_chat?c_id=%d&r_id=%d", clientID, repetitorID), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	clientID := authResponse.ID
+		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cm_chat?c_id=%d&m_id=%d", clientID, moderatorID), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	repetitorAuthLoginResp, err := c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testRepetitorAuthData)
-	if err != nil {
-		t.Fatalf("Failed to login repetitor: %v", err)
-	}
-	defer repetitorAuthLoginResp.Body.Close()
+		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_rm_chat?r_id=%d&m_id=%d", repetitorID, moderatorID), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	if repetitorAuthLoginResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for repetitor login, got %d", http.StatusOK, repetitorAuthLoginResp.StatusCode)
-	}
+		resp, err = s.c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	body, err = io.ReadAll(repetitorAuthLoginResp.Body)
-	if err != nil {
-		t.Fatalf("Failed to read response body: %v", err)
-	}
+		resp, err = s.c.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/chat/delete_chat?id=%d", 0), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	if err := json.Unmarshal(body, &authResponse); err != nil {
-		t.Fatalf("Failed to parse auth response: %v", err)
-	}
+		resp, err = s.c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-	repetitorID := authResponse.ID
+		resp, err = s.c.makeRequest(ctx, "PATCH", fmt.Sprintf("/api/chat/send_message?id=%d&message=test", 0), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Assert().NotEqual(http.StatusOK, resp.StatusCode)
+	})
 
-	moderatorAuthLoginResp, err := c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testModeratorAuthData)
-	if err != nil {
-		t.Fatalf("Failed to login moderator: %v", err)
-	}
-	defer moderatorAuthLoginResp.Body.Close()
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {})
+}
 
-	if moderatorAuthLoginResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for moderator login, got %d", http.StatusOK, moderatorAuthLoginResp.StatusCode)
-	}
-
-	body, err = io.ReadAll(moderatorAuthLoginResp.Body)
-	if err != nil {
-		t.Fatalf("Failed to read response body: %v", err)
-	}
-
-	if err := json.Unmarshal(body, &authResponse); err != nil {
-		t.Fatalf("Failed to parse auth response: %v", err)
-	}
-
-	moderatorID := authResponse.ID
-
-	crChatResp, err := c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cr_chat?c_id=%d&r_id=%d", clientID, repetitorID), nil)
-	if err != nil {
-		t.Fatalf("Failed to create CR chat: %v", err)
-	}
-	defer crChatResp.Body.Close()
-
-	if crChatResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for CR chat creation, got %d", http.StatusOK, crChatResp.StatusCode)
-	}
-
-	cmChatResp, err := c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cm_chat?c_id=%d&m_id=%d", clientID, moderatorID), nil)
-	if err != nil {
-		t.Fatalf("Failed to create CM chat: %v", err)
-	}
-	defer cmChatResp.Body.Close()
-
-	if cmChatResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for CM chat creation, got %d", http.StatusOK, cmChatResp.StatusCode)
-	}
-
-	rmChatResp, err := c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_rm_chat?r_id=%d&m_id=%d", repetitorID, moderatorID), nil)
-	if err != nil {
-		t.Fatalf("Failed to create RM chat: %v", err)
-	}
-	defer rmChatResp.Body.Close()
-
-	if rmChatResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for RM chat creation, got %d", http.StatusOK, rmChatResp.StatusCode)
-	}
-
-	clearMessagesResp, err := c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
-	if err != nil {
-		t.Fatalf("Failed to clear messages: %v", err)
-	}
-	defer clearMessagesResp.Body.Close()
-
-	if clearMessagesResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for clearing messages, got %d", http.StatusOK, clearMessagesResp.StatusCode)
-	}
-
-	deleteChatResp, err := c.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/chat/delete_chat?id=%d", 0), nil)
-	if err != nil {
-		t.Fatalf("Failed to delete chat: %v", err)
-	}
-	defer deleteChatResp.Body.Close()
-
-	if deleteChatResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for deleting chat, got %d", http.StatusInternalServerError, deleteChatResp.StatusCode)
-	}
-
-	clearMessagesResp, err = c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
-	if err != nil {
-		t.Fatalf("Failed to clear messages: %v", err)
-	}
-	defer clearMessagesResp.Body.Close()
-
-	if clearMessagesResp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status %d for clearing messages, got %d", http.StatusInternalServerError, clearMessagesResp.StatusCode)
-	}
-
-	sendMessageResp, err := c.makeRequest(ctx, "PATCH", fmt.Sprintf("/api/chat/send_message?id=%d&message=test", 0), nil)
-	if err != nil {
-		t.Fatalf("Failed to send message: %v", err)
-	}
-	defer sendMessageResp.Body.Close()
-
-	if sendMessageResp.StatusCode == http.StatusOK {
-		t.Fatalf("Expected status %d for sending message, got %d", http.StatusInternalServerError, sendMessageResp.StatusCode)
-	}
+func TestRunAPISuite(t *testing.T) {
+	suite.RunSuite(t, new(APISuite))
 }
