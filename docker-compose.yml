@@ -11,10 +11,9 @@ services:
       POSTGRES_CLIENT_MIN_MESSAGES: notice
       POSTGRES_LOG_MIN_MESSAGES: notice
       POSTGRES_PORT: 5433
-    ports:
-      - "5433:5433"
-    volumes:
-      - db_data:/var/lib/postgresql/data
+    # No host port publish to avoid collisions across parallel runs
+    tmpfs:
+      - /var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
       interval: 5s
@@ -27,8 +26,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8001:8000"
     depends_on:
       - db
     environment:
@@ -38,8 +35,8 @@ services:
       DATABASE_PASSWORD: pass
     networks:
       - app-network
-    volumes:
-      - ./logs:/build/logs
+    # volumes:
+    #   - ./logs:/build/logs
 
 
   # frontend:
@@ -69,7 +66,5 @@ services:
 networks:
   app-network:
     driver: bridge
-    name: app-network
+    # No hardcoded name; Compose will create <project>_app-network per run
 
-volumes:
-  db_data:

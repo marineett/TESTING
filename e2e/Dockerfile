@@ -20,13 +20,30 @@ RUN apt-get update && apt-get install -y docker.io docker-compose && rm -rf /var
 
 WORKDIR /workspace
 
-RUN git clone https://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@github.com/DaniilBelyy2/data_base_project.git .
+RUN git clone https://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@github.com/marineett/TESTING.git .
 
 RUN cat >/usr/local/bin/start-project.sh <<'SH' && chmod +x /usr/local/bin/start-project.sh
 #!/bin/bash
 set -euo pipefail
 cd /workspace
-docker-compose up --build -d
+
+# Use unique project name per run to avoid resource clashes
+export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-run_$(date +%s)}
+
+echo "Pruning Docker caches before build..."
+# Legacy builder cache prune
+docker builder prune -a -f || true
+# BuildKit buildx cache prune (if present)
+if docker buildx version >/dev/null 2>&1; then
+  docker buildx prune -a -f || true
+fi
+# Remove dangling images/containers/networks/volumes (safe in CI container)
+docker system prune -a -f || true
+
+echo "Bringing up stack with fresh, no-cache builds..."
+docker-compose down -v --rmi all --remove-orphans || true
+docker-compose build --no-cache --pull
+docker-compose up -d
 
 echo "Checking if backend is ready (internal check)..."
 for i in {1..10}; do
@@ -40,8 +57,9 @@ done
 
 docker-compose ps
 
-echo "Attaching this test container to app-network..."
-docker network connect app-network "$HOSTNAME" || true
+RUNTIME_NET="${COMPOSE_PROJECT_NAME}_app-network"
+echo "Attaching this test container to ${RUNTIME_NET}..."
+docker network connect "$RUNTIME_NET" "$HOSTNAME" || true
 sleep 1
 
 export PATH=$PATH:/usr/local/go/bin
@@ -61,7 +79,11 @@ go mod tidy
 go test -v
 
 echo "Tests completed. Press Ctrl+C to stop all services"
-wait
+# Detach from network before down to avoid 'active endpoints' error
+docker network disconnect "$RUNTIME_NET" "$HOSTNAME" || true
+docker-compose down -v --remove-orphans || true
 SH
+
+
 
 ENTRYPOINT ["/usr/local/bin/start-project.sh"]
