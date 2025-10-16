@@ -99,7 +99,7 @@ func AdminCreateDepartmentHandler(
 func AdminGetDepartmentsHandler(departmentService service_logic.IDepartmentService, moderatorService service_logic.IModeratorService, logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
-		if r.Method != "GET" {
+		if r.Method != "" {
 			logger.Printf("Method not allowed: %s", r.Method)
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
