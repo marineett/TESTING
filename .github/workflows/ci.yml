@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, lab1, lab2]
+    branches: [main, master, lab1, lab2]
   pull_request:
-    branches: [main, lab1, lab2]
+    branches: [main, master, lab1, lab2]
 
 jobs:
   unit-tests:
@@ -56,6 +56,12 @@ jobs:
           if [ "$CODE1" -eq 0 ] && [ "$CODE2" -eq 0 ]; then OK=true; else OK=false; fi
           echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
           exit 0
+
+      - name: Ensure Allure target dir exists (unit)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
 
       - name: Collect Allure results
         if: ${{ always() }}
@@ -119,6 +125,12 @@ jobs:
           if [ "$CODE" -eq 0 ]; then OK=true; else OK=false; fi
           echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
           exit 0
+
+      - name: Ensure Allure target dir exists (integration)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
 
       - name: Collect Allure results (integration)
         if: ${{ always() }}
@@ -205,6 +217,12 @@ jobs:
           wait $TP >/dev/null 2>&1 || true
           exit $EC
 
+      - name: Fix permissions for Allure dir (e2e)
+        if: ${{ always() }}
+        run: |
+          sudo mkdir -p "${GITHUB_WORKSPACE}/e2e"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
       - name: Upload e2e PCAP
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -265,6 +283,12 @@ jobs:
         run: |
           mkdir -p e2e/allure-results
           echo "E2E tests were skipped (gated by integration)." > e2e/allure-results/placeholder.txt
+
+      - name: Fix permissions for Allure dir (e2e placeholder)
+        if: ${{ always() }}
+        run: |
+          sudo mkdir -p "${GITHUB_WORKSPACE}/e2e"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
 
       - name: Collect Allure results (e2e placeholder)
         if: ${{ always() }}
