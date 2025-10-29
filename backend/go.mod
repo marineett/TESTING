@@ -5,9 +5,11 @@ go 1.24
 toolchain go1.24.7
 
 require (
+	github.com/gorilla/mux v1.8.1
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/joho/godotenv v1.5.1
 	github.com/marcboeker/go-duckdb v1.8.5
+	github.com/ozontech/allure-go/pkg/framework v0.7.4
 	go.mongodb.org/mongo-driver v1.17.3
 )
 
@@ -30,12 +32,11 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
-	github.com/ozontech/allure-go v0.7.4 // indirect
 	github.com/ozontech/allure-go/pkg/allure v0.6.14 // indirect
-	github.com/ozontech/allure-go/pkg/framework v0.7.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect

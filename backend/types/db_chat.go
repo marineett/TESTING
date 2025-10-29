@@ -8,6 +8,8 @@ type DBChat struct {
 	RepetitorID int64     `json:"repetitor_id"`
 	ModeratorID int64     `json:"moderator_id"`
 	CreatedAt   time.Time `json:"created_at"`
+	Type        string    `json:"type"`
+	Status      string    `json:"status"`
 }
 
 type DBMessage struct {

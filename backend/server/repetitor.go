@@ -8,7 +8,34 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupRepetitorRouterV2(repetitorService service_logic.IRepetitorService, contractService service_logic.IContractService, transactionService service_logic.ITransactionService, resumeService service_logic.IResumeService) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(EXACT_REPETITOR_V2, RepetitorGetHandlerV2(repetitorService)).Methods("GET")
+	return router
+}
+
+func RepetitorGetHandlerV2(repetitorService service_logic.IRepetitorService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		repetitorID := mux.Vars(r)["repetitorId"]
+		repetitorIDInt, err := strconv.Atoi(repetitorID)
+		if err != nil {
+			http.Error(w, "Invalid repetitor ID", http.StatusBadRequest)
+			return
+		}
+		repetitor, err := repetitorService.GetRepetitorProfile(int64(repetitorIDInt), 0, 0)
+		if err != nil {
+			http.Error(w, "Error getting repetitor", http.StatusInternalServerError)
+			return
+		}
+		serverRepetitor := types.MapperRepetitorProfileServiceToServerV2(repetitor)
+		json.NewEncoder(w).Encode(serverRepetitor)
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupRepetitorRouter(
 	repetitorService service_logic.IRepetitorService,
@@ -262,7 +289,7 @@ func RepetitorMakeReviewHandler(
 		}
 		logger.Printf("Review: %v", review)
 		serviceReview := types.MapperReviewServerToService(&review)
-		err = contractService.CreateContractReviewRepetitor(int64(contractID), *serviceReview)
+		_, err = contractService.CreateContractReviewRepetitor(int64(contractID), *serviceReview)
 		if err != nil {
 			logger.Printf("Error creating review: %v", err)
 			http.Error(w, "Error creating review", http.StatusInternalServerError)

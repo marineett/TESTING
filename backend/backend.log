@@ -166,3 +166,53 @@
 2025/10/13 18:17:57 Server starting on port 8000
 2025/10/13 21:09:27 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
 2025/10/13 21:09:27 Server starting on port 8000
+2025/10/22 09:44:05 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:44:05 Server starting on addr 0.0.0.0:8000
+2025/10/22 09:44:12 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:44:12 Server starting on addr 0.0.0.0:8000
+2025/10/22 09:44:31 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:44:31 Server starting on addr 8000
+2025/10/22 09:45:37 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:45:37 Server starting on addr 8000
+2025/10/22 09:45:59 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:45:59 Server starting on addr 8000
+2025/10/22 09:46:27 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:46:27 Server starting on addr 8000
+2025/10/22 09:46:27 Error starting server: listen tcp: address 8000: missing port in address
+2025/10/22 09:47:21 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 09:47:21 Server starting on addr :8000
+2025/10/22 09:48:20 http: superfluous response.WriteHeader call from data_base_project/server.SetupServer.ContractsListHandlerV2.func4 (contract.go:72)
+2025/10/22 21:05:59 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:05:59 Server starting on addr :8000
+2025/10/22 21:07:52 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:07:52 Server starting on addr :8000
+2025/10/22 21:20:34 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:20:34 Server starting on addr :8000
+2025/10/22 21:21:16 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:21:16 Server starting on addr :8000
+2025/10/22 21:50:03 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:50:03 Server starting on addr :8000
+2025/10/22 21:57:54 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 21:57:54 Server starting on addr :8000
+2025/10/22 22:11:10 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 22:11:10 Server starting on addr :8000
+2025/10/22 22:14:04 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 22:14:04 Server starting on addr :8000
+2025/10/22 22:49:38 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 22:49:38 Server starting on addr :8000
+2025/10/22 22:54:20 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 22:54:20 Server starting on addr :8000
+2025/10/22 22:56:33 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 22:56:33 Server starting on addr :8000
+2025/10/22 23:01:45 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:01:45 Server starting on addr :8000
+2025/10/22 23:07:38 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:07:38 Server starting on addr :8000
+2025/10/22 23:09:06 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:09:06 Server starting on addr :8000
+2025/10/22 23:15:20 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:15:20 Server starting on addr :8000
+2025/10/22 23:24:26 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:24:26 Server starting on addr :8000
+2025/10/22 23:27:41 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/10/22 23:27:41 Server starting on addr :8000

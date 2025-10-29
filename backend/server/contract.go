@@ -4,11 +4,390 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupContractRouterV2(
+	contractService service_logic.IContractService,
+	lessonService service_logic.ILessonService,
+	reviewService service_logic.IReviewService,
+	transactionService service_logic.ITransactionService,
+) *mux.Router {
+	r := mux.NewRouter()
+	r.HandleFunc(CONTRACTS_V2, ContractsListHandlerV2(contractService)).Methods("GET")
+	r.HandleFunc(CONTRACTS_V2, ContractCreateHandlerV2(contractService)).Methods("POST")
+	r.HandleFunc(EXACT_CONTRACT_V2, ContractGetHandlerV2(contractService)).Methods("GET")
+	r.HandleFunc(EXACT_CONTRACT_V2, ContractStatusPatchHandlerV2(contractService)).Methods("PATCH")
+	r.HandleFunc(CONTRACT_LESSONS_V2, ContractLessonsListHandlerV2(lessonService)).Methods("GET")
+	r.HandleFunc(CONTRACT_LESSONS_V2, ContractLessonCreateHandlerV2(lessonService)).Methods("POST")
+	r.HandleFunc(CONTRACT_REVIEWS_V2, ContractReviewsListHandlerV2(reviewService, contractService)).Methods("GET")
+	r.HandleFunc(CONTRACT_REVIEWS_V2, ContractReviewCreateHandlerV2(reviewService, contractService)).Methods("POST")
+	r.HandleFunc(CONTRACT_TRANSACTIONS_V2, ContractTransactionsListHandlerV2(transactionService)).Methods("GET")
+	r.HandleFunc(CONTRACT_TRANSACTIONS_V2, ContractTransactionCreateHandlerV2(transactionService)).Methods("POST")
+	r.HandleFunc(TRANSACTION_APPROVAL_V2, TransactionApproveHandlerV2(transactionService)).Methods("PATCH")
+	return r
+}
+
+func ContractsListHandlerV2(contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Getting contracts")
+		offsetStr := r.URL.Query().Get("offset")
+		offset, err := strconv.ParseInt(offsetStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid offset", http.StatusBadRequest)
+			return
+		}
+		sizeStr := r.URL.Query().Get("limit")
+		size, err := strconv.ParseInt(sizeStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid size", http.StatusBadRequest)
+			return
+		}
+		clientIDStr := r.URL.Query().Get("client_id")
+		clientID, err := strconv.ParseInt(clientIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid client ID", http.StatusBadRequest)
+			return
+		}
+		repetitorIDStr := r.URL.Query().Get("repetitor_id")
+		repetitorID, err := strconv.ParseInt(repetitorIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid repetitor ID", http.StatusBadRequest)
+			return
+		}
+		fmt.Println("Getting contracts for client ID: ", clientID, " and repetitor ID: ", repetitorID)
+		contracts, err := contractService.GetContracts(clientID, repetitorID, offset, size)
+		if err != nil {
+			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(contracts)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractCreateHandlerV2(contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.ServerContractCreateV2
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			return
+		}
+		contractID, err := contractService.CreateContract(*types.MapperContractCreateV2ServerToServiceInit(&req))
+		if err != nil {
+			fmt.Println("Error creating contract: ", err)
+			http.Error(w, "Error creating contract", http.StatusInternalServerError)
+			return
+		}
+		contract, err := contractService.GetContract(contractID)
+		if err != nil {
+			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			return
+		}
+		serverContract := types.MapperContractServiceToServerV2(contract)
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(serverContract)
+	}
+}
+
+func ContractGetHandlerV2(contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		contract, err := contractService.GetContract(contractID)
+		if err != nil {
+			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			return
+		}
+		serverContract := types.MapperContractServiceToServerV2(contract)
+		json.NewEncoder(w).Encode(serverContract)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractStatusPatchHandlerV2(contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.ServerContractStatusPatchV2
+		contractID := mux.Vars(r)["contract_id"]
+		contractIDInt, err := strconv.ParseInt(contractID, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			return
+		}
+		statusEnum, err := types.ParseContractStatus(req.Status)
+		err = contractService.UpdateContractStatus(contractIDInt, statusEnum)
+		if err != nil {
+			http.Error(w, "Error updating contract status", http.StatusInternalServerError)
+			return
+		}
+		contract, err := contractService.GetContract(contractIDInt)
+		if err != nil {
+			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			return
+		}
+		serverContract := types.MapperContractServiceToServerV2(contract)
+		json.NewEncoder(w).Encode(serverContract)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractLessonsListHandlerV2(lessonService service_logic.ILessonService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		offsetStr := r.URL.Query().Get("offset")
+		offset, err := strconv.ParseInt(offsetStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid offset", http.StatusBadRequest)
+			return
+		}
+		sizeStr := r.URL.Query().Get("size")
+		size, err := strconv.ParseInt(sizeStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid size", http.StatusBadRequest)
+			return
+		}
+		lessons, err := lessonService.GetLessons(contractID, offset, size)
+		if err != nil {
+			http.Error(w, "Error getting lessons", http.StatusInternalServerError)
+			return
+		}
+		serverLessons := make([]types.ServerLessonV2, len(lessons))
+		for i, lesson := range lessons {
+			serverLessons[i] = *types.MapperLessonServiceToServerV2(&lesson)
+		}
+		json.NewEncoder(w).Encode(serverLessons)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractLessonCreateHandlerV2(lessonService service_logic.ILessonService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		var req types.ServerLessonCreateV2
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			return
+		}
+		lessonID, err := lessonService.CreateLesson(*types.MapperLessonCreateV2ServerToService(contractID, &req))
+		if err != nil {
+			http.Error(w, "Error creating lesson", http.StatusInternalServerError)
+			return
+		}
+		lesson, err := lessonService.GetLesson(lessonID)
+		if err != nil {
+			http.Error(w, "Error getting lesson", http.StatusInternalServerError)
+			return
+		}
+		serverLesson := types.MapperLessonServiceToServerV2(lesson)
+		json.NewEncoder(w).Encode(*serverLesson)
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func ContractReviewsListHandlerV2(reviewService service_logic.IReviewService, contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		contract, err := contractService.GetContract(contractID)
+		if err != nil {
+			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			return
+		}
+		reviews := make([]types.ServiceReview, 0)
+		if contract.ReviewClientID != 0 {
+			review, err := reviewService.GetReview(contract.ReviewClientID)
+			if err != nil {
+				http.Error(w, "Error getting review", http.StatusInternalServerError)
+				return
+			}
+			reviews = append(reviews, *review)
+		}
+		if contract.ReviewRepetitorID != 0 {
+			review, err := reviewService.GetReview(contract.ReviewRepetitorID)
+			if err != nil {
+				http.Error(w, "Error getting review", http.StatusInternalServerError)
+				return
+			}
+			reviews = append(reviews, *review)
+		}
+		serverReviews := make([]types.ServerReviewV2, len(reviews))
+		for i, review := range reviews {
+			serverReviews[i] = *types.MapperReviewServiceToServerV2(&review)
+		}
+		json.NewEncoder(w).Encode(serverReviews)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractReviewCreateHandlerV2(reviewService service_logic.IReviewService, contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.ServerReviewCreateV2
+		contractIDStr := mux.Vars(r)["contract_id"]
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			return
+		}
+		contract, err := contractService.GetContract(contractID)
+		if err != nil {
+			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			return
+		}
+		review := types.MapperReviewCreateV2ServerToService(&req, contractID, contract.ClientID, contract.RepetitorID)
+		reviewID := int64(0)
+		if req.SenderID == contract.ClientID {
+			reviewID, err = contractService.CreateContractReviewClient(contractID, *review)
+			if err != nil {
+				http.Error(w, "Error creating review", http.StatusInternalServerError)
+				return
+			}
+		} else if req.SenderID == contract.RepetitorID {
+			reviewID, err = contractService.CreateContractReviewRepetitor(contractID, *review)
+			if err != nil {
+				http.Error(w, "Error creating review", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			http.Error(w, "Invalid sender ID", http.StatusBadRequest)
+			return
+		}
+		reviewV2 := types.ServerReviewV2{
+			ID:         reviewID,
+			ContractID: contractID,
+			FromUserID: req.SenderID,
+			ToUserID:   contract.ClientID,
+			Score:      review.Rating,
+			Text:       review.Comment,
+			CreatedAt:  review.CreatedAt,
+		}
+		json.NewEncoder(w).Encode(reviewV2)
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func ContractTransactionsListHandlerV2(transactionService service_logic.ITransactionService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		if _, err := strconv.ParseInt(contractIDStr, 10, 64); err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		offsetStr := r.URL.Query().Get("offset")
+		limitStr := r.URL.Query().Get("limit")
+		_ = offsetStr
+		_ = limitStr
+		json.NewEncoder(w).Encode([]types.ServerTransactionV2{})
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ContractTransactionCreateHandlerV2(transactionService service_logic.ITransactionService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		contractIDStr := mux.Vars(r)["contract_id"]
+		if _, err := strconv.ParseInt(contractIDStr, 10, 64); err != nil {
+			http.Error(w, "Invalid contract ID", http.StatusBadRequest)
+			return
+		}
+		var req types.ServerTransactionCreateV2
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		if err := json.Unmarshal(body, &req); err != nil {
+			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			return
+		}
+		serverTx := types.ServerTransactionV2{
+			ID:         0,
+			ContractID: 0,
+			Amount:     req.Amount,
+			Status:     types.TransactionStatusPending.String(),
+			CreatedAt:  time.Now(),
+		}
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(serverTx)
+	}
+}
+
+func TransactionApproveHandlerV2(transactionService service_logic.ITransactionService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		transactionIDStr := mux.Vars(r)["id"]
+		transactionID, err := strconv.ParseInt(transactionIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid transaction ID", http.StatusBadRequest)
+			return
+		}
+		if err := transactionService.ApproveTransaction(transactionID); err != nil {
+			http.Error(w, "Error approving transaction", http.StatusInternalServerError)
+			return
+		}
+		tx, err := transactionService.GetTransaction(transactionID)
+		if err != nil {
+			http.Error(w, "Error getting transaction", http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(types.MapperTransactionServiceToServerV2(tx))
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupContractRouter(
 	contractService service_logic.IContractService,

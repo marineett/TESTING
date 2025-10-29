@@ -320,3 +320,103 @@ func MapperPersonalDataDBToService(data *DBPersonalData) *ServicePersonalData {
 		},
 	}
 }
+
+func MapperRegistrationServerToClientRegistration(registration *ServerRegistrationDataV2) *ServerInitClientData {
+	if registration == nil {
+		return nil
+	}
+	return &ServerInitClientData{}
+}
+
+func MapperRegistrationV2ToServiceInitClient(data *ServerRegistrationDataV2) *ServiceInitClientData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitClientData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+			},
+		},
+	}
+}
+
+func MapperRegistrationV2ToServiceInitRepetitor(data *ServerRegistrationDataV2) *ServiceInitRepetitorData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitRepetitorData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+			},
+		},
+	}
+}
+
+func MapperRegistrationV2ToServiceInitModerator(data *ServerRegistrationDataV2) *ServiceInitModeratorData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitModeratorData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+			},
+		},
+	}
+}
+
+func MapperRegistrationV2ToServiceInitAdmin(data *ServerRegistrationDataV2, salary int64) *ServiceInitAdminData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitAdminData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+			},
+		},
+		Salary: salary,
+	}
+}
+
+// V2 client/repetitor mappers are defined in dedicated files:
+// - mapper_client.go
+// - mapper_repetitor.go

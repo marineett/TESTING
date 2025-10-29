@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 func MapperTransactionDBToService(transaction *DBTransaction) *ServiceTransaction {
 	if transaction == nil {
 		return nil
@@ -63,6 +65,31 @@ func MapperTransactionServiceToServer(transaction *ServiceTransaction) *ServerTr
 		Status:    transaction.Status,
 		Type:      transaction.Type,
 		CreatedAt: transaction.CreatedAt,
+	}
+}
+
+// --- V2 Transaction mappers ---
+func MapperTransactionServiceToServerV2(tx *ServiceTransaction) *ServerTransactionV2 {
+	if tx == nil {
+		return nil
+	}
+	return &ServerTransactionV2{
+		ID:         tx.ID,
+		ContractID: 0,
+		Amount:     tx.Amount,
+		Status:     tx.Status.String(),
+		CreatedAt:  tx.CreatedAt,
+	}
+}
+
+func MapperTransactionCreateV2ServerToService(contractID int64, req *ServerTransactionCreateV2) *ServiceTransaction {
+	if req == nil {
+		return nil
+	}
+	return &ServiceTransaction{
+		Amount:    req.Amount,
+		Status:    TransactionStatusPending,
+		CreatedAt: time.Now(),
 	}
 }
 

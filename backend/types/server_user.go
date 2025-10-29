@@ -46,3 +46,14 @@ type ServerVerdict struct {
 	UserID   int64    `json:"user_id"`
 	UserType UserType `json:"user_type"`
 }
+
+type ServerRegistrationDataV2 struct {
+	Login           string `json:"login"`
+	Password        string `json:"password"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	MiddleName      string `json:"middle_name"`
+	Email           string `json:"email"`
+	TelephoneNumber string `json:"telephone_number"`
+	Role            string `json:"role"`
+}

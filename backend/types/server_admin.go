@@ -13,3 +13,10 @@ type ServerAdminProfile struct {
 	Email           string `json:"email"`
 	Salary          int64  `json:"salary"`
 }
+
+// V2 Auth generic response
+type ServerAuthResponseV2 struct {
+	Token  string `json:"token"`
+	Role   string `json:"role"`
+	UserID int64  `json:"user_id"`
+}

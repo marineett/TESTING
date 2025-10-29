@@ -7,8 +7,10 @@ import (
 )
 
 type IDepartmentService interface {
-	CreateDepartment(department types.ServiceDepartmentInitData) error
+	CreateDepartment(department types.ServiceDepartmentInitData) (int64, error)
+	DeleteDepartment(departmentID int64) error
 	GetDepartmentsByHeadID(headID int64) ([]types.ServiceDepartment, error)
+	GetDepartmentsByHeadIdWithModerators(headID int64) ([]types.ServerDepartmentV2, error)
 	GetDepartmentIdByName(name string) (int64, error)
 	GetDepartment(id int64) (types.ServiceDepartment, error)
 	AssignAdminToDepartment(adminID int64, departmentID int64) error
@@ -17,10 +19,12 @@ type IDepartmentService interface {
 	FireModeratorFromDepartment(moderatorID int64, departmentID int64) error
 	GetDepartmentUsersIDs(departmentID int64) ([]int64, error)
 	GetUserDepartmentsIDs(userID int64) ([]int64, error)
+	UpdateDepartmentName(departmentID int64, name string) error
 }
 
 type DepartmentService struct {
 	departmentRepository data_base.IDepartmentRepository
+	moderatorRepository  data_base.IModeratorRepository
 }
 
 func CreateDepartmentService(
@@ -29,19 +33,20 @@ func CreateDepartmentService(
 ) IDepartmentService {
 	return &DepartmentService{
 		departmentRepository: departmentRepository,
+		moderatorRepository:  moderatorRepository,
 	}
 }
 
-func (s *DepartmentService) CreateDepartment(department types.ServiceDepartmentInitData) error {
+func (s *DepartmentService) CreateDepartment(department types.ServiceDepartmentInitData) (int64, error) {
 	serviceDepartment := types.ServiceDepartment{
 		Name:   department.Name,
 		HeadID: department.HeadID,
 	}
-	_, err := s.departmentRepository.InsertDepartment(*types.MapperDepartmentServiceToDB(&serviceDepartment))
+	id, err := s.departmentRepository.InsertDepartment(*types.MapperDepartmentServiceToDB(&serviceDepartment))
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	return id, nil
 }
 
 func (s *DepartmentService) GetDepartment(id int64) (types.ServiceDepartment, error) {
@@ -148,4 +153,55 @@ func (s *DepartmentService) GetUserDepartmentsIDs(userID int64) ([]int64, error)
 		return nil, err
 	}
 	return departmentsIDs, nil
+}
+
+func (s *DepartmentService) GetDepartmentsByHeadIdWithModerators(headID int64) ([]types.ServerDepartmentV2, error) {
+	departments, err := s.departmentRepository.GetDepartmentsByHeadID(headID)
+	if err != nil {
+		return nil, err
+	}
+	serverDepartments := make([]types.ServerDepartmentV2, len(departments))
+	for i, department := range departments {
+		moderators, err := s.moderatorRepository.GetModeratorsByDepartmentID(department.ID)
+		if err != nil {
+			return nil, err
+		}
+		serverDepartments[i] = types.ServerDepartmentV2{
+			ID:         department.ID,
+			Name:       department.Name,
+			HeadID:     department.HeadID,
+			Moderators: []types.ServerModeratorProfileWithIDV2{},
+		}
+		for _, moderator := range moderators {
+			moderatorProfile, err := s.moderatorRepository.GetModerator(moderator)
+			if err != nil {
+				return nil, err
+			}
+			serverDepartments[i].Moderators = append(serverDepartments[i].Moderators, types.ServerModeratorProfileWithIDV2{
+				ID: moderatorProfile.ID,
+				Moderator: *types.MapperModeratorProfileServiceToServer(
+					types.MapperModeratorDataServiceToProfileService(
+						types.MapperModeratorDataDBToService(moderatorProfile),
+					),
+				),
+			})
+		}
+	}
+	return serverDepartments, nil
+}
+
+func (s *DepartmentService) UpdateDepartmentName(departmentID int64, name string) error {
+	err := s.departmentRepository.UpdateDepartmentName(departmentID, name)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *DepartmentService) DeleteDepartment(departmentID int64) error {
+	err := s.departmentRepository.DeleteDepartment(departmentID)
+	if err != nil {
+		return err
+	}
+	return nil
 }

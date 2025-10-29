@@ -14,13 +14,18 @@ type IChatService interface {
 	GetChatListByRepetitorID(repetitorID int64, from int64, size int64) ([]types.ServiceChat, error)
 	GetChatListByModeratorID(moderatorID int64, from int64, size int64) ([]types.ServiceChat, error)
 	GetChat(chatID int64) (*types.ServiceChat, error)
-	SendMessage(chatID int64, senderID int64, message string) error
+	SendMessage(chatID int64, senderID int64, message string) (*types.ServerMessageV2, error)
 	GetMessages(chatID int64, from int64, size int64) ([]types.ServiceMessage, error)
 	GetChatIdByCIDAndMID(clientID int64, moderatorID int64) (int64, error)
 	GetChatIdByCIDAndRID(clientID int64, repetitorID int64) (int64, error)
 	GetChatIdByMIDAndRID(moderatorID int64, repetitorID int64) (int64, error)
 	DeleteChat(chatID int64) error
 	ClearMessages(chatID int64) error
+	DeleteMessage(messageID int64) error
+	UpdateMessageContent(messageID int64, content string) error
+	GetMessage(messageID int64) (*types.ServiceMessage, error)
+	UpdateChat(chatID int64, chatStatus string) error
+	ClearChat(chatID int64) error
 }
 
 type ChatService struct {
@@ -126,14 +131,24 @@ func (s *ChatService) GetChat(chatID int64) (*types.ServiceChat, error) {
 	return types.MapperChatDBToService(chat), nil
 }
 
-func (s *ChatService) SendMessage(chatID int64, senderID int64, message string) error {
-	_, err := s.messageRepository.InsertMessage(types.DBMessage{
+func (s *ChatService) SendMessage(chatID int64, senderID int64, message string) (*types.ServerMessageV2, error) {
+	dbMessage := types.DBMessage{
 		ChatID:    chatID,
 		SenderID:  senderID,
 		Content:   message,
 		CreatedAt: time.Now(),
-	})
-	return err
+	}
+	messageID, err := s.messageRepository.InsertMessage(dbMessage)
+	if err != nil {
+		return nil, err
+	}
+	return types.MapperMessageServiceToServerV2(&types.ServiceMessage{
+		ID:        int64(messageID),
+		ChatID:    chatID,
+		SenderID:  dbMessage.SenderID,
+		Content:   dbMessage.Content,
+		CreatedAt: dbMessage.CreatedAt,
+	}), nil
 }
 
 func (s *ChatService) GetMessages(chatID int64, from int64, size int64) ([]types.ServiceMessage, error) {
@@ -170,4 +185,32 @@ func (s *ChatService) DeleteChat(chatID int64) error {
 
 func (s *ChatService) ClearMessages(chatID int64) error {
 	return s.messageRepository.DeleteMessages(chatID)
+}
+
+func (s *ChatService) DeleteMessage(messageID int64) error {
+	return s.messageRepository.DeleteMessage(messageID)
+}
+
+func (s *ChatService) UpdateMessageContent(messageID int64, content string) error {
+	return s.messageRepository.UpdateMessageContent(messageID, content)
+}
+
+func (s *ChatService) GetMessage(messageID int64) (*types.ServiceMessage, error) {
+	message, err := s.messageRepository.GetMessage(messageID)
+	if err != nil {
+		return nil, err
+	}
+	return types.MapperMessageDBToService(message), nil
+}
+
+func (s *ChatService) UpdateChat(chatID int64, chatStatus string) error {
+	return s.chatRepository.UpdateChat(chatID, chatStatus)
+}
+
+func (s *ChatService) ClearChat(chatID int64) error {
+	err := s.messageRepository.DeleteMessages(chatID)
+	if err != nil {
+		return err
+	}
+	return s.chatRepository.UpdateChat(chatID, "cleared")
 }

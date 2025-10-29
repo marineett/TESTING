@@ -40,3 +40,41 @@ type ServerReview struct {
 	Comment     string    `json:"comment"`
 	CreatedAt   time.Time `json:"created_at"`
 }
+
+type ServerContractV2 struct {
+	ID          int64     `json:"id"`
+	ClientID    int64     `json:"client_id"`
+	RepetitorID *int64    `json:"repetitor_id,omitempty"`
+	Description string    `json:"description"`
+	Rate        int64     `json:"rate"`
+	Format      string    `json:"format"`
+	Status      string    `json:"status"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type ServerContractCreateV2 struct {
+	ClientID    int64  `json:"client_id"`
+	Description string `json:"description"`
+	Rate        int64  `json:"rate"`
+	Format      string `json:"format"`
+}
+
+type ServerContractStatusPatchV2 struct {
+	Status string `json:"status"`
+}
+
+type ServerReviewV2 struct {
+	ID         int64     `json:"id"`
+	ContractID int64     `json:"contract_id"`
+	FromUserID int64     `json:"from_user_id"`
+	ToUserID   int64     `json:"to_user_id"`
+	Score      int       `json:"score"`
+	Text       string    `json:"text"`
+	CreatedAt  time.Time `json:"created_at"`
+}
+
+type ServerReviewCreateV2 struct {
+	Score    int    `json:"score"`
+	Text     string `json:"text"`
+	SenderID int64  `json:"sender_id"`
+}

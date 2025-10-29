@@ -105,3 +105,49 @@ func MapperModeratorDataDBToService(data *DBModeratorData) *ServiceModeratorData
 		Salary: data.Salary,
 	}
 }
+
+// Fills profile fields that are available from ServiceModeratorData
+func MapperModeratorDataServiceToProfileService(data *ServiceModeratorData) *ServiceModeratorProfile {
+	if data == nil {
+		return nil
+	}
+	return &ServiceModeratorProfile{
+		Salary:      data.Salary,
+		Departments: data.Departments,
+	}
+}
+
+func MapperDepartmentServiceToServerV2(dep *ServiceDepartment, moderators []ServiceModeratorProfileWithID) *ServerDepartmentV2 {
+	if dep == nil {
+		return nil
+	}
+	result := ServerDepartmentV2{ID: dep.ID, Name: dep.Name, HeadID: dep.HeadID}
+	result.Moderators = make([]ServerModeratorProfileWithIDV2, 0, len(moderators))
+	for _, m := range moderators {
+		result.Moderators = append(result.Moderators, ServerModeratorProfileWithIDV2{
+			ID: m.ID,
+			Moderator: ServerModeratorProfile{
+				FirstName:       m.FirstName,
+				LastName:        m.LastName,
+				MiddleName:      m.MiddleName,
+				TelephoneNumber: m.TelephoneNumber,
+				Email:           m.Email,
+			},
+		})
+	}
+	return &result
+}
+
+func MapperDepartmentCreateV2ServerToService(req *ServerDepartmentCreateV2) *ServiceDepartmentInitData {
+	if req == nil {
+		return nil
+	}
+	return &ServiceDepartmentInitData{Name: req.Name, HeadID: req.HeadID}
+}
+
+func MapperDepartmentNameUpdateV2ServerToService(req *ServerDepartmentNameUpdateV2, departmentID int64, headID int64) *ServiceDepartmentInitData {
+	if req == nil {
+		return nil
+	}
+	return &ServiceDepartmentInitData{ID: departmentID, Name: req.Name, HeadID: headID}
+}

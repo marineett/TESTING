@@ -11,6 +11,7 @@ import (
 
 type IDepartmentRepository interface {
 	InsertDepartment(department types.DBDepartment) (int64, error)
+	DeleteDepartment(departmentID int64) error
 	GetDepartmentIdByName(name string) (int64, error)
 	GetDepartmentsByHeadID(headID int64) ([]types.DBDepartment, error)
 	GetDepartment(id int64) (*types.DBDepartment, error)
@@ -19,6 +20,7 @@ type IDepartmentRepository interface {
 	HireInfoDelete(userId int64, departmentId int64) error
 	GetUserDepartmentsIDs(userId int64) ([]int64, error)
 	GetDepartmentUsersIDs(departmentId int64) ([]int64, error)
+	UpdateDepartmentName(departmentID int64, name string) error
 }
 
 func CreateSqlDepartmentTable(db *sql.DB, departmentTable string, hireInfoTable string, userTableName string) error {
@@ -218,4 +220,26 @@ func (r *SqlDepartmentRepository) GetDepartmentIdByName(name string) (int64, err
 		return 0, err
 	}
 	return id, nil
+}
+
+func (r *SqlDepartmentRepository) UpdateDepartmentName(departmentID int64, name string) error {
+	query := `
+	UPDATE ` + r.departmentTable + ` SET name = $1 WHERE id = $2
+	`
+	_, err := r.db.Exec(query, name, departmentID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SqlDepartmentRepository) DeleteDepartment(departmentID int64) error {
+	query := `
+	DELETE FROM ` + r.departmentTable + ` WHERE id = $1
+	`
+	_, err := r.db.Exec(query, departmentID)
+	if err != nil {
+		return err
+	}
+	return nil
 }

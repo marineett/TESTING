@@ -4,10 +4,263 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupChatRouterV2(chatService service_logic.IChatService) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(CHATS_V2, ChatGetChatsHandlerV2(chatService)).Methods("GET")
+	router.HandleFunc(CHATS_V2, ChatCreateChatHandlerV2(chatService)).Methods("POST")
+	router.HandleFunc(EXACT_CHAT_V2, ChatGetChatHandlerV2(chatService)).Methods("GET")
+	router.HandleFunc(EXACT_CHAT_V2, ChatUpdateChatHandlerV2(chatService)).Methods("PATCH")
+	router.HandleFunc(EXACT_CHAT_V2, ChatDeleteChatHandlerV2(chatService)).Methods("DELETE")
+	router.HandleFunc(EXACT_CHAT_V2, ChatClearChatHandlerV2(chatService)).Methods("PUT")
+	router.HandleFunc(EXACT_CHAT_MESSAGES_V2, ChatGetMessagesHandlerV2(chatService)).Methods("GET")
+	router.HandleFunc(EXACT_CHAT_MESSAGES_V2, ChatSendMessageHandlerV2(chatService)).Methods("POST")
+	return router
+}
+
+func ChatGetChatsHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		queryParams := r.URL.Query()
+		clientID := queryParams.Get("userId")
+		clientIDInt, err := strconv.Atoi(clientID)
+		if err != nil {
+			http.Error(w, "Invalid client ID", http.StatusBadRequest)
+			return
+		}
+		chatsOffset := queryParams.Get("offset")
+		chatsOffsetInt, err := strconv.Atoi(chatsOffset)
+		if err != nil {
+			http.Error(w, "Invalid chats offset", http.StatusBadRequest)
+			return
+		}
+		chatsLimit := queryParams.Get("limit")
+		chatsLimitInt, err := strconv.Atoi(chatsLimit)
+		if err != nil {
+			http.Error(w, "Invalid chats limit", http.StatusBadRequest)
+			return
+		}
+		chats, err := chatService.GetChatListByClientID(int64(clientIDInt), int64(chatsOffsetInt), int64(chatsLimitInt))
+		if err != nil {
+			http.Error(w, "Error getting chats", http.StatusInternalServerError)
+			return
+		}
+		serverChats := make([]types.ServerChat, 0)
+		for _, chat := range chats {
+			serverChats = append(serverChats, *types.MapperChatServiceToServer(&chat))
+		}
+		json.NewEncoder(w).Encode(serverChats)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatCreateChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		var chat types.ServerChatV2
+		if err := json.Unmarshal(body, &chat); err != nil {
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			return
+		}
+		if chat.Type != "client_moderator" && chat.Type != "repetitor_moderator" && chat.Type != "client_repetitor" {
+			http.Error(w, "Invalid chat type", http.StatusBadRequest)
+			return
+		}
+		var chatID int64
+		if chat.Type == "client_moderator" {
+			chatID, err = chatService.CreateCMChat(chat.ClientID, chat.ModeratorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusInternalServerError)
+				return
+			}
+		}
+		if chat.Type == "repetitor_moderator" {
+			chatID, err = chatService.CreateRMChat(chat.RepetitorID, chat.ModeratorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusInternalServerError)
+				return
+			}
+		}
+		if chat.Type == "client_repetitor" {
+			chatID, err = chatService.CreateCRChat(chat.ClientID, chat.RepetitorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusInternalServerError)
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(chatID)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatUpdateChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		var req types.ServerChatUpdateV2
+		if err := json.Unmarshal(body, &req); err != nil {
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			return
+		}
+		if req.Status != "active" && req.Status != "closed" {
+			http.Error(w, "Invalid chat status", http.StatusBadRequest)
+			return
+		}
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+		err = chatService.UpdateChat(int64(chatIDInt), req.Status)
+		if err != nil {
+			http.Error(w, "Error updating chat", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatGetChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+		chat, err := chatService.GetChat(int64(chatIDInt))
+		if err != nil {
+			http.Error(w, "Error getting chat", http.StatusInternalServerError)
+			return
+		}
+		serverChat := types.MapperChatServiceToServerV2(chat)
+		json.NewEncoder(w).Encode(serverChat)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatGetMessagesHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+		offset := r.URL.Query().Get("offset")
+		offsetInt, err := strconv.Atoi(offset)
+		if err != nil {
+			http.Error(w, "Invalid offset", http.StatusBadRequest)
+			return
+		}
+		limit := r.URL.Query().Get("limit")
+		limitInt, err := strconv.Atoi(limit)
+		if err != nil {
+			http.Error(w, "Invalid limit", http.StatusBadRequest)
+			return
+		}
+		messages, err := chatService.GetMessages(int64(chatIDInt), int64(offsetInt), int64(limitInt))
+		if err != nil {
+			http.Error(w, "Error getting messages", http.StatusInternalServerError)
+			return
+		}
+		serverMessages := make([]types.ServerMessageV2, 0)
+		for _, message := range messages {
+			serverMessages = append(serverMessages, *types.MapperMessageServiceToServerV2(&message))
+		}
+		json.NewEncoder(w).Encode(serverMessages)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatSendMessageHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.ServerMessageCreateV2
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			return
+		}
+		if err := json.Unmarshal(body, &req); err != nil {
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			return
+		}
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+
+		message, err := chatService.SendMessage(int64(chatIDInt), req.SenderID, req.Content)
+		if err != nil {
+			http.Error(w, "Error sending message", http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(message)
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatDeleteChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+		err = chatService.DeleteChat(int64(chatIDInt))
+		if err != nil {
+			http.Error(w, "Error deleting chat", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ChatClearChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		chatID := mux.Vars(r)["chat_id"]
+		chatIDInt, err := strconv.Atoi(chatID)
+		if err != nil {
+			http.Error(w, "Invalid chat ID", http.StatusBadRequest)
+			return
+		}
+		err = chatService.ClearChat(int64(chatIDInt))
+		if err != nil {
+			http.Error(w, "Error clearing chat", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(types.ServerChatV2{})
+		if err != nil {
+			http.Error(w, "Error getting chat", http.StatusInternalServerError)
+			return
+		}
+		updatedChat, err := chatService.GetChat(int64(chatIDInt))
+		if err != nil {
+			http.Error(w, "Error getting chat", http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(updatedChat)
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupChatRouter(
 	chatService service_logic.IChatService,
@@ -358,7 +611,7 @@ func ChatSendMessageHandler(chatService service_logic.IChatService, logger *log.
 			return
 		}
 		logger.Printf("Chat ID: %v", chatID)
-		err = chatService.SendMessage(chatID, senderID, message)
+		_, err = chatService.SendMessage(chatID, senderID, message)
 		if err != nil {
 			logger.Printf("Error sending message: %v", err)
 			http.Error(w, "Error sending message", http.StatusInternalServerError)

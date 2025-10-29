@@ -301,6 +301,10 @@ func CreateTestModeratorRepository(
 	}
 }
 
+func (r *TestModeratorRepository) GetModeratorsByDepartmentID(departmentID int64) ([]int64, error) {
+	return nil, nil
+}
+
 func (r *TestModeratorRepository) InsertModerator(moderator types.DBModeratorData, personalData types.DBPersonalData, auth types.DBAuthData) (int64, error) {
 	personalDataID, err := r.personalDataRepository.InsertPersonalData(personalData)
 	if err != nil {
@@ -527,6 +531,16 @@ func CreateTestContractRepository() *TestContractRepository {
 	return &TestContractRepository{
 		data: make(map[int64]*types.DBContract),
 	}
+}
+
+func (r *TestContractRepository) GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.DBContract, error) {
+	contracts := make([]types.DBContract, 0)
+	for _, contract := range r.data {
+		if contract.ClientID == clientID && contract.RepetitorID == repetitorID {
+			contracts = append(contracts, *contract)
+		}
+	}
+	return contracts[from:min(from+size, int64(len(contracts)))], nil
 }
 
 func (r *TestContractRepository) InsertContract(contract types.DBContract) (int64, error) {
@@ -903,6 +917,26 @@ func CreateTestDepartmentRepository() *TestDepartmentRepository {
 	}
 }
 
+func (r *TestDepartmentRepository) UpdateDepartmentName(departmentID int64, name string) error {
+	if _, ok := r.data[departmentID]; !ok {
+		return errors.New("department not found")
+	}
+	r.data[departmentID].Name = name
+	return nil
+}
+
+func (r *TestDepartmentRepository) DeleteDepartment(departmentID int64) error {
+	if _, ok := r.data[departmentID]; !ok {
+		return errors.New("department not found")
+	}
+	delete(r.data, departmentID)
+	return nil
+}
+
+func (r *TestDepartmentRepository) GetModeratorsByDepartmentID(departmentID int64) ([]int64, error) {
+	return nil, nil
+}
+
 func (r *TestDepartmentRepository) InsertDepartment(department types.DBDepartment) (int64, error) {
 	department.ID = int64(len(r.data) + 1)
 	r.data[department.ID] = &department
@@ -974,6 +1008,14 @@ func CreateTestChatRepository() *TestChatRepository {
 	return &TestChatRepository{
 		data: make(map[int64]*types.DBChat),
 	}
+}
+
+func (r *TestChatRepository) UpdateChat(chatID int64, chatStatus string) error {
+	if _, ok := r.data[chatID]; !ok {
+		return errors.New("chat not found")
+	}
+	r.data[chatID].Status = chatStatus
+	return nil
 }
 
 func (r *TestChatRepository) DeleteChat(id int64) error {
@@ -1071,6 +1113,29 @@ func CreateTestMessageRepository() *TestMessageRepository {
 	return &TestMessageRepository{
 		data: make(map[int64]*types.DBMessage),
 	}
+}
+
+func (r *TestMessageRepository) UpdateMessageContent(messageID int64, content string) error {
+	if _, ok := r.data[messageID]; !ok {
+		return errors.New("message not found")
+	}
+	r.data[messageID].Content = content
+	return nil
+}
+
+func (r *TestMessageRepository) GetMessage(messageID int64) (*types.DBMessage, error) {
+	if _, ok := r.data[messageID]; !ok {
+		return nil, errors.New("message not found")
+	}
+	return r.data[messageID], nil
+}
+
+func (r *TestMessageRepository) DeleteMessage(messageID int64) error {
+	if _, ok := r.data[messageID]; !ok {
+		return errors.New("message not found")
+	}
+	delete(r.data, messageID)
+	return nil
 }
 
 func (r *TestMessageRepository) InsertMessage(message types.DBMessage) (int64, error) {

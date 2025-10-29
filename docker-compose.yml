@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:15
@@ -33,10 +31,14 @@ services:
       DATABASE_NAME: mydb
       DATABASE_USER: user
       DATABASE_PASSWORD: pass
+      BACKEND_PORT: "8000"
+      JWT_SECRET: "dev-secret"
     networks:
       - app-network
-    # volumes:
-    #   - ./logs:/build/logs
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/build/logs
 
 
   # frontend:

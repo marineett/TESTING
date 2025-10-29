@@ -399,7 +399,7 @@ func TestCreateContractReviewClientCorrectLondon(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating contract: %v", err)
 	}
-	err = contractService.CreateContractReviewClient(contractID, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewClient(contractID, tu.TestServiceReview)
 	if err != nil {
 		t.Fatalf("error creating contract review client: %v", err)
 	}
@@ -447,7 +447,7 @@ func TestCreateContractReviewClientCorrectClassic(t *testing.T) {
 		t.Fatalf("error creating contract: %v", err)
 	}
 	tu.TestServiceReview.ClientID = result.UserID
-	err = contractService.CreateContractReviewClient(contractID, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewClient(contractID, tu.TestServiceReview)
 	if err != nil {
 		t.Fatalf("error creating contract review client: %v", err)
 	}
@@ -464,7 +464,7 @@ func TestCreateContractReviewClientIncorrectLondon(t *testing.T) {
 	contractRepository := tu.CreateTestContractRepository()
 	reviewRepository := tu.CreateTestReviewRepository()
 	contractService := CreateContractService(contractRepository, reviewRepository)
-	err := contractService.CreateContractReviewClient(1, tu.TestServiceReview)
+	_, err := contractService.CreateContractReviewClient(1, tu.TestServiceReview)
 	if err == nil {
 		t.Fatalf("no error creating contract review client: %v", err)
 	}
@@ -483,7 +483,7 @@ func TestCreateContractReviewClientIncorrectClassic(t *testing.T) {
 	contractRepository := module.ContractRepository
 	reviewRepository := module.ReviewRepository
 	contractService := CreateContractService(contractRepository, reviewRepository)
-	err = contractService.CreateContractReviewClient(1, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewClient(1, tu.TestServiceReview)
 	if err == nil {
 		t.Fatalf("no error creating contract review client: %v", err)
 	}
@@ -497,7 +497,7 @@ func TestCreateContractReviewRepetitorCorrectLondon(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating contract: %v", err)
 	}
-	err = contractService.CreateContractReviewRepetitor(contractID, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewRepetitor(contractID, tu.TestServiceReview)
 	if err != nil {
 		t.Fatalf("error creating contract review repetitor: %v", err)
 	}
@@ -561,7 +561,7 @@ func TestCreateContractReviewRepetitorCorrectClassic(t *testing.T) {
 		t.Fatalf("error authorizing: %v", err)
 	}
 	tu.TestServiceReview.RepetitorID = result.UserID
-	err = contractService.CreateContractReviewRepetitor(contractID, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewRepetitor(contractID, tu.TestServiceReview)
 	if err != nil {
 		t.Fatalf("error creating contract review repetitor: %v", err)
 	}
@@ -578,7 +578,7 @@ func TestCreateContractReviewRepetitorIncorrectLondon(t *testing.T) {
 	contractRepository := tu.CreateTestContractRepository()
 	reviewRepository := tu.CreateTestReviewRepository()
 	contractService := CreateContractService(contractRepository, reviewRepository)
-	err := contractService.CreateContractReviewRepetitor(1, tu.TestServiceReview)
+	_, err := contractService.CreateContractReviewRepetitor(1, tu.TestServiceReview)
 	if err == nil {
 		t.Fatalf("no error creating contract review repetitor: %v", err)
 	}
@@ -597,7 +597,7 @@ func TestCreateContractReviewRepetitorIncorrectClassic(t *testing.T) {
 	contractRepository := module.ContractRepository
 	reviewRepository := module.ReviewRepository
 	contractService := CreateContractService(contractRepository, reviewRepository)
-	err = contractService.CreateContractReviewRepetitor(1, tu.TestServiceReview)
+	_, err = contractService.CreateContractReviewRepetitor(1, tu.TestServiceReview)
 	if err == nil {
 		t.Fatalf("no error creating contract review repetitor: %v", err)
 	}

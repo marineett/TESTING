@@ -28,7 +28,7 @@ func (s *DepartmentSuite) TestCreateDepartmentCorrectLondon(t provider.T) {
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {
@@ -61,7 +61,7 @@ func (s *DepartmentSuite) TestCreateDepartmentCorrectClassic(t provider.T) {
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		init := tu.TestInitDepartmentData
 		init.HeadID = uid
-		err := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository).CreateDepartment(init)
+		_, err := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository).CreateDepartment(init)
 		sx.Assert().NoError(err)
 	})
 }
@@ -75,7 +75,7 @@ func (s *DepartmentSuite) TestGetDepartmentsByHeadIDCorrectLondon(t provider.T) 
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
@@ -109,8 +109,10 @@ func (s *DepartmentSuite) TestGetDepartmentsByHeadIDCorrectClassic(t provider.T)
 		init := tu.TestInitDepartmentData
 		init.HeadID = uid
 		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
-		sx.Assert().NoError(ds.CreateDepartment(init))
-		sx.Assert().NoError(ds.CreateDepartment(init))
+		_, err := ds.CreateDepartment(init)
+		sx.Assert().NoError(err)
+		_, err = ds.CreateDepartment(init)
+		sx.Assert().NoError(err)
 		list, err := ds.GetDepartmentsByHeadID(uid)
 		sx.Assert().NoError(err)
 		sx.Assert().Equal(2, len(list))
@@ -128,7 +130,8 @@ func (s *DepartmentSuite) TestGetDepartmentCorrectLondon(t provider.T) {
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		dep, err := CreateDepartmentService(depRepo, modRepo).GetDepartment(1)
@@ -160,7 +163,8 @@ func (s *DepartmentSuite) TestGetDepartmentCorrectClassic(t provider.T) {
 		init := tu.TestInitDepartmentData
 		init.HeadID = uid
 		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
-		sx.Assert().NoError(ds.CreateDepartment(init))
+		_, err := ds.CreateDepartment(init)
+		sx.Assert().NoError(err)
 		list, err := ds.GetDepartmentsByHeadID(uid)
 		sx.Assert().NoError(err)
 		sx.Require().Equal(1, len(list))
@@ -182,7 +186,8 @@ func (s *DepartmentSuite) TestAssignAdminToDepartmentCorrectLondon(t provider.T)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
 		init := tu.TestInitDepartmentData
 		init.HeadID = 0
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(init))
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(init)
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		ds := CreateDepartmentService(depRepo, modRepo)
@@ -215,7 +220,8 @@ func (s *DepartmentSuite) TestAssignAdminToDepartmentCorrectClassic(t provider.T
 		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
 		init := tu.TestInitDepartmentData
 		init.HeadID = 0
-		sx.Assert().NoError(ds.CreateDepartment(init))
+		_, err := ds.CreateDepartment(init)
+		sx.Assert().NoError(err)
 		list, err := ds.GetDepartmentsByHeadID(0)
 		sx.Assert().NoError(err)
 		sx.Require().Equal(1, len(list))
@@ -235,7 +241,8 @@ func (s *DepartmentSuite) TestAssignAdminToDepartmentIncorrectLondon(t provider.
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		err := CreateDepartmentService(depRepo, modRepo).AssignAdminToDepartment(1, 2)
@@ -271,7 +278,8 @@ func (s *DepartmentSuite) TestFireAdminFromDepartmentCorrectLondon(t provider.T)
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		ds := CreateDepartmentService(depRepo, modRepo)
@@ -304,7 +312,8 @@ func (s *DepartmentSuite) TestFireAdminFromDepartmentCorrectClassic(t provider.T
 		ds := CreateDepartmentService(mod.DepartmentRepository, mod.ModeratorRepository)
 		init := tu.TestInitDepartmentData
 		init.HeadID = uid
-		sx.Assert().NoError(ds.CreateDepartment(init))
+		_, err := ds.CreateDepartment(init)
+		sx.Assert().NoError(err)
 		list, err := ds.GetDepartmentsByHeadID(uid)
 		sx.Assert().NoError(err)
 		sx.Require().Equal(1, len(list))
@@ -356,10 +365,12 @@ func (s *DepartmentSuite) TestFireModeratorFromDepartmentCorrectLondon(t provide
 		modRepo = tu.CreateTestModeratorRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData))
+		_, err := CreateDepartmentService(depRepo, modRepo).CreateDepartment(tu.TestInitDepartmentData)
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
-		sx.Assert().NoError(CreateDepartmentService(depRepo, modRepo).FireModeratorFromDepartment(tu.TestInitDepartmentData.HeadID, 1))
+		err := CreateDepartmentService(depRepo, modRepo).FireModeratorFromDepartment(tu.TestInitDepartmentData.HeadID, 1)
+		sx.Assert().NoError(err)
 		dep, err := depRepo.GetDepartment(1)
 		sx.Assert().NoError(err)
 		sx.Assert().Equal(tu.TestInitDepartmentData.HeadID, dep.HeadID)

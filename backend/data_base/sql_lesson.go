@@ -8,6 +8,7 @@ import (
 type ILessonRepository interface {
 	InsertLesson(lesson types.DBLesson) (int64, error)
 	GetLessons(contractID int64, from int64, size int64) ([]types.DBLesson, error)
+	GetLesson(lessonID int64) (*types.DBLesson, error)
 }
 
 func CreateSqlLessonTable(db *sql.DB, lessonTable string, contractTable string, transactionTable string) error {
@@ -84,4 +85,18 @@ func (r *SqlLessonRepository) GetLessons(contractID int64, from int64, size int6
 		lessons = append(lessons, lesson)
 	}
 	return lessons, nil
+}
+
+func (r *SqlLessonRepository) GetLesson(lessonID int64) (*types.DBLesson, error) {
+	query := `
+		SELECT id, contract_id, duration, created_at
+		FROM ` + r.lessonTable + `
+		WHERE id = $1
+	`
+	var lesson types.DBLesson
+	err := r.db.QueryRow(query, lessonID).Scan(&lesson.ID, &lesson.ContractID, &lesson.Duration, &lesson.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &lesson, nil
 }

@@ -8,6 +8,7 @@ import (
 type ILessonService interface {
 	CreateLesson(lesson types.ServiceLesson) (int64, error)
 	GetLessons(contractID int64, from int64, size int64) ([]types.ServiceLesson, error)
+	GetLesson(lessonID int64) (*types.ServiceLesson, error)
 }
 
 type LessonService struct {
@@ -36,4 +37,12 @@ func (s *LessonService) GetLessons(contractID int64, from int64, size int64) ([]
 		serviceLessons[i] = *types.MapperLessonDBToService(&lesson)
 	}
 	return serviceLessons, nil
+}
+
+func (s *LessonService) GetLesson(lessonID int64) (*types.ServiceLesson, error) {
+	lesson, err := s.lessonRepository.GetLesson(lessonID)
+	if err != nil {
+		return nil, err
+	}
+	return types.MapperLessonDBToService(lesson), nil
 }

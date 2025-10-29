@@ -1,20 +1,21 @@
 package server
 
 const (
-	API = "/api/"
+	API_V1 = "/api/v1/"
+	API_V2 = "/api/v2/"
 )
 
 const (
-	USER_API         = API + "user/"
-	GUEST_API        = API + "guest/"
-	ADMIN_API        = API + "admin/"
-	MODERATOR_API    = API + "moderator/"
-	CLIENT_API       = API + "client/"
-	REGISTRATION_API = API + "registration/"
-	AUTH_API         = API + "auth/"
-	CONTRACT_API     = API + "contract/"
-	CHAT_API         = API + "chat/"
-	REPETITOR_API    = API + "repetitor/"
+	USER_API         = API_V1 + "user/"
+	GUEST_API        = API_V1 + "guest/"
+	ADMIN_API        = API_V1 + "admin/"
+	MODERATOR_API    = API_V1 + "moderator/"
+	CLIENT_API       = API_V1 + "client/"
+	REGISTRATION_API = API_V1 + "registration/"
+	AUTH_API         = API_V1 + "auth/"
+	CONTRACT_API     = API_V1 + "contract/"
+	CHAT_API         = API_V1 + "chat/"
+	REPETITOR_API    = API_V1 + "repetitor/"
 )
 
 const (
@@ -88,4 +89,119 @@ const (
 	CHAT_GET_MESSAGES        = CHAT_API + "get_messages"
 	CHAT_DELETE_CHAT         = CHAT_API + "delete_chat"
 	CHAT_CLEAR_MESSAGES      = CHAT_API + "clear_messages"
+)
+
+const (
+	USER_API_V2         = API_V2 + "user/"
+	GUEST_API_V2        = API_V2 + "guest/"
+	ADMIN_API_V2        = API_V2 + "admin/"
+	MODERATOR_API_V2    = API_V2 + "moderator/"
+	CLIENT_API_V2       = API_V2 + "client/"
+	REGISTRATION_API_V2 = API_V2 + "registration/"
+	AUTH_API_V2         = API_V2 + "auth/"
+	CONTRACT_API_V2     = API_V2 + "contract/"
+	CHAT_API_V2         = API_V2 + "chat/"
+	REPETITOR_API_V2    = API_V2 + "repetitor/"
+)
+
+const (
+	AUTH_REGISTRATION = AUTH_API_V2 + "registration"
+	AUTH_LOGIN_V2     = AUTH_API_V2 + "login"
+)
+
+const (
+	CLIENTS_V2      = API_V2 + "clients"
+	EXACT_CLIENT_V2 = CLIENTS_V2 + "/{clientId}"
+)
+
+const (
+	REPETITORS_V2      = API_V2 + "repetitors"
+	EXACT_REPETITOR_V2 = REPETITORS_V2 + "/{repetitorId}"
+)
+
+const (
+	CHATS_V2               = API_V2 + "chats"
+	EXACT_CHAT_V2          = CHATS_V2 + "/{chat_id}"
+	EXACT_CHAT_MESSAGES_V2 = EXACT_CHAT_V2 + "/messages"
+)
+
+const (
+	MESSAGES_V2      = API_V2 + "messages"
+	EXACT_MESSAGE_V2 = MESSAGES_V2 + "/{message_id}"
+)
+
+const (
+	CONTRACTS_V2             = API_V2 + "contracts"
+	EXACT_CONTRACT_V2        = CONTRACTS_V2 + "/{contract_id}"
+	CONTRACT_LESSONS_V2      = EXACT_CONTRACT_V2 + "/lessons"
+	CONTRACT_REVIEWS_V2      = EXACT_CONTRACT_V2 + "/reviews"
+	CONTRACT_TRANSACTIONS_V2 = EXACT_CONTRACT_V2 + "/transactions"
+)
+
+const (
+	TRANSACTIONS_V2         = API_V2 + "transactions"
+	EXACT_TRANSACTION_V2    = TRANSACTIONS_V2 + "/{transaction_id}"
+	TRANSACTION_APPROVAL_V2 = EXACT_TRANSACTION_V2 + "/approval"
+)
+
+const (
+	DEPARTMENTS_V2       = API_V2 + "departments"
+	EXACT_DEPARTMENT_V2  = DEPARTMENTS_V2 + "/{departmentId}"
+	ADMINS_V2            = API_V2 + "admins"
+	EXACT_ADMIN_V2       = ADMINS_V2 + "/{adminId}"
+	ADMIN_DEPARTMENTS_V2 = EXACT_ADMIN_V2 + "/departments"
+	MODERATORS_V2        = API_V2 + "moderators"
+	EXACT_MODERATOR_V2   = MODERATORS_V2 + "/{moderatorId}"
+	MODERATOR_SALARY_V2  = EXACT_MODERATOR_V2 + "/salary"
+)
+
+const (
+	DEPARTMENT_MODERATOR_V2 = DEPARTMENTS_V2 + "/{departmentId}/moderators/{moderatorId}"
+)
+
+const (
+	ERR_CODE_BAD_REQUEST  = "bad_request"
+	ERR_CODE_UNAUTHORIZED = "unauthorized"
+	ERR_CODE_FORBIDDEN    = "forbidden"
+	ERR_CODE_NOT_FOUND    = "not_found"
+	ERR_CODE_CONFLICT     = "conflict"
+	ERR_CODE_SERVER_ERROR = "server_error"
+)
+
+const (
+	ERR_MSG_INVALID_PARAMS = "Invalid request parameters"
+	ERR_MSG_INVALID_BODY   = "Invalid request body"
+)
+
+const (
+	ERR_MSG_NO_TOKEN      = "Authorization token is missing"
+	ERR_MSG_BAD_TOKEN     = "Token is invalid"
+	ERR_MSG_TOKEN_EXPIRED = "Token expired"
+)
+
+const (
+	ERR_MSG_NOT_PARTICIPANT = "User is not a participant of this chat"
+	ERR_MSG_NOT_MODERATOR   = "Moderator role required"
+	ERR_MSG_NOT_HEAD        = "Department head role required"
+)
+
+const (
+	ERR_MSG_CHAT_NOT_FOUND        = "Chat not found"
+	ERR_MSG_MESSAGE_NOT_FOUND     = "Message not found"
+	ERR_MSG_DEPARTMENT_NOT_FOUND  = "Department not found"
+	ERR_MSG_PROFILE_NOT_FOUND     = "Profile not found"
+	ERR_MSG_CONTRACT_NOT_FOUND    = "Contract not found"
+	ERR_MSG_TRANSACTION_NOT_FOUND = "Transaction not found"
+	ERR_MSG_LESSON_NOT_FOUND      = "Lesson not found"
+	ERR_MSG_REVIEW_NOT_FOUND      = "Review not found"
+)
+
+const (
+	ERR_MSG_CHAT_ALREADY_EXISTS             = "Chat already exists for these participants"
+	ERR_MSG_DEPARTMENT_NAME_TAKEN           = "Department name already in use"
+	ERR_MSG_MODERATOR_ALREADY_IN_DEPARTMENT = "Moderator already assigned to this department"
+)
+
+const (
+	ERR_MSG_SERVER_UNEXPECTED = "Unexpected server error"
 )

@@ -18,3 +18,28 @@ type ServerModeratorProfileWithID struct {
 	ID        int64                  `json:"id"`
 	Moderator ServerModeratorProfile `json:"moderator"`
 }
+
+type ServerModeratorProfileWithIDV2 struct {
+	ID        int64                  `json:"id"`
+	Moderator ServerModeratorProfile `json:"moderator"`
+}
+
+type ServerDepartmentV2 struct {
+	ID         int64                            `json:"id"`
+	Name       string                           `json:"name"`
+	HeadID     int64                            `json:"head_id"`
+	Moderators []ServerModeratorProfileWithIDV2 `json:"moderators"`
+}
+
+type ServerDepartmentNameUpdateV2 struct {
+	Name string `json:"name"`
+}
+
+type ServerDepartmentCreateV2 struct {
+	Name   string `json:"name"`
+	HeadID int64  `json:"head_id"`
+}
+
+type ModeratorSalaryPatch struct {
+	Salary int64 `json:"salary"`
+}

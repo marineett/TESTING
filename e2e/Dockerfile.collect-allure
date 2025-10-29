@@ -1,0 +1,14 @@
+FROM alpine:3.20
+
+RUN apk add --no-cache findutils bash coreutils
+
+WORKDIR /workspace
+
+COPY e2e/collect-allure.sh /usr/local/bin/collect-allure.sh
+RUN chmod +x /usr/local/bin/collect-allure.sh
+
+ENV PROJECT_ROOT=/workspace
+
+ENTRYPOINT ["/usr/local/bin/collect-allure.sh"]
+
+

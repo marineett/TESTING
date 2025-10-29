@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, lab1, lab2]
+    branches: [main, master, back_dev]
   pull_request:
-    branches: [main, lab1, lab2]
+    branches: [main, master, back_dev]
 
 jobs:
   unit-tests:
@@ -15,6 +15,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -70,6 +81,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -243,6 +265,13 @@ jobs:
         run: |
           mkdir -p e2e/allure-results
           echo "E2E tests were skipped (gated by integration)." > e2e/allure-results/placeholder.txt
+
+      - name: Collect Allure results (e2e placeholder)
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: false
+        run: bash e2e/collect-allure.sh
 
       - name: Upload Allure results (e2e placeholder)
         uses: actions/upload-artifact@v4

@@ -7,9 +7,9 @@ import (
 	"strconv"
 )
 
-func MainMenu(sqlDataBaseModule *data_base.DataBaseModule, mongoDataBaseModule *data_base.DataBaseModule, db *sql.DB) {
+func MainMenu(sqlDataBaseModule *data_base.DataBaseModule, db *sql.DB) {
 
-	serviceModule := ChangeDataBaseType(sqlDataBaseModule, mongoDataBaseModule)
+	serviceModule := ChangeDataBaseType(sqlDataBaseModule)
 	for {
 		fmt.Println("Main menu")
 		fmt.Println("1. User registration")
@@ -22,8 +22,7 @@ func MainMenu(sqlDataBaseModule *data_base.DataBaseModule, mongoDataBaseModule *
 		fmt.Println("8. Repetitor functionality")
 		fmt.Println("9. Moderator functionality")
 		fmt.Println("10. Bench mark")
-		fmt.Println("11. Change data base type")
-		fmt.Println("12. Exit")
+		fmt.Println("11. Exit")
 		choiceStr := ""
 		fmt.Scanln(&choiceStr)
 		choice, err := strconv.Atoi(choiceStr)
@@ -31,7 +30,7 @@ func MainMenu(sqlDataBaseModule *data_base.DataBaseModule, mongoDataBaseModule *
 			fmt.Println("Error:", err)
 			return
 		}
-		if choice < 1 || choice > 12 {
+		if choice < 1 || choice > 13 {
 			fmt.Println("Invalid choice")
 			continue
 		}
@@ -57,8 +56,6 @@ func MainMenu(sqlDataBaseModule *data_base.DataBaseModule, mongoDataBaseModule *
 		case 10:
 			BenchMarkMenu(serviceModule, db)
 		case 11:
-			serviceModule = ChangeDataBaseType(sqlDataBaseModule, mongoDataBaseModule)
-		case 12:
 			return
 		}
 	}

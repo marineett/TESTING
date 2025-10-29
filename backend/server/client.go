@@ -4,12 +4,41 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupClientRouterV2(clientService service_logic.IClientService, contractService service_logic.IContractService) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(EXACT_CLIENT_V2, ClientGetHandlerV2(clientService)).Methods("GET")
+	return router
+}
+
+func ClientGetHandlerV2(clientService service_logic.IClientService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clientID := mux.Vars(r)["clientId"]
+		fmt.Printf("client ID: %s\n", clientID)
+		clientIDInt, err := strconv.Atoi(clientID)
+		if err != nil {
+			http.Error(w, "Invalid client ID", http.StatusBadRequest)
+			return
+		}
+		client, err := clientService.GetClientProfile(int64(clientIDInt), 0, 0)
+		if err != nil {
+			http.Error(w, "Error getting client", http.StatusInternalServerError)
+			return
+		}
+		serverClient := types.MapperClientProfileServiceToServerV2(client)
+		json.NewEncoder(w).Encode(serverClient)
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupClientRouter(
 	clientService service_logic.IClientService,
@@ -190,7 +219,7 @@ func ClientMakeReviewHandler(contractService service_logic.IContractService, log
 		review.CreatedAt = time.Now()
 		logger.Printf("Review: %v", review)
 		serviceReview := types.ServiceReview(review)
-		err = contractService.CreateContractReviewClient(int64(contractID), serviceReview)
+		_, err = contractService.CreateContractReviewClient(int64(contractID), serviceReview)
 		if err != nil {
 			logger.Printf("Error making review: %v", err)
 			http.Error(w, "Error making review", http.StatusInternalServerError)
