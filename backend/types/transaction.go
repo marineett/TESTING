@@ -17,9 +17,9 @@ func (s TransactionStatus) String() string {
 	case TransactionStatusPaid:
 		return "confirmed"
 	case TransactionStatusRefunded:
-		return "rejected"
+		return "refunded"
 	case TransactionStatusFailed:
-		return "rejected"
+		return "failed"
 	default:
 		return "pending"
 	}

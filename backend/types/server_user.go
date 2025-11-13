@@ -56,4 +56,5 @@ type ServerRegistrationDataV2 struct {
 	Email           string `json:"email"`
 	TelephoneNumber string `json:"telephone_number"`
 	Role            string `json:"role"`
+	Salary          int    `json:"salary"`
 }

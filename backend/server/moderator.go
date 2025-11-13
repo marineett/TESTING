@@ -21,7 +21,7 @@ func SetupModeratorRouterV2(moderatorService service_logic.IModeratorService) *m
 
 func ModeratorSalaryPatchHandlerV2(moderatorService service_logic.IModeratorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		moderatorID := mux.Vars(r)["moderator_id"]
+		moderatorID := mux.Vars(r)["moderatorId"]
 		moderatorIDInt, err := strconv.Atoi(moderatorID)
 		if err != nil {
 			http.Error(w, "Invalid moderator ID", http.StatusBadRequest)
@@ -29,7 +29,7 @@ func ModeratorSalaryPatchHandlerV2(moderatorService service_logic.IModeratorServ
 		}
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
 			return
 		}
 		var req types.ModeratorSalaryPatch
@@ -40,7 +40,7 @@ func ModeratorSalaryPatchHandlerV2(moderatorService service_logic.IModeratorServ
 		}
 		err = moderatorService.UpdateModeratorSalary(int64(moderatorIDInt), int64(req.Salary))
 		if err != nil {
-			http.Error(w, "Error updating moderator salary", http.StatusInternalServerError)
+			http.Error(w, "Error updating moderator salary", http.StatusBadRequest)
 			return
 		}
 		w.WriteHeader(http.StatusOK)
@@ -51,7 +51,7 @@ func ModeratorsListHandlerV2(moderatorService service_logic.IModeratorService) h
 	return func(w http.ResponseWriter, r *http.Request) {
 		moderators, err := moderatorService.GetModerators()
 		if err != nil {
-			http.Error(w, "Error getting moderators", http.StatusInternalServerError)
+			http.Error(w, "Error getting moderators", http.StatusBadRequest)
 			return
 		}
 		serverModerators := make([]types.ServerModeratorProfileWithID, len(moderators))
@@ -91,7 +91,7 @@ func AdminGetModeratorsHandler(moderatorService service_logic.IModeratorService,
 		moderators, err := moderatorService.GetModerators()
 		if err != nil {
 			logger.Printf("Failed to get moderators: %v", err)
-			http.Error(w, "Failed to get moderators", http.StatusInternalServerError)
+			http.Error(w, "Failed to get moderators", http.StatusBadRequest)
 			return
 		}
 		serverModerators := make([]types.ServerModeratorProfileWithID, len(moderators))
@@ -133,7 +133,7 @@ func AdminChangeModeratorSalaryHandler(
 		err = moderatorService.UpdateModeratorSalary(moderatorID, newSalary)
 		if err != nil {
 			logger.Printf("Failed to change moderator salary: %v", err)
-			http.Error(w, "Failed to change moderator salary", http.StatusInternalServerError)
+			http.Error(w, "Failed to change moderator salary", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Changed moderator salary successfully")
@@ -160,7 +160,7 @@ func ModeratorGetProfileHandler(moderatorService service_logic.IModeratorService
 		moderator, err := moderatorService.GetModeratorProfile(moderatorID)
 		if err != nil {
 			logger.Printf("Error getting moderator: %v", err)
-			http.Error(w, "Error getting moderator", http.StatusInternalServerError)
+			http.Error(w, "Error getting moderator", http.StatusBadRequest)
 			return
 		}
 		serverModerator := types.MapperModeratorProfileServiceToServer(moderator)
@@ -181,7 +181,7 @@ func ModeratorGetTransactionsToApproveHandler(transactionService service_logic.I
 		transaction, err := transactionService.GetPendingContractPaymentTransaction()
 		if err != nil {
 			logger.Printf("Error getting transaction: %v", err)
-			http.Error(w, "Error getting transaction", http.StatusInternalServerError)
+			http.Error(w, "Error getting transaction", http.StatusBadRequest)
 			return
 		}
 		serverTransaction := types.ServerPendingContractPaymentTransaction(*transaction)
@@ -216,7 +216,7 @@ func ModeratorApproveTransactionHandler(transactionService service_logic.ITransa
 		err = transactionService.ApproveTransaction(transactionID)
 		if err != nil {
 			logger.Printf("Error approving transaction: %v", err)
-			http.Error(w, "Error approving transaction", http.StatusInternalServerError)
+			http.Error(w, "Error approving transaction", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Transaction approved")
@@ -263,7 +263,7 @@ func ModeratorGetContractsHandler(contractService service_logic.IContractService
 		contracts, err := contractService.GetAllContracts(from, size)
 		if err != nil {
 			logger.Printf("Error getting contracts: %v", err)
-			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
 		serverContracts := make([]types.ServerContract, len(contracts))
@@ -301,7 +301,7 @@ func ModeratorBanContractHandler(contractService service_logic.IContractService,
 		contract, err := contractService.GetContract(contractID)
 		if err != nil {
 			logger.Printf("Error getting contract: %v", err)
-			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			http.Error(w, "Error getting contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract retrieved: %v", contract)
@@ -313,7 +313,7 @@ func ModeratorBanContractHandler(contractService service_logic.IContractService,
 		err = contractService.UpdateContractStatus(contractID, types.ContractStatusBanned)
 		if err != nil {
 			logger.Printf("Error banning contract: %v", err)
-			http.Error(w, "Error banning contract", http.StatusInternalServerError)
+			http.Error(w, "Error banning contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract banned")

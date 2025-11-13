@@ -7,8 +7,10 @@ func MapperLessonDBToService(lesson *DBLesson) *ServiceLesson {
 		return nil
 	}
 	return &ServiceLesson{
+		ID:         lesson.ID,
 		ContractID: lesson.ContractID,
 		Duration:   lesson.Duration,
+		Format:     lesson.Format,
 		CreatedAt:  lesson.CreatedAt,
 	}
 }
@@ -18,8 +20,10 @@ func MapperLessonServiceToDB(lesson *ServiceLesson) *DBLesson {
 		return nil
 	}
 	return &DBLesson{
+		ID:         lesson.ID,
 		ContractID: lesson.ContractID,
 		Duration:   lesson.Duration,
+		Format:     lesson.Format,
 		CreatedAt:  lesson.CreatedAt,
 	}
 }
@@ -52,10 +56,10 @@ func MapperLessonServiceToServerV2(lesson *ServiceLesson) *ServerLessonV2 {
 		return nil
 	}
 	return &ServerLessonV2{
-		ID:          0,
+		ID:          lesson.ID,
 		ContractID:  lesson.ContractID,
 		DurationMin: lesson.Duration,
-		Format:      "online",
+		Format:      lesson.Format,
 		CreatedAt:   lesson.CreatedAt,
 	}
 }

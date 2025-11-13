@@ -802,6 +802,23 @@ func CreateTestLessonRepository() *TestLessonRepository {
 	}
 }
 
+func (r *TestLessonRepository) UpdateLesson(lessonID int64, duration *int64, format *string) error {
+	if _, ok := r.data[lessonID]; !ok {
+		return errors.New("lesson not found")
+	}
+	r.data[lessonID].Duration = *duration
+	r.data[lessonID].Format = *format
+	return nil
+}
+
+func (r *TestLessonRepository) DeleteLesson(lessonID int64) error {
+	if _, ok := r.data[lessonID]; !ok {
+		return errors.New("lesson not found")
+	}
+	delete(r.data, lessonID)
+	return nil
+}
+
 func (r *TestLessonRepository) InsertLesson(lesson types.DBLesson) (int64, error) {
 	if lesson.ContractID == 0 {
 		return 0, errors.New("contract id is required")
@@ -845,6 +862,16 @@ func CreateTestTransactionRepository() *TestTransactionRepository {
 	return &TestTransactionRepository{
 		data: make(map[int64]*types.DBTransaction),
 	}
+}
+
+func (r *TestTransactionRepository) GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.DBTransaction, error) {
+	transactions := make([]types.DBTransaction, 0)
+	for _, transaction := range r.data {
+		if transaction.ContractID == contract_id {
+			transactions = append(transactions, *transaction)
+		}
+	}
+	return transactions[from:min(from+size, int64(len(transactions)))], nil
 }
 
 func (r *TestTransactionRepository) InsertTransaction(transaction types.DBTransaction) (int64, error) {

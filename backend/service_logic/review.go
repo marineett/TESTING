@@ -25,6 +25,8 @@ func (s *ReviewService) GetReview(id int64) (*types.ServiceReview, error) {
 		return nil, err
 	}
 	return &types.ServiceReview{
+		ID:          dbReview.ID,
+		ContractID:  dbReview.ContractID,
 		ClientID:    dbReview.ClientID,
 		RepetitorID: dbReview.RepetitorID,
 		Rating:      dbReview.Rating,

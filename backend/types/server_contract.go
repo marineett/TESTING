@@ -34,6 +34,7 @@ type ServerContract struct {
 }
 
 type ServerReview struct {
+	ContractID  int64     `json:"contract_id"`
 	ClientID    int64     `json:"client_id"`
 	RepetitorID int64     `json:"repetitor_id"`
 	Rating      int       `json:"rating"`
@@ -76,5 +77,5 @@ type ServerReviewV2 struct {
 type ServerReviewCreateV2 struct {
 	Score    int    `json:"score"`
 	Text     string `json:"text"`
-	SenderID int64  `json:"sender_id"`
+	SenderID int64  `json:"senderId"`
 }

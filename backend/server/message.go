@@ -19,7 +19,7 @@ func SetupMessageRouterV2(chatService service_logic.IChatService) *mux.Router {
 
 func UpdateMessageContentHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		messageIDStr := mux.Vars(r)["message_id"]
+		messageIDStr := mux.Vars(r)["messageId"]
 		messageID, err := strconv.Atoi(messageIDStr)
 		if err != nil {
 			http.Error(w, "Invalid message ID", http.StatusBadRequest)
@@ -32,23 +32,29 @@ func UpdateMessageContentHandlerV2(chatService service_logic.IChatService) http.
 		}
 		err = chatService.UpdateMessageContent(int64(messageID), req.Content)
 		if err != nil {
-			http.Error(w, "Error updating message content", http.StatusInternalServerError)
+			http.Error(w, ERR_MSG_MESSAGE_NOT_FOUND, http.StatusNotFound)
+			return
+		}
+		updated, err := chatService.GetMessage(int64(messageID))
+		if err != nil {
+			http.Error(w, ERR_MSG_MESSAGE_NOT_FOUND, http.StatusNotFound)
 			return
 		}
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(types.MapperMessageServiceToServerV2(updated))
 	}
 }
 
 func DeleteMessageHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		messageIDStr := mux.Vars(r)["message_id"]
+		messageIDStr := mux.Vars(r)["messageId"]
 		messageID, err := strconv.Atoi(messageIDStr)
 		if err != nil {
 			http.Error(w, "Invalid message ID", http.StatusBadRequest)
 			return
 		}
 		if err := chatService.DeleteMessage(int64(messageID)); err != nil {
-			http.Error(w, ERR_MSG_SERVER_UNEXPECTED, http.StatusInternalServerError)
+			http.Error(w, ERR_MSG_MESSAGE_NOT_FOUND, http.StatusNotFound)
 			return
 		}
 		w.WriteHeader(http.StatusNoContent)

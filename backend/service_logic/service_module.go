@@ -45,7 +45,7 @@ func CreateServiceModule(
 		ChatService:         CreateChatService(chatRepository, messageRepository),
 		ResumeService:       CreateResumeService(resumeRepository),
 		TransactionService:  CreateTransactionService(transactionRepository),
-		DepartmentService:   CreateDepartmentService(departmentRepository, moderatorRepository),
+		DepartmentService:   CreateDepartmentService(departmentRepository, moderatorRepository, userRepository, personalDataRepository),
 		PersonalDataService: CreatePersonalDataService(personalDataRepository),
 		ReviewService:       CreateReviewService(reviewRepository),
 		LessonService:       CreateLessonService(lessonRepository),

@@ -1,45 +1,49 @@
 services:
-  db:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: mydb
-      POSTGRES_CLIENT_MIN_MESSAGES: notice
-      POSTGRES_LOG_MIN_MESSAGES: notice
-      POSTGRES_PORT: 5433
-    # No host port publish to avoid collisions across parallel runs
-    tmpfs:
-      - /var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
+  # db:
+  #   image: postgres:15
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: pass
+  #     POSTGRES_DB: mydb
+  #     POSTGRES_CLIENT_MIN_MESSAGES: notice
+  #     POSTGRES_LOG_MIN_MESSAGES: notice
+  #     POSTGRES_PORT: 5433
+  #   tmpfs:
+  #     - /var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 20
+  #     start_period: 20s
+  #   networks:
+  #     - app-network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-    environment:
-      DATABASE_HOST: db
-      DATABASE_NAME: mydb
-      DATABASE_USER: user
-      DATABASE_PASSWORD: pass
-      BACKEND_PORT: "8000"
-      JWT_SECRET: "dev-secret"
-    networks:
-      - app-network
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./logs:/build/logs
-
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      environment:
+        DATABASE_HOST: db
+        DATABASE_NAME: mydb
+        DATABASE_USER: user
+        DATABASE_PASSWORD: pass
+        BACKEND_PORT: "8000"
+        JWT_SECRET: "dev-secret"
+      healthcheck:
+        test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
+        interval: 3s
+        timeout: 2s
+        retries: 40
+        start_period: 120s
+      networks:
+        - app-network
+      ports:
+        - "8000:8000"
+    # volumes:
+    #   - ./logs:/build/logs:rw,cached
+    #   - ./README.md:/build/README.md:ro,cached
 
   # frontend:
   #   build: ./frontend
@@ -48,7 +52,7 @@ services:
   #   volumes:
   #     - ./frontend:/app:delegated
   #     - /app/node_modules
-  #     - ./logs:/app/logs
+  #     - ./logs:/app/logs:rw,cached
   #   environment:
   #     - CHOKIDAR_USEPOLLING=true
   #     - WATCHPACK_POLLING=true
@@ -69,4 +73,3 @@ networks:
   app-network:
     driver: bridge
     # No hardcoded name; Compose will create <project>_app-network per run
-

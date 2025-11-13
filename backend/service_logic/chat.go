@@ -51,6 +51,8 @@ func (s *ChatService) CreateCRChat(clientID int64, repetitorID int64) (int64, er
 	return s.chatRepository.InsertChat(*types.MapperChatServiceToDB(&types.ServiceChat{
 		ClientID:    clientID,
 		RepetitorID: repetitorID,
+		Status:      "active",
+		Type:        "client_repetitor",
 		CreatedAt:   time.Now(),
 	}))
 }
@@ -67,6 +69,8 @@ func (s *ChatService) CreateRMChat(repetitorID int64, moderatorID int64) (int64,
 		RepetitorID: repetitorID,
 		ModeratorID: moderatorID,
 		CreatedAt:   time.Now(),
+		Status:      "active",
+		Type:        "repetitor_moderator",
 	}
 	return s.chatRepository.InsertChat(chat)
 }
@@ -83,6 +87,8 @@ func (s *ChatService) CreateCMChat(clientID int64, moderatorID int64) (int64, er
 		ClientID:    clientID,
 		ModeratorID: moderatorID,
 		CreatedAt:   time.Now(),
+		Status:      "active",
+		Type:        "client_moderator",
 	}
 	return s.chatRepository.InsertChat(chat)
 }

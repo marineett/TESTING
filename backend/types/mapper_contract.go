@@ -107,6 +107,7 @@ func MapperReviewServiceToServer(review *ServiceReview) *ServerReview {
 		return nil
 	}
 	return &ServerReview{
+		ContractID:  review.ContractID,
 		ClientID:    review.ClientID,
 		RepetitorID: review.RepetitorID,
 		Rating:      review.Rating,
@@ -120,6 +121,7 @@ func MapperReviewServerToService(review *ServerReview) *ServiceReview {
 		return nil
 	}
 	return &ServiceReview{
+		ContractID:  review.ContractID,
 		ClientID:    review.ClientID,
 		RepetitorID: review.RepetitorID,
 		Rating:      review.Rating,
@@ -199,6 +201,8 @@ func MapperReviewServiceToServerV2(review *ServiceReview) *ServerReviewV2 {
 		return nil
 	}
 	return &ServerReviewV2{
+		ID:         review.ID,
+		ContractID: review.ContractID,
 		FromUserID: review.ClientID,
 		ToUserID:   review.RepetitorID,
 		Score:      review.Rating,
@@ -212,6 +216,7 @@ func MapperReviewCreateV2ServerToService(req *ServerReviewCreateV2, contractID i
 		return nil
 	}
 	return &ServiceReview{
+		ContractID:  contractID,
 		ClientID:    fromUserID,
 		RepetitorID: toUserID,
 		Rating:      req.Score,

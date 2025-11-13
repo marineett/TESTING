@@ -1,0 +1,20 @@
+services:
+  degradation-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.degradation-runner
+    depends_on:
+      - backend  # Просто зависимость без condition
+    networks:
+      - app-network
+    environment:
+      BACKEND_URL: http://backend:8000
+    volumes:
+      - ./metrics:/metrics:rw,cached
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/degradation"]
+    user: "0:0"
+    restart: "no"
+
+networks:
+  app-network:
+    external: false

@@ -1,0 +1,113 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - prom_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=6h
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+
+  node-exporter:
+    image: prom/node-exporter:v1.7.0
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run|var/lib/docker/.+)($|/)
+    ports:
+      - "9100:9100"
+    networks:
+      - app-network
+
+  e2e-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.test-runner
+    depends_on:
+      - backend
+      - prometheus
+      - cadvisor
+      - node-exporter
+    environment:
+      BACKEND_URL: http://backend:8000
+      RUN_UNIT: "false"
+      RUN_INTEGRATION: "false"
+      RUN_E2E: "true"
+      POST_TEST_SLEEP: "20"
+    entrypoint: ["sh", "-lc", "sleep 10; /usr/local/bin/run-tests.sh"]
+    networks:
+      - app-network
+    volumes:
+      - ./metrics:/metrics:rw,cached
+
+  bench-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.benchmark-runner
+    depends_on:
+      - backend
+      - prometheus
+      - cadvisor
+      - node-exporter
+    environment:
+      BACKEND_URL: http://backend:8000
+      SEQUENTIAL_BENCH: "true"
+      TEST1_LABEL: "create_batch"
+      TEST1_REGEX: "TestRunCreateChatSuite"
+      TEST2_LABEL: "one_big"
+      TEST2_REGEX: "TestRunOneBigChatSuite"
+      POST_TEST_SLEEP: "11"
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor", name=~".*backend.*"}[120s]))'
+    networks:
+      - app-network
+    volumes:
+      - ./metrics:/metrics:rw,cached
+
+  metrics-collector:
+    image: alpine:3.19
+    depends_on:
+      - prometheus
+    environment:
+      PROM_URL: http://prometheus:9090
+      STEP: 5s
+      NAME_REGEX: '.*backend.*'
+      OUTPUT_DIR: /metrics
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor", name=~".*backend.*"}[120s]))'
+      TEST1_LABEL: "create_batch"
+      TEST2_LABEL: "one_big"
+    entrypoint: ["sh", "-lc", "apk add --no-cache curl jq >/dev/null; PROM_URL=\"$${PROM_URL:-http://prometheus:9090}\"; echo \"Using PROM_URL=$${PROM_URL}\"; echo 'Waiting for Prometheus...'; for i in $(seq 1 120); do if curl -sf \"$${PROM_URL}/-/ready\" >/dev/null; then echo 'Prometheus is ready'; break; else echo \"... still waiting for Prometheus at $${PROM_URL}\"; sleep 2; fi; done; for lbl in \"$${TEST1_LABEL}\" \"$${TEST2_LABEL}\"; do if [ -z \"$${lbl}\" ]; then continue; fi; echo \"Waiting for /metrics/$${lbl}/timestamps.env ...\"; while [ ! -f \"/metrics/$${lbl}/timestamps.env\" ] || ! grep -q '^END_TS=' \"/metrics/$${lbl}/timestamps.env\"; do sleep 2; done; echo \"Collecting metrics for $${lbl}\"; OUTPUT_DIR=\"/metrics/$${lbl}\" sh /collect.sh; done; echo 'metrics-collector finished'"]
+    networks:
+      - app-network
+    volumes:
+      - ./metrics:/metrics:rw,cached
+      - ./monitoring/collect_prometheus.sh:/collect.sh:ro,cached
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  prom_data:

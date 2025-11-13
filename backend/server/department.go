@@ -4,6 +4,7 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -28,7 +29,7 @@ func AdminCreateDepartmentHandlerV2(departmentService service_logic.IDepartmentS
 		var req types.ServerDepartmentCreateV2
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
 			return
 		}
 		err = json.Unmarshal(body, &req)
@@ -42,7 +43,7 @@ func AdminCreateDepartmentHandlerV2(departmentService service_logic.IDepartmentS
 			HeadID: req.HeadID,
 		})
 		if err != nil {
-			http.Error(w, "Error creating department", http.StatusInternalServerError)
+			http.Error(w, "Error creating department", http.StatusBadRequest)
 			return
 		}
 		json.NewEncoder(w).Encode(types.ServerDepartmentV2{
@@ -56,7 +57,7 @@ func AdminCreateDepartmentHandlerV2(departmentService service_logic.IDepartmentS
 
 func AdminListDepartmentsHandlerV2(departmentService service_logic.IDepartmentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		adminId := mux.Vars(r)["admin_id"]
+		adminId := mux.Vars(r)["adminId"]
 		adminIdInt, err := strconv.ParseInt(adminId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid admin ID", http.StatusBadRequest)
@@ -64,7 +65,8 @@ func AdminListDepartmentsHandlerV2(departmentService service_logic.IDepartmentSe
 		}
 		departments, err := departmentService.GetDepartmentsByHeadIdWithModerators(adminIdInt)
 		if err != nil {
-			http.Error(w, "Error getting departments", http.StatusInternalServerError)
+			fmt.Print(err.Error())
+			http.Error(w, "Error getting departments", http.StatusBadRequest)
 			return
 		}
 		json.NewEncoder(w).Encode(departments)
@@ -76,7 +78,7 @@ func DepartmentReplaceHandlerV2(departmentService service_logic.IDepartmentServi
 		var req types.ServerDepartmentNameUpdateV2
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, "Error reading request body", http.StatusInternalServerError)
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
 			return
 		}
 		err = json.Unmarshal(body, &req)
@@ -84,20 +86,25 @@ func DepartmentReplaceHandlerV2(departmentService service_logic.IDepartmentServi
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		departmentId := mux.Vars(r)["department_id"]
+		departmentId := mux.Vars(r)["departmentId"]
 		departmentIdInt, err := strconv.ParseInt(departmentId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid department ID", http.StatusBadRequest)
 			return
 		}
+		// Existence check
+		if _, err := departmentService.GetDepartment(departmentIdInt); err != nil {
+			http.Error(w, "Department not found", http.StatusNotFound)
+			return
+		}
 		err = departmentService.UpdateDepartmentName(departmentIdInt, req.Name)
 		if err != nil {
-			http.Error(w, "Error updating department name", http.StatusInternalServerError)
+			http.Error(w, "Error updating department name", http.StatusBadRequest)
 			return
 		}
 		updatedDepartment, err := departmentService.GetDepartment(departmentIdInt)
 		if err != nil {
-			http.Error(w, "Error getting department", http.StatusInternalServerError)
+			http.Error(w, "Error getting department", http.StatusBadRequest)
 			return
 		}
 		json.NewEncoder(w).Encode(updatedDepartment)
@@ -106,15 +113,20 @@ func DepartmentReplaceHandlerV2(departmentService service_logic.IDepartmentServi
 
 func DepartmentDeleteHandlerV2(departmentService service_logic.IDepartmentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		departmentId := mux.Vars(r)["department_id"]
+		departmentId := mux.Vars(r)["departmentId"]
 		departmentIdInt, err := strconv.ParseInt(departmentId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid department ID", http.StatusBadRequest)
 			return
 		}
+		// Existence check
+		if _, err := departmentService.GetDepartment(departmentIdInt); err != nil {
+			http.Error(w, "Department not found", http.StatusNotFound)
+			return
+		}
 		err = departmentService.DeleteDepartment(departmentIdInt)
 		if err != nil {
-			http.Error(w, "Error deleting department", http.StatusInternalServerError)
+			http.Error(w, "Error deleting department", http.StatusBadRequest)
 			return
 		}
 		w.WriteHeader(http.StatusNoContent)
@@ -123,59 +135,63 @@ func DepartmentDeleteHandlerV2(departmentService service_logic.IDepartmentServic
 
 func DepartmentAssignModeratorHandlerV2(departmentService service_logic.IDepartmentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		moderatorId := mux.Vars(r)["moderator_id"]
+		moderatorId := mux.Vars(r)["moderatorId"]
 		moderatorIdInt, err := strconv.ParseInt(moderatorId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid moderator ID", http.StatusBadRequest)
 			return
 		}
-		departmentId := mux.Vars(r)["department_id"]
+		departmentId := mux.Vars(r)["departmentId"]
 		departmentIdInt, err := strconv.ParseInt(departmentId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid department ID", http.StatusBadRequest)
 			return
 		}
+		// Existence check
+		if _, err := departmentService.GetDepartment(departmentIdInt); err != nil {
+			http.Error(w, "Department not found", http.StatusNotFound)
+			return
+		}
 		err = departmentService.AssignModeratorToDepartment(moderatorIdInt, departmentIdInt)
 		if err != nil {
-			http.Error(w, "Error assigning moderator to department", http.StatusInternalServerError)
+			http.Error(w, "Error assigning moderator to department", http.StatusBadRequest)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent)
 		updatedDepartment, err := departmentService.GetDepartment(departmentIdInt)
 		if err != nil {
-			http.Error(w, "Error getting department", http.StatusInternalServerError)
+			http.Error(w, "Error getting department", http.StatusBadRequest)
 			return
 		}
+		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(updatedDepartment)
 	}
 }
 
 func DepartmentRemoveModeratorHandlerV2(departmentService service_logic.IDepartmentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		moderatorId := mux.Vars(r)["moderator_id"]
+		moderatorId := mux.Vars(r)["moderatorId"]
 		moderatorIdInt, err := strconv.ParseInt(moderatorId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid moderator ID", http.StatusBadRequest)
 			return
 		}
-		departmentId := mux.Vars(r)["department_id"]
+		departmentId := mux.Vars(r)["departmentId"]
 		departmentIdInt, err := strconv.ParseInt(departmentId, 10, 64)
 		if err != nil {
 			http.Error(w, "Invalid department ID", http.StatusBadRequest)
 			return
 		}
+		// Existence check
+		if _, err := departmentService.GetDepartment(departmentIdInt); err != nil {
+			http.Error(w, "Department not found", http.StatusNotFound)
+			return
+		}
 		err = departmentService.FireModeratorFromDepartment(moderatorIdInt, departmentIdInt)
 		if err != nil {
-			http.Error(w, "Error removing moderator from department", http.StatusInternalServerError)
+			http.Error(w, "Error removing moderator from department", http.StatusBadRequest)
 			return
 		}
 		w.WriteHeader(http.StatusNoContent)
-		updatedDepartment, err := departmentService.GetDepartment(departmentIdInt)
-		if err != nil {
-			http.Error(w, "Error getting department", http.StatusInternalServerError)
-			return
-		}
-		json.NewEncoder(w).Encode(updatedDepartment)
 	}
 }
 

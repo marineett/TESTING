@@ -37,7 +37,7 @@ func PayForContract(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Invalid amount")
 		return
 	}
-	transactionID, err := serviceModule.TransactionService.CreateContractPaymentTransaction(amount, contract.RepetitorID)
+	transactionID, err := serviceModule.TransactionService.CreateContractPaymentTransaction(amount, contract.RepetitorID, contract.ID)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return

@@ -121,18 +121,23 @@ const (
 
 const (
 	CHATS_V2               = API_V2 + "chats"
-	EXACT_CHAT_V2          = CHATS_V2 + "/{chat_id}"
+	EXACT_CHAT_V2          = CHATS_V2 + "/{chatId}"
 	EXACT_CHAT_MESSAGES_V2 = EXACT_CHAT_V2 + "/messages"
 )
 
 const (
 	MESSAGES_V2      = API_V2 + "messages"
-	EXACT_MESSAGE_V2 = MESSAGES_V2 + "/{message_id}"
+	EXACT_MESSAGE_V2 = MESSAGES_V2 + "/{messageId}"
+)
+
+const (
+	LESSONS_V2      = API_V2 + "lessons"
+	EXACT_LESSON_V2 = LESSONS_V2 + "/{lessonId}"
 )
 
 const (
 	CONTRACTS_V2             = API_V2 + "contracts"
-	EXACT_CONTRACT_V2        = CONTRACTS_V2 + "/{contract_id}"
+	EXACT_CONTRACT_V2        = CONTRACTS_V2 + "/{contractId}"
 	CONTRACT_LESSONS_V2      = EXACT_CONTRACT_V2 + "/lessons"
 	CONTRACT_REVIEWS_V2      = EXACT_CONTRACT_V2 + "/reviews"
 	CONTRACT_TRANSACTIONS_V2 = EXACT_CONTRACT_V2 + "/transactions"
@@ -140,7 +145,7 @@ const (
 
 const (
 	TRANSACTIONS_V2         = API_V2 + "transactions"
-	EXACT_TRANSACTION_V2    = TRANSACTIONS_V2 + "/{transaction_id}"
+	EXACT_TRANSACTION_V2    = TRANSACTIONS_V2 + "/{transactionId}"
 	TRANSACTION_APPROVAL_V2 = EXACT_TRANSACTION_V2 + "/approval"
 )
 
@@ -153,10 +158,21 @@ const (
 	MODERATORS_V2        = API_V2 + "moderators"
 	EXACT_MODERATOR_V2   = MODERATORS_V2 + "/{moderatorId}"
 	MODERATOR_SALARY_V2  = EXACT_MODERATOR_V2 + "/salary"
+	LEGACY_ARCHIVE_V2    = API_V2 + "legacy/"
 )
 
 const (
 	DEPARTMENT_MODERATOR_V2 = DEPARTMENTS_V2 + "/{departmentId}/moderators/{moderatorId}"
+)
+
+const (
+	STATIC_FILES_V2        = API_V2 + "static"
+	EXACT_STATIC_FILE_V2   = STATIC_FILES_V2 + "/{filename}"
+	OPENAPI_YAML_V2        = STATIC_FILES_V2 + "/openapi.yaml"
+	README_V2              = STATIC_FILES_V2 + "/README.md"
+	DOCUMENTATION_V2       = STATIC_FILES_V2 + "/documentation"
+	RESERVED_FILES_V2      = API_V2 + "reserved"
+	EXACT_RESERVED_FILE_V2 = RESERVED_FILES_V2 + "/{filename}"
 )
 
 const (

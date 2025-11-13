@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     pkg-config \
+    tcpdump \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://go.dev/dl/go1.24.7.linux-amd64.tar.gz && \

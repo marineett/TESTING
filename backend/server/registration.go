@@ -53,7 +53,7 @@ func RegistrationHandlerV2(
 		case "moderator":
 			err = moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData))
 		case "admin":
-			err = adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData, 0))
+			err = adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData))
 		case "repetitor":
 			err = repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData))
 		default:
@@ -61,22 +61,22 @@ func RegistrationHandlerV2(
 			return
 		}
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		verdict, err := authService.Authorize(types.ServiceAuthData{Login: registrationData.Login, Password: registrationData.Password})
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		secret := os.Getenv("JWT_SECRET")
 		if secret == "" {
-			http.Error(w, "JWT secret is not configured", http.StatusInternalServerError)
+			http.Error(w, "JWT secret is not configured", http.StatusBadRequest)
 			return
 		}
 		token, err := createJWT(verdict.UserID, verdict.UserType.String(), 24*time.Hour, secret)
 		if err != nil {
-			http.Error(w, "Failed to issue token", http.StatusInternalServerError)
+			http.Error(w, "Failed to issue token", http.StatusBadRequest)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -133,7 +133,7 @@ func RegistrationModeratorHandler(
 		inSystem, err := authService.CheckLogin(initData.Login)
 		if err != nil {
 			logger.Printf("Error checking login: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		if inSystem {
@@ -146,7 +146,7 @@ func RegistrationModeratorHandler(
 		err = moderatorService.CreateModerator(*serviceInitData)
 		if err != nil {
 			logger.Printf("Error creating moderator: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 

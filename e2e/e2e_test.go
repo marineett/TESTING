@@ -1,74 +1,16 @@
 package integration
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
-
-type APIClient struct {
-	baseURL    string
-	httpClient *http.Client
-	token      string
-}
-
-func NewAPIClient(baseURL string) *APIClient {
-	return &APIClient{
-		baseURL: baseURL,
-		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
-		},
-	}
-}
-
-func (c *APIClient) WithToken(token string) *APIClient {
-	clone := *c
-	clone.token = token
-	return &clone
-}
-
-func (c *APIClient) makeRequest(ctx context.Context, method string, query string, body io.Reader) (*http.Response, error) {
-	url := c.baseURL + query
-	req, err := http.NewRequestWithContext(ctx, method, url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	if c.token != "" {
-		req.Header.Set("Authorization", "Bearer "+c.token)
-	}
-	return c.httpClient.Do(req)
-}
-
-func (c *APIClient) makeRequestWithBody(ctx context.Context, method, endpoint string, body interface{}) (*http.Response, error) {
-	var bodyReader io.Reader
-	if body != nil {
-		jsonData, err := json.Marshal(body)
-		if err != nil {
-			return nil, err
-		}
-		bodyReader = bytes.NewBuffer(jsonData)
-	}
-	return c.makeRequest(ctx, method, endpoint, bodyReader)
-}
-
-type APISuite struct {
-	suite.Suite
-	c *APIClient
-}
-
-func (s *APISuite) BeforeAll(t provider.T) {
-	s.c = NewAPIClient("http://backend:8000")
-}
 
 func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 	var (
@@ -85,6 +27,9 @@ func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {})
 
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
+		type chatResp struct {
+			ID int64 `json:"id"`
+		}
 		var authResp struct {
 			Token  string `json:"token"`
 			Role   string `json:"role"`
@@ -132,11 +77,12 @@ func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 		resp, err = cClient.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-		var crChatID int64
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var crResp chatResp
 		b, err = io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		sx.Require().NoError(json.Unmarshal(b, &crChatID))
+		sx.Require().NoError(json.Unmarshal(b, &crResp))
+		crChatID := crResp.ID
 
 		body = map[string]interface{}{
 			"type":         "client_moderator",
@@ -146,11 +92,11 @@ func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 		resp, err = cClient.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-		var cmChatID int64
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var cmResp chatResp
 		b, err = io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		sx.Require().NoError(json.Unmarshal(b, &cmChatID))
+		sx.Require().NoError(json.Unmarshal(b, &cmResp))
 
 		body = map[string]interface{}{
 			"type":         "repetitor_moderator",
@@ -160,18 +106,13 @@ func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 		resp, err = cRep.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-		var rmChatID int64
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var rmResp chatResp
 		b, err = io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		sx.Require().NoError(json.Unmarshal(b, &rmChatID))
+		sx.Require().NoError(json.Unmarshal(b, &rmResp))
 
 		resp, err = cClient.makeRequest(ctx, "PUT", fmt.Sprintf("/api/v2/chats/%d", crChatID), nil)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-
-		resp, err = cClient.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/v2/chats/%d", crChatID), nil)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
 		sx.Require().Equal(http.StatusOK, resp.StatusCode)
@@ -180,10 +121,15 @@ func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 			"senderId": clientID,
 			"content":  "test",
 		}
-		resp, err = cClient.makeRequestWithBody(ctx, "POST", fmt.Sprintf("/api/v2/chats/%d/messages?offset=%d&limit=%d", crChatID, 0, 10), msg)
+		resp, err = cClient.makeRequestWithBody(ctx, "POST", fmt.Sprintf("/api/v2/chats/%d/messages", crChatID), msg)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Assert().NotEqual(http.StatusOK, resp.StatusCode)
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+
+		resp, err = cClient.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/v2/chats/%d", crChatID), nil)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusNoContent, resp.StatusCode)
 	})
 
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {})

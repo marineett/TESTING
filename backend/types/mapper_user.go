@@ -391,10 +391,11 @@ func MapperRegistrationV2ToServiceInitModerator(data *ServerRegistrationDataV2) 
 				Password: data.Password,
 			},
 		},
+		Salary: data.Salary,
 	}
 }
 
-func MapperRegistrationV2ToServiceInitAdmin(data *ServerRegistrationDataV2, salary int64) *ServiceInitAdminData {
+func MapperRegistrationV2ToServiceInitAdmin(data *ServerRegistrationDataV2) *ServiceInitAdminData {
 	if data == nil {
 		return nil
 	}
@@ -413,7 +414,7 @@ func MapperRegistrationV2ToServiceInitAdmin(data *ServerRegistrationDataV2, sala
 				Password: data.Password,
 			},
 		},
-		Salary: salary,
+		Salary: int64(data.Salary),
 	}
 }
 

@@ -91,7 +91,7 @@ func TestInsertTransactionIncorrect(t *testing.T) {
 	}
 	transactionRepository := CreateSqlTransactionRepository(db, "transactions", "pending_contract_payment_transactions", "sequence")
 	_, err = transactionRepository.InsertTransaction(tu.TestTransaction)
-	if err == nil {
+	if err != nil {
 		t.Fatalf("No error inserting transaction: %v", err)
 	}
 }

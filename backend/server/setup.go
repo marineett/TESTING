@@ -16,9 +16,19 @@ func SetupServer(service_module *service_logic.ServiceModule, port string, logge
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
-	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.NotFound(w, r)
-	})
+
+	router.Handle(API_V2, JWTAuthMiddleware(ApiV2Handler())).Methods("GET")
+	router.Handle(strings.TrimSuffix(API_V2, "/"), JWTAuthMiddleware(SwaggerSpecHandler())).Methods("GET")
+	router.Handle(OPENAPI_YAML_V2, JWTAuthMiddleware(SwaggerSpecHandler())).Methods("GET")
+	router.Handle(DOCUMENTATION_V2, JWTAuthMiddleware(DocumentationHandler())).Methods("GET")
+	router.Handle(STATIC_FILES_V2, JWTAuthMiddleware(StaticFileHandler())).Methods("GET")
+	router.Handle(STATIC_FILES_V2+"/", JWTAuthMiddleware(StaticFileHandler())).Methods("GET")
+	router.Handle(EXACT_STATIC_FILE_V2, JWTAuthMiddleware(StaticFileHandler())).Methods("GET")
+	router.Handle(RESERVED_FILES_V2, JWTAuthMiddleware(ReservedStaticFileHandler())).Methods("GET")
+	router.Handle(RESERVED_FILES_V2+"/", JWTAuthMiddleware(ReservedStaticFileHandler())).Methods("GET")
+	router.Handle(RESERVED_FILES_V2+"/", JWTAuthMiddleware(ReservedStaticFileHandler())).Methods("GET")
+	router.Handle(EXACT_RESERVED_FILE_V2, JWTAuthMiddleware(ReservedStaticFileHandler())).Methods("GET")
+	router.Handle(LEGACY_ARCHIVE_V2, JWTAuthMiddleware(LegacyArchiveHandler())).Methods("GET")
 
 	router.HandleFunc(AUTH_LOGIN_V2, AuthorizeHandlerV2(service_module.AuthService)).Methods("POST")
 
@@ -36,14 +46,18 @@ func SetupServer(service_module *service_logic.ServiceModule, port string, logge
 	router.Handle(EXACT_CONTRACT_V2, JWTAuthMiddleware(ContractStatusPatchHandlerV2(service_module.ContractService))).Methods("PATCH")
 	router.Handle(CONTRACT_LESSONS_V2, JWTAuthMiddleware(ContractLessonsListHandlerV2(service_module.LessonService))).Methods("GET")
 	router.Handle(CONTRACT_LESSONS_V2, JWTAuthMiddleware(ContractLessonCreateHandlerV2(service_module.LessonService))).Methods("POST")
+	router.Handle(EXACT_LESSON_V2, JWTAuthMiddleware(LessonGetHandlerV2(service_module.LessonService))).Methods("GET")
+	router.Handle(EXACT_LESSON_V2, JWTAuthMiddleware(LessonPatchHandlerV2(service_module.LessonService))).Methods("PATCH")
+	router.Handle(EXACT_LESSON_V2, JWTAuthMiddleware(LessonDeleteHandlerV2(service_module.LessonService))).Methods("DELETE")
 	router.Handle(CONTRACT_REVIEWS_V2, JWTAuthMiddleware(ContractReviewsListHandlerV2(service_module.ReviewService, service_module.ContractService))).Methods("GET")
 	router.Handle(CONTRACT_REVIEWS_V2, JWTAuthMiddleware(ContractReviewCreateHandlerV2(service_module.ReviewService, service_module.ContractService))).Methods("POST")
-	router.Handle(CONTRACT_TRANSACTIONS_V2, JWTAuthMiddleware(ContractTransactionsListHandlerV2(service_module.TransactionService))).Methods("GET")
+	router.Handle(CONTRACT_TRANSACTIONS_V2, JWTAuthMiddleware(ContractTransactionsListHandlerV2(service_module.TransactionService, service_module.ContractService))).Methods("GET")
 	router.Handle(CONTRACT_TRANSACTIONS_V2, JWTAuthMiddleware(ContractTransactionCreateHandlerV2(service_module.TransactionService))).Methods("POST")
 	router.Handle(TRANSACTION_APPROVAL_V2, JWTAuthMiddleware(TransactionApproveHandlerV2(service_module.TransactionService))).Methods("PATCH")
 
 	router.Handle(EXACT_CLIENT_V2, JWTAuthMiddleware(ClientGetHandlerV2(service_module.ClientService))).Methods("GET")
 	router.Handle(EXACT_REPETITOR_V2, JWTAuthMiddleware(RepetitorGetHandlerV2(service_module.RepetitorService))).Methods("GET")
+	router.Handle(EXACT_REPETITOR_V2, JWTAuthMiddleware(RepetitorAssignContractHandlerV2(service_module.ContractService))).Methods("PATCH")
 
 	router.Handle(CHATS_V2, JWTAuthMiddleware(ChatGetChatsHandlerV2(service_module.ChatService))).Methods("GET")
 	router.Handle(CHATS_V2, JWTAuthMiddleware(ChatCreateChatHandlerV2(service_module.ChatService))).Methods("POST")

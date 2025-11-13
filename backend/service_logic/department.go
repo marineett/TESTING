@@ -23,17 +23,23 @@ type IDepartmentService interface {
 }
 
 type DepartmentService struct {
-	departmentRepository data_base.IDepartmentRepository
-	moderatorRepository  data_base.IModeratorRepository
+	departmentRepository   data_base.IDepartmentRepository
+	moderatorRepository    data_base.IModeratorRepository
+	userRepository         data_base.IUserRepository
+	personalDataRepository data_base.IPersonalDataRepository
 }
 
 func CreateDepartmentService(
 	departmentRepository data_base.IDepartmentRepository,
 	moderatorRepository data_base.IModeratorRepository,
+	userRepository data_base.IUserRepository,
+	personalDataRepository data_base.IPersonalDataRepository,
 ) IDepartmentService {
 	return &DepartmentService{
-		departmentRepository: departmentRepository,
-		moderatorRepository:  moderatorRepository,
+		departmentRepository:   departmentRepository,
+		moderatorRepository:    moderatorRepository,
+		userRepository:         userRepository,
+		personalDataRepository: personalDataRepository,
 	}
 }
 
@@ -162,7 +168,7 @@ func (s *DepartmentService) GetDepartmentsByHeadIdWithModerators(headID int64) (
 	}
 	serverDepartments := make([]types.ServerDepartmentV2, len(departments))
 	for i, department := range departments {
-		moderators, err := s.moderatorRepository.GetModeratorsByDepartmentID(department.ID)
+		moderators, err := s.departmentRepository.GetDepartmentUsersIDs(department.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -173,17 +179,41 @@ func (s *DepartmentService) GetDepartmentsByHeadIdWithModerators(headID int64) (
 			Moderators: []types.ServerModeratorProfileWithIDV2{},
 		}
 		for _, moderator := range moderators {
-			moderatorProfile, err := s.moderatorRepository.GetModerator(moderator)
+			userData, err := s.userRepository.GetUser(moderator)
 			if err != nil {
 				return nil, err
 			}
+			personalData, err := s.personalDataRepository.GetPersonalData(userData.PersonalDataID)
+			if err != nil {
+				return nil, err
+			}
+			moderatorData, err := s.moderatorRepository.GetModerator(moderator)
+			if err != nil {
+				return nil, err
+			}
+			departmentsIds, err := s.departmentRepository.GetUserDepartmentsIDs(moderator)
+			if err != nil {
+				return nil, err
+			}
+			departments := make([]string, len(departmentsIds))
+			for _, departmentId := range departmentsIds {
+				department, err := s.departmentRepository.GetDepartment(departmentId)
+				departments = append(departments, department.Name)
+				if err != nil {
+					return nil, err
+				}
+			}
 			serverDepartments[i].Moderators = append(serverDepartments[i].Moderators, types.ServerModeratorProfileWithIDV2{
-				ID: moderatorProfile.ID,
-				Moderator: *types.MapperModeratorProfileServiceToServer(
-					types.MapperModeratorDataServiceToProfileService(
-						types.MapperModeratorDataDBToService(moderatorProfile),
-					),
-				),
+				ID: moderator,
+				Moderator: types.ServerModeratorProfile{
+					FirstName:       personalData.FirstName,
+					LastName:        personalData.LastName,
+					MiddleName:      personalData.MiddleName,
+					TelephoneNumber: personalData.TelephoneNumber,
+					Email:           personalData.Email,
+					Salary:          moderatorData.Salary,
+					Departments:     []string{department.Name},
+				},
 			})
 		}
 	}

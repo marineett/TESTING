@@ -8,7 +8,8 @@ import (
 
 type ITransactionService interface {
 	GetTransactionsList(user_id int64, from int64, size int64) ([]types.ServiceTransaction, error)
-	CreateContractPaymentTransaction(amount int64, user_id int64) (int64, error)
+	GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.ServiceTransaction, error)
+	CreateContractPaymentTransaction(amount int64, user_id int64, contract_id int64) (int64, error)
 	ChangeTransactionStatus(transaction_id int64, status types.TransactionStatus) error
 	GetTransaction(transaction_id int64) (*types.ServiceTransaction, error)
 	GetPendingContractPaymentTransaction() (*types.ServicePendingContractPaymentTransaction, error)
@@ -23,13 +24,14 @@ func CreateTransactionService(transactionRepository data_base.ITransactionReposi
 	return &TransactionService{transactionRepository: transactionRepository}
 }
 
-func (s *TransactionService) CreateContractPaymentTransaction(amount int64, user_id int64) (int64, error) {
+func (s *TransactionService) CreateContractPaymentTransaction(amount int64, user_id int64, contract_id int64) (int64, error) {
 	return s.transactionRepository.InsertTransaction(types.DBTransaction{
-		UserID:    user_id,
-		Amount:    amount,
-		Status:    types.TransactionStatusPending,
-		Type:      types.TransactionTypeContractPayment,
-		CreatedAt: time.Now(),
+		UserID:     user_id,
+		ContractID: contract_id,
+		Amount:     amount,
+		Status:     types.TransactionStatusPending,
+		Type:       types.TransactionTypeContractPayment,
+		CreatedAt:  time.Now(),
 	})
 }
 
@@ -67,4 +69,16 @@ func (s *TransactionService) GetPendingContractPaymentTransaction() (*types.Serv
 
 func (s *TransactionService) ApproveTransaction(transaction_id int64) error {
 	return s.transactionRepository.ApproveTransaction(transaction_id)
+}
+
+func (s *TransactionService) GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.ServiceTransaction, error) {
+	transactions, err := s.transactionRepository.GetContractTransactionsList(contract_id, from, size)
+	if err != nil {
+		return nil, err
+	}
+	serviceTransactions := make([]types.ServiceTransaction, len(transactions))
+	for i, transaction := range transactions {
+		serviceTransactions[i] = types.ServiceTransaction(transaction)
+	}
+	return serviceTransactions, nil
 }

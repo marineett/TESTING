@@ -30,6 +30,7 @@ func MapperModeratorProfileServiceToServer(profile *ServiceModeratorProfile) *Se
 		MiddleName:      profile.MiddleName,
 		TelephoneNumber: profile.TelephoneNumber,
 		Email:           profile.Email,
+		Salary:          profile.Salary,
 	}
 }
 
@@ -58,6 +59,7 @@ func MapperModeratorProfileWithIDServiceToServer(profile *ServiceModeratorProfil
 			MiddleName:      profile.MiddleName,
 			TelephoneNumber: profile.TelephoneNumber,
 			Email:           profile.Email,
+			Salary:          profile.Salary,
 		},
 	}
 }
@@ -74,6 +76,7 @@ func MapperModeratorProfileWithIDServerToService(profile *ServerModeratorProfile
 			MiddleName:      profile.Moderator.MiddleName,
 			TelephoneNumber: profile.Moderator.TelephoneNumber,
 			Email:           profile.Moderator.Email,
+			Salary:          profile.Moderator.Salary,
 		},
 	}
 }
@@ -132,6 +135,7 @@ func MapperDepartmentServiceToServerV2(dep *ServiceDepartment, moderators []Serv
 				MiddleName:      m.MiddleName,
 				TelephoneNumber: m.TelephoneNumber,
 				Email:           m.Email,
+				Salary:          m.Salary,
 			},
 		})
 	}

@@ -19,7 +19,7 @@ func SetupAdminRouterV2(adminService service_logic.IAdminService, moderatorServi
 
 func AdminGetProfileHandlerV2(adminService service_logic.IAdminService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		adminID := mux.Vars(r)["admin_id"]
+		adminID := mux.Vars(r)["adminId"]
 		adminIDInt, err := strconv.Atoi(adminID)
 		if err != nil {
 			http.Error(w, "Invalid admin ID", http.StatusBadRequest)
@@ -27,7 +27,7 @@ func AdminGetProfileHandlerV2(adminService service_logic.IAdminService) http.Han
 		}
 		adminProfile, err := adminService.GetAdminProfile(int64(adminIDInt))
 		if err != nil {
-			http.Error(w, "Error getting admin profile", http.StatusInternalServerError)
+			http.Error(w, "Error getting admin profile", http.StatusBadRequest)
 			return
 		}
 		serverAdminProfile := *types.MapperAdminProfileServiceToServer(adminProfile)
@@ -66,7 +66,7 @@ func AdminGetProfileHandler(adminService service_logic.IAdminService, logger *lo
 		adminProfile, err := adminService.GetAdminProfile(userID)
 		if err != nil {
 			logger.Printf("Failed to get admin profile: %v", err)
-			http.Error(w, "Failed to get admin profile", http.StatusInternalServerError)
+			http.Error(w, "Failed to get admin profile", http.StatusBadRequest)
 			return
 		}
 		serverAdminProfile := types.MapperAdminProfileServiceToServer(adminProfile)

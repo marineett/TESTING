@@ -1,0 +1,1 @@
+[{"values":["./service_logic (223), ./data_base (151)"],"name":"UNIT.TESTS"},{"values":["DepartmentSuite (16), ClientSuite (14)"],"name":"INTEGRATION.TESTS"},{"values":["ChatSuite (13), AuthSuite (10), LessonSuite (6), PersonalDataSuite (4), APISuite (1)"],"name":"E2E.TESTS"},{"values":["438"],"name":"Total.Tests"},{"values":["2025-10-30 22:03:36"],"name":"Date"}]

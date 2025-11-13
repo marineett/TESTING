@@ -14,7 +14,6 @@ type IModeratorRepository interface {
 	UpdateModeratorPassword(moderatorID int64, authData types.DBAuthData, newPassword string) error
 	UpdateModeratorSalary(moderatorID int64, salary int64) error
 	GetModerators() ([]int64, error)
-	GetModeratorsByDepartmentID(departmentID int64) ([]int64, error)
 }
 
 func CreateSqlModeratorTable(db *sql.DB, moderatorTableName string, userTableName string) error {
@@ -143,27 +142,6 @@ func (r *SqlModeratorRepository) GetModerators() ([]int64, error) {
 	SELECT id FROM ` + r.moderatorTable + `
 	`
 	rows, err := r.db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var ids []int64
-	for rows.Next() {
-		var id int64
-		err = rows.Scan(&id)
-		if err != nil {
-			return nil, err
-		}
-		ids = append(ids, id)
-	}
-	return ids, nil
-}
-
-func (r *SqlModeratorRepository) GetModeratorsByDepartmentID(departmentID int64) ([]int64, error) {
-	query := `
-	SELECT id FROM ` + r.moderatorTable + ` WHERE department_id = $1
-	`
-	rows, err := r.db.Query(query, departmentID)
 	if err != nil {
 		return nil, err
 	}

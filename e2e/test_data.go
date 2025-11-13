@@ -1,11 +1,5 @@
 package integration
 
-import (
-	cryptoRand "crypto/rand"
-	"encoding/hex"
-	"fmt"
-)
-
 var (
 	testClientAuthData    map[string]interface{}
 	testRepetitorAuthData map[string]interface{}
@@ -15,19 +9,6 @@ var (
 	testRepetitorData map[string]interface{}
 	testModeratorData map[string]interface{}
 )
-
-func randHex(nBytes int) string {
-	b := make([]byte, nBytes)
-	_, _ = cryptoRand.Read(b)
-	return hex.EncodeToString(b)
-}
-
-func makeCreds(prefix string) (login, password string) {
-	sfx := randHex(8)
-	login = fmt.Sprintf("%s_%s@test.com", prefix, sfx)
-	password = randHex(12)
-	return
-}
 
 func init() {
 	clLogin, clPass := makeCreds("client")
