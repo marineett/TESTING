@@ -42,7 +42,7 @@ jobs:
 
       - name: Run gocyclo
         working-directory: backend
-        run: gocyclo -over 10 .
+        run: gocyclo -over 8 .
 
   unit-tests:
     needs: lint
