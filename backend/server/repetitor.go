@@ -33,11 +33,12 @@ func RepetitorGetHandlerV2(repetitorService service_logic.IRepetitorService) htt
 			return
 		}
 		serverRepetitor := types.MapperRepetitorProfileServiceToServerV2(repetitor)
-		err = json.NewEncoder(w).Encode(serverRepetitor)
-		if err != nil {
-			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
-			return
-		}
+		// err = json.NewEncoder(w).Encode(serverRepetitor)
+		json.NewEncoder(w).Encode(serverRepetitor)
+		// if err != nil {
+		// 	http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
+		// 	return
+		// }
 		w.WriteHeader(http.StatusOK)
 	}
 }
