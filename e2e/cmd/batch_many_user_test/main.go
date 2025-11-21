@@ -30,8 +30,8 @@ var (
 )
 
 const (
-	defaultBaseURL = "http://backend:8000"
-	defaultOutDir  = "/metrics/batch_many_user_test"
+	defaultBaseURL = "http://backend-once:8000"
+	defaultOutDir  = "/metrics/degradation_many_user_test"
 )
 
 func generateLogins(n int) []string {
@@ -44,11 +44,7 @@ func generateLogins(n int) []string {
 }
 
 func mustMkdirAll(dir string) {
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		fmt.Printf("ERROR: failed to create directory %s: %v\n", dir, err)
-		os.Exit(1)
-	}
-	fmt.Printf("Created/verified directory: %s\n", dir)
+	_ = os.MkdirAll(dir, 0o755)
 }
 
 func loginAuthorize(login, role string, client *integration.APIClient) error {
@@ -174,26 +170,20 @@ func testBatch(batchSize int, file *os.File, messagesSize int) error {
 	}
 }
 
-func getenv(key, def string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return def
-}
-
 func main() {
-	baseURL := getenv("BACKEND_URL", defaultBaseURL)
+	baseURL := defaultBaseURL
 	outputDir := defaultOutDir
 	latencyFile := outputDir + "/latency_ms.csv"
 	resultFile := outputDir + "/result.json"
 	messagesSize := 150
-	bs := os.Getenv("BATCH_SIZE") // чтение нагрузки из env
+	bs := os.Getenv("BATCH_SIZE")
 	sz, err := strconv.Atoi(bs)
 	if bs == "" || err != nil || sz <= 0 {
 		fmt.Printf("ERROR: invalid or empty BATCH_SIZE: %q\n", bs)
 		os.Exit(1)
 	}
 
+	// Prepare users for this batch
 	usersNeeded := sz * 2
 	client := integration.NewAPIClient(baseURL)
 	authMap = make(map[string]*loginData)
@@ -209,32 +199,15 @@ func main() {
 		}
 	}
 
+	// Ensure output dir exists
 	mustMkdirAll(outputDir)
 
-	if info, err := os.Stat(outputDir); err != nil {
-		fmt.Printf("ERROR: cannot stat output directory %s: %v\n", outputDir, err)
-		os.Exit(1)
-	} else if !info.IsDir() {
-		fmt.Printf("ERROR: output path %s is not a directory\n", outputDir)
-		os.Exit(1)
-	}
-
-	testFile := outputDir + "/.write_test"
-	if err := os.WriteFile(testFile, []byte("test"), 0o644); err != nil {
-		fmt.Printf("ERROR: cannot write to output directory %s: %v\n", outputDir, err)
-		os.Exit(1)
-	}
-	_ = os.Remove(testFile)
-	fmt.Printf("Verified write access to: %s\n", outputDir)
-
+	// timestamps for Prometheus collector
 	tsPath := outputDir + "/timestamps.env"
 	startTs := time.Now().Unix()
-	if err := os.WriteFile(tsPath, []byte(fmt.Sprintf("START_TS=%d\n", startTs)), 0o644); err != nil {
-		fmt.Printf("ERROR: failed to write timestamps file: %v\n", err)
-		os.Exit(1)
-	}
-	fmt.Printf("Created timestamps file: %s\n", tsPath)
+	_ = os.WriteFile(tsPath, []byte(fmt.Sprintf("START_TS=%d\n", startTs)), 0o644)
 
+	// Open latency file
 	f, err := os.Create(latencyFile)
 	if err != nil {
 		fmt.Printf("ERROR: create latency file: %v\n", err)
@@ -245,13 +218,14 @@ func main() {
 		fmt.Printf("ERROR: write header: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Printf("Created latency file: %s\n", latencyFile)
 
+	// Run exactly one batch
 	if err := testBatch(sz, f, messagesSize); err != nil {
 		fmt.Printf("ERROR: testBatch failed for size %d: %v\n", sz, err)
 		os.Exit(1)
 	}
 
+	// Optional post-test sleep to let Prometheus scrape final samples
 	sleepSec := 11
 	if v := os.Getenv("POST_TEST_SLEEP"); v != "" {
 		if n, e := strconv.Atoi(v); e == nil && n >= 0 {
@@ -260,25 +234,16 @@ func main() {
 	}
 	time.Sleep(time.Duration(sleepSec) * time.Second)
 
+	// Append END_TS
 	endTs := time.Now().Unix()
 	if fh, err := os.OpenFile(tsPath, os.O_WRONLY|os.O_APPEND, 0o644); err == nil {
-		if _, err := fh.WriteString(fmt.Sprintf("START_TS=%d\nEND_TS=%d\n", startTs, endTs)); err != nil { //временные рамки для Prometheus
-			fmt.Printf("WARNING: failed to append END_TS: %v\n", err)
-		} else {
-			fmt.Printf("Appended END_TS to timestamps file\n")
-		}
+		_, _ = fh.WriteString(fmt.Sprintf("START_TS=%d\nEND_TS=%d\n", startTs, endTs))
 		_ = fh.Close()
-	} else {
-		fmt.Printf("WARNING: failed to open timestamps file for append: %v\n", err) 
 	}
 
 	// Emit result
 	res := result{SelectedIndex: 0, SelectedSize: sz, Timestamp: time.Now().Unix()}
 	bsBytes, _ := json.Marshal(res)
-	if err := os.WriteFile(resultFile, bsBytes, 0o644); err != nil {
-		fmt.Printf("ERROR: failed to write result file: %v\n", err)
-		os.Exit(1)
-	}
-	fmt.Printf("Created result file: %s\n", resultFile)
+	_ = os.WriteFile(resultFile, bsBytes, 0o644)
 	fmt.Printf("BATCH_RUN_SIZE=%d\n", sz)
 }

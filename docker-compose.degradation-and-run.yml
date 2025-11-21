@@ -1,12 +1,26 @@
 services:
-  backend:
-    # этот healthcheck "подмешается" к backend из docker-compose.yml
+  backend-once:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: mydb
+      DATABASE_USER: user
+      DATABASE_PASSWORD: pass
+      BACKEND_PORT: "8000"
+      JWT_SECRET: "dev-secret"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
       interval: 3s
       timeout: 2s
-      retries: 40
-      start_period: 120s
+      retries: 20
+      start_period: 5s
+    networks:
+      - app-network
+    volumes:
+      - ./logs:/build/logs
+      - ./README.md:/build/README.md:ro
 
   prometheus:
     image: prom/prometheus:v2.54.1
@@ -16,41 +30,40 @@ services:
       - "--storage.tsdb.retention.time=2h"
       - "--web.enable-lifecycle"
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prom_data:/prometheus
-    networks: [app-network]
+    networks:
+      - app-network
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.49.1
-    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    command:
+      - "--disable_metrics=percpu,sched,tcp,udp,advtcp,referenced_memory"
     privileged: true
-    ports:
-      - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    command:
-      - '--docker_only=true'
-      - '--housekeeping_interval=10s'
-      - '--disable_metrics=diskIO,disk,network,tcp,udp'
-    networks: [app-network]
+    networks:
+      - app-network
 
   node-exporter:
     image: prom/node-exporter:v1.8.1
-    command: ["--path.rootfs=/host", "--no-collector.filesystem.mount-points"]
+    pid: host
+    command:
+      - "--path.rootfs=/host"
     volumes:
-      - /:/host:ro
-    networks: [app-network]
+      - /:/host:ro,rslave
+    networks:
+      - app-network
 
-  # Runner, который даёт статическую нагрузку (1 инстанс) и пишет latency/result/timestamps
   degradation-and-run-runner:
     build:
       context: .
       dockerfile: e2e/Dockerfile.degradation-and-run
     depends_on:
-      backend:
+      backend-once:
         condition: service_healthy
       prometheus:
         condition: service_started
@@ -58,69 +71,36 @@ services:
         condition: service_started
       node-exporter:
         condition: service_started
-    networks: [app-network]
+    networks:
+      - app-network
     environment:
-      - BACKEND_URL=http://backend:8000
-      - OUTPUT_DIR=/metrics/static_load
-      - BATCH_SIZE=${BATCH_SIZE:-60}
-      - POST_TEST_SLEEP=${POST_TEST_SLEEP:-15}
+      - BACKEND_URL=http://backend-once:8000
+      - OUTPUT_DIR=/metrics/degradation_many_user_test
+      - MESSAGES_PER_CHAT=${MESSAGES_PER_CHAT:-20000}
+      - POST_TEST_SLEEP=${POST_TEST_SLEEP:-11}
     volumes:
-      - ./metrics:/metrics:rw,cached
-    # ВНИМАНИЕ: экранируем $ как $$, иначе compose подумает, что это его переменные
-    entrypoint:
-      - sh
-      - -lc
-      - |
-        DIR="/metrics/static_load";
-        mkdir -p "$$DIR" && chmod 777 "$$DIR";
-        echo "Directory: $$DIR";
-        exec /usr/local/bin/degradation_and_run
+      - ./metrics:/metrics
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/degradation_and_run"]
     user: "0:0"
     restart: "no"
 
   metrics-collector:
     image: alpine:3.19
     depends_on:
-      degradation-and-run-runner:
-        condition: service_completed_successfully
       prometheus:
         condition: service_started
     environment:
       PROM_URL: http://prometheus:9090
       STEP: 5s
-      # собираем CPU/MEM по compose-лейблу backend'а
-      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend"}[60s]))'
-      PROMQL_MEM: 'sum(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend"})'
-    entrypoint:
-      - sh
-      - -lc
-      - |
-        apk add --no-cache curl jq >/dev/null
-        echo "Waiting for Prometheus..."
-        for i in $$(seq 1 60); do
-          if curl -sf $${PROM_URL}/-/ready >/dev/null 2>&1; then
-            echo "Prometheus is ready"; break
-          else
-            echo "... waiting ($$i/60)"; sleep 2
-          fi
-        done
-
-        DIR="/metrics/static_load"
-        echo "Waiting for timestamps.env in $$DIR ..."
-        MAX_WAIT=300; WAITED=0
-        while [ $$WAITED -lt $$MAX_WAIT ]; do
-          if [ -f "$$DIR/timestamps.env" ] && grep -q '^END_TS=' "$$DIR/timestamps.env"; then
-            echo "Found timestamps"; break
-          fi
-          sleep 2; WAITED=$$((WAITED+2))
-        done
-
-        OUTPUT_DIR="$$DIR" sh /collect.sh
-        echo "Collection done."
-    networks: [app-network]
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[120s]))'
+      PROMQL_MEM: 'max_over_time(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[5m])'
+    entrypoint: ["sh", "-lc", "apk add --no-cache curl jq >/dev/null; NOW=$$(date +%s); echo 'Waiting for fresh timestamps...'; while :; do if [ -f /metrics/degradation_many_user_test/timestamps.env ]; then END=$$(grep -E '^END_TS=' /metrics/degradation_many_user_test/timestamps.env | sed 's/END_TS=//'); if [ -n \"$$END\" ] && [ \"$$END\" -ge \"$$NOW\" ]; then break; fi; fi; sleep 2; done; OUTPUT_DIR=/metrics/degradation_many_user_test sh /collect.sh; echo 'Collection done.'"]
+    networks:
+      - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
       - ./monitoring/collect_prometheus.sh:/collect.sh:ro
+    restart: "no"
 
 networks:
   app-network:
@@ -128,3 +108,6 @@ networks:
 
 volumes:
   prom_data: {}
+
+
+

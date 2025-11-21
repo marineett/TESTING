@@ -17,7 +17,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
     entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/degradation"]
     user: "0:0"
     restart: "no"
@@ -25,3 +25,6 @@ services:
 networks:
   app-network:
     external: false
+
+
+

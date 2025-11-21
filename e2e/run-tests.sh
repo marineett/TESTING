@@ -8,6 +8,8 @@ BACKEND_URL=${BACKEND_URL:-http://backend:8000}
 WAIT_MAX_ATTEMPTS=${WAIT_MAX_ATTEMPTS:-120}
 POST_TEST_SLEEP=${POST_TEST_SLEEP:-0}
 TEST_LABEL=${TEST_LABEL:-e2e}
+
+# record start timestamp for metrics collection (write to temp and publish at end)
 mkdir -p /metrics || true
 START_TS=$(date +%s)
 TMP_TS_FILE="/metrics/timestamps.tmp"

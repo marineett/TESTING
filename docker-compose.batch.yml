@@ -1,11 +1,35 @@
 services:
+  backend-once:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: mydb
+      DATABASE_USER: user
+      DATABASE_PASSWORD: pass
+      BACKEND_PORT: "8000"
+      JWT_SECRET: "dev-secret"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
+    networks:
+      - app-network
+    # no published ports; internal-only
+    volumes:
+      - ./logs:/build/logs
+      - ./README.md:/build/README.md:ro
+
   backend:
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
       interval: 3s
       timeout: 2s
-      retries: 40
-      start_period: 120s
+      retries: 20
+      start_period: 5s
 
   prometheus:
     image: prom/prometheus:v2.54.1
@@ -15,41 +39,40 @@ services:
       - "--storage.tsdb.retention.time=2h"
       - "--web.enable-lifecycle"
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prom_data:/prometheus
-    networks: [app-network]
+    networks:
+      - app-network
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.49.1
-    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    command:
+      - "--disable_metrics=percpu,sched,tcp,udp,advtcp,referenced_memory"
     privileged: true
-    ports:
-      - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro #отдаёт метрики Prometheus
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    command:
-      - '--docker_only=true'
-      - '--housekeeping_interval=10s'
-      - '--disable_metrics=diskIO,disk,network,tcp,udp'
     networks:
-      - app-network 
+      - app-network
 
   node-exporter:
     image: prom/node-exporter:v1.8.1
-    command: ["--path.rootfs=/host", "--no-collector.filesystem.mount-points"]
+    pid: host
+    command:
+      - "--path.rootfs=/host"
     volumes:
-      - /:/host:ro
-    networks: [app-network]
+      - /:/host:ro,rslave
+    networks:
+      - app-network
 
   batch-runner:
     build:
       context: .
       dockerfile: e2e/Dockerfile.batch-runner
     depends_on:
-      backend:
+      backend-once:
         condition: service_healthy
       prometheus:
         condition: service_started
@@ -57,61 +80,35 @@ services:
         condition: service_started
       node-exporter:
         condition: service_started
-    networks: [app-network]
+    networks:
+      - app-network
     environment:
       - BATCH_SIZE=${BATCH_SIZE}
       - POST_TEST_SLEEP=${POST_TEST_SLEEP:-11}
-      - BACKEND_URL=http://backend:8000
+      - BACKEND_URL=http://backend-once:8000
     volumes:
-      - ./metrics:/metrics:rw,cached
-    entrypoint: ["sh","-lc","mkdir -p /metrics/batch_many_user_test && chmod 777 /metrics/batch_many_user_test && exec /usr/local/bin/batch"]
+      - ./metrics:/metrics
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/batch"]
     user: "0:0"
     restart: "no"
 
   metrics-collector:
     image: alpine:3.19
     depends_on:
-      batch-runner:
-        condition: service_completed_successfully
-      backend:
-        condition: service_started
       prometheus:
         condition: service_started
     environment:
       PROM_URL: http://prometheus:9090
       STEP: 5s
-      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend"}[60s]))'
-      PROMQL_MEM: 'sum(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend"})'
-    entrypoint:
-      - sh
-      - -c
-      - |
-        apk add --no-cache curl jq >/dev/null
-        echo 'Waiting for Prometheus...'
-        for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
-          if curl -sf http://prometheus:9090/-/ready >/dev/null 2>&1; then
-            echo "Prometheus ready!"
-            break
-          fi
-          echo "Wait $i/20"
-          sleep 3
-        done
-        
-        echo 'Waiting for timestamps...'
-        for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
-          if [ -f /metrics/batch_many_user_test/timestamps.env ] && grep -q '^END_TS=' /metrics/batch_many_user_test/timestamps.env; then
-            echo 'Found timestamps!'
-            break
-          fi
-          sleep 2
-        done
-        
-        OUTPUT_DIR=/metrics/batch_many_user_test sh /collect.sh
-        echo 'Collection done!'
-    networks: [app-network]
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[120s]))'
+      PROMQL_MEM: 'max_over_time(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[5m])'
+    entrypoint: ["sh", "-lc", "apk add --no-cache curl jq >/dev/null; NOW=$$(date +%s); echo 'Waiting for fresh timestamps...'; while :; do if [ -f /metrics/degradation_many_user_test/timestamps.env ]; then END=$$(grep -E '^END_TS=' /metrics/degradation_many_user_test/timestamps.env | sed 's/END_TS=//'); if [ -n \"$$END\" ] && [ \"$$END\" -ge \"$$NOW\" ]; then break; fi; fi; sleep 2; done; OUTPUT_DIR=/metrics/degradation_many_user_test sh /collect.sh; echo 'Collection done.'"]
+    networks:
+      - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
       - ./monitoring/collect_prometheus.sh:/collect.sh:ro
+    restart: "no"
 
 networks:
   app-network:
@@ -119,3 +116,5 @@ networks:
 
 volumes:
   prom_data: {}
+
+

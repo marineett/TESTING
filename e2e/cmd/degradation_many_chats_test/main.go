@@ -34,15 +34,8 @@ const (
 	defaultOutDir  = "/metrics/degradation_many_user_test"
 )
 
-var hardcodedBatchSizes = []int{
-	50, 55, 60, 65,
-	70, 75, 80, 85,
-	90, 95, 100, 105,
-	110, 115, 120, 125,
-	130, 135, 140, 145,
-	150, 155, 160, 165,
-	170, 175, 180, 185,
-	190, 195, 200,
+var hardcodedChatSizes = []int{
+	5000, 10000, 15000, 20000,
 }
 
 func generateLogins(n int) []string {
@@ -153,31 +146,41 @@ func createChatAndSpam(login1, login2 string, messagesSize int, file *os.File, b
 }
 
 func testBatch(batchSize int, file *os.File, messagesSize int) error {
-	errChan := make(chan error)
-	counter := make(chan bool)
-	done := make(chan bool)
-	for i := 0; i < batchSize; i++ {
-		login1 := logins[i*2]
-		login2 := logins[i*2+1]
-		go func() {
-			_, err := createChatAndSpam(login1, login2, messagesSize, file, batchSize)
-			if err != nil {
-				errChan <- err
-			}
-			counter <- false
-		}()
-	}
+	// guard against deadlocks: buffered error channel, buffered counter, timeout
+	errChan := make(chan error, batchSize)
+	counter := make(chan struct{}, batchSize)
+	done := make(chan struct{})
+
+	// start watcher first
 	go func(size int) {
 		for i := 0; i < size; i++ {
 			<-counter
 		}
-		done <- true
+		close(done)
 	}(batchSize)
+
+	// launch workers
+	for i := 0; i < batchSize; i++ {
+		go func() {
+			// single-chat load for many-chats model: reuse first two users
+			if _, err := createChatAndSpam(logins[0], logins[1], messagesSize, file, batchSize); err != nil {
+				select {
+				case errChan <- err:
+				default:
+				}
+			}
+			counter <- struct{}{}
+		}()
+	}
+
+	timeout := time.After(2 * time.Minute)
 	select {
 	case err := <-errChan:
 		return err
 	case <-done:
 		return nil
+	case <-timeout:
+		return fmt.Errorf("timeout waiting batch completion (possible deadlock)")
 	}
 }
 
@@ -201,20 +204,19 @@ func main() {
 	outputDir := defaultOutDir
 	latencyFile := outputDir + "/latency_ms.csv"
 	resultFile := outputDir + "/result.json"
-	batchSizes := hardcodedBatchSizes
-	messagesSize := 150
+	chatSizes := hardcodedChatSizes
+	messagesSize := 300
 
-	if bs := os.Getenv("BATCH_SIZE"); bs != "" {
-		sz, err := strconv.Atoi(bs)
+	if cs := os.Getenv("CHAT_SIZE"); cs != "" {
+		sz, err := strconv.Atoi(cs)
 		if err != nil || sz <= 0 {
-			fmt.Printf("ERROR: invalid BATCH_SIZE: %q\n", bs)
+			fmt.Printf("ERROR: invalid CHAT_SIZE: %q\n", cs)
 			os.Exit(1)
 		}
-		usersNeeded := sz * 2
 		client := integration.NewAPIClient(baseURL)
 		authMap = make(map[string]*loginData)
-		logins = generateLogins(usersNeeded)
-		for i := 0; i < usersNeeded; i++ {
+		logins = generateLogins(2)
+		for i := 0; i < 2; i++ {
 			role := "client"
 			if i%2 == 1 {
 				role = "repetitor"
@@ -241,7 +243,6 @@ func main() {
 			fmt.Printf("ERROR: testBatch failed for size %d: %v\n", sz, err)
 			os.Exit(1)
 		}
-		// Emit result
 		res := result{SelectedIndex: 0, SelectedSize: sz, Timestamp: time.Now().Unix()}
 		bs, _ := json.Marshal(res)
 		_ = os.WriteFile(resultFile, bs, 0o644)
@@ -249,8 +250,8 @@ func main() {
 		return
 	}
 
-	maxBatch := batchSizes[len(batchSizes)-1]
-	usersNeeded := maxBatch * 2
+	maxChatSize := chatSizes[len(chatSizes)-1]
+	usersNeeded := maxChatSize * 2
 	client := integration.NewAPIClient(baseURL)
 	authMap = make(map[string]*loginData)
 	logins = generateLogins(usersNeeded)
@@ -275,16 +276,14 @@ func main() {
 		fmt.Printf("ERROR: write header: %v\n", err)
 		os.Exit(1)
 	}
-	idx, err := selectBatch(batchSizes, f, messagesSize)
+	idx, err := selectBatch(chatSizes, f, messagesSize)
 	if err != nil {
 		fmt.Printf("ERROR: selectBatch failed: %v\n", err)
 		os.Exit(1)
 	}
-	selected := batchSizes[idx]
+	selected := chatSizes[idx]
 	res := result{SelectedIndex: idx, SelectedSize: selected, Timestamp: time.Now().Unix()}
 	bsBytes, _ := json.Marshal(res)
 	_ = os.WriteFile(resultFile, bsBytes, 0o644)
 	fmt.Printf("DEGRADATION_BATCH_SIZE=%d\n", selected)
 }
-
-

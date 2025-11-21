@@ -2,7 +2,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.53.0
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prom_data:/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
@@ -61,7 +61,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
 
   bench-runner:
     build:
@@ -84,7 +84,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
 
   metrics-collector:
     image: alpine:3.19
@@ -102,8 +102,8 @@ services:
     networks:
       - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
-      - ./monitoring/collect_prometheus.sh:/collect.sh:ro,cached
+      - ./metrics:/metrics
+      - ./monitoring/collect_prometheus.sh:/collect.sh:ro
 
 networks:
   app-network:

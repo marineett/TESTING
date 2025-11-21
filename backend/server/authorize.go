@@ -1,3 +1,38 @@
+
+
+
+func CheckClientBlock(clientID string) (bool, string, error) {
+    var isBlocked bool
+    var blockType string
+    err := db.QueryRow(
+        "SELECT EXISTS(SELECT 1 FROM client_blocks WHERE client_id = $1 AND status = 'ACTIVE'), 
+         COALESCE(block_type, '') FROM client_blocks WHERE client_id = $1 AND status = 'ACTIVE' LIMIT 1",
+        clientID,
+    ).Scan(&isBlocked, &blockType)
+    
+    return isBlocked, blockType, err
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 package server
 
 import (

@@ -19,8 +19,8 @@ services:
     networks:
       - app-network
     volumes:
-      - ./logs:/build/logs:rw,cached
-      - ./README.md:/build/README.md:ro,cached
+      - ./logs:/build/logs
+      - ./README.md:/build/README.md:ro
 
   backend:
     healthcheck:
@@ -38,7 +38,7 @@ services:
       - "--storage.tsdb.retention.time=2h"
       - "--web.enable-lifecycle"
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prom_data:/prometheus
     networks:
       - app-network
@@ -86,7 +86,7 @@ services:
       - POST_TEST_SLEEP=${POST_TEST_SLEEP:-11}
       - BACKEND_URL=http://backend-once:8000
     volumes:
-      - ./metrics:/metrics:rw,cached
+      - ./metrics:/metrics
     entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/batch"]
     user: "0:0"
     restart: "no"
@@ -105,8 +105,8 @@ services:
     networks:
       - app-network
     volumes:
-      - ./metrics:/metrics:rw,cached
-      - ./monitoring/collect_prometheus.sh:/collect.sh:ro,cached
+      - ./metrics:/metrics
+      - ./monitoring/collect_prometheus.sh:/collect.sh:ro
     restart: "no"
 
 networks:
