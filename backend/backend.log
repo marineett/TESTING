@@ -374,3 +374,7 @@
 2025/11/05 22:36:19 Server starting on addr :8000
 2025/11/06 13:19:23 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
 2025/11/06 13:19:23 Server starting on addr :8000
+2025/11/21 18:14:03 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/11/21 18:14:03 Error setting up roles: error creating roles: Parser Error: syntax error at or near "DO"
+2025/11/21 18:28:53 Connection string: postgres://user:pass@localhost/mydb?sslmode=disable
+2025/11/21 18:28:53 Server starting on addr :8000

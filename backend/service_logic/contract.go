@@ -86,7 +86,9 @@ func (s *ContractService) CreateContractReviewClient(contractID int64, review ty
 		return 0, err
 	}
 	if tx != nil {
-		defer tx.Rollback()
+		defer func() {
+			_ = tx.Rollback()
+		}()
 	}
 	reviewID, err := s.reviewRepository.InsertReviewInSeq(tx, *types.MapperReviewServiceToDB(&review))
 	if err != nil {
@@ -111,7 +113,9 @@ func (s *ContractService) CreateContractReviewRepetitor(contractID int64, review
 		return 0, err
 	}
 	if tx != nil {
-		defer tx.Rollback()
+		defer func() {
+			_ = tx.Rollback()
+		}()
 	}
 	reviewID, err := s.reviewRepository.InsertReviewInSeq(tx, *types.MapperReviewServiceToDB(&review))
 	if err != nil {

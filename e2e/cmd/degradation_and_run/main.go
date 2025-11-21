@@ -31,7 +31,7 @@ var (
 )
 
 const (
-	defaultBaseURL = "http://backend-once:8000"
+	defaultBaseURL = "http://backend:8000"
 	defaultOutDir  = "/metrics/degradation_many_user_test"
 )
 

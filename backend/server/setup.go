@@ -14,7 +14,11 @@ func SetupServer(service_module *service_logic.ServiceModule, port string, logge
 	router.StrictSlash(true)
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		_, err := w.Write([]byte("OK"))
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	})
 
 	router.Handle(API_V2, JWTAuthMiddleware(ApiV2Handler())).Methods("GET")
@@ -130,7 +134,11 @@ func SetupServer(service_module *service_logic.ServiceModule, port string, logge
 
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		_, err := w.Write([]byte("OK"))
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	})
 
 	addr := ":" + port

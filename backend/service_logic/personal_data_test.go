@@ -37,9 +37,9 @@ func (s *PersonalDataSuite) TestGetPersonalDataLondon(t provider.T) {
 		sx.Assert().Equal(tu.TestPD.FirstName, res.FirstName)
 		sx.Assert().Equal(tu.TestPD.LastName, res.LastName)
 		sx.Assert().Equal(tu.TestPD.MiddleName, res.MiddleName)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportNumber, res.ServicePassportData.PassportNumber)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportSeries, res.ServicePassportData.PassportSeries)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportIssuedBy, res.ServicePassportData.PassportIssuedBy)
+		sx.Assert().Equal(tu.TestPD.PassportNumber, res.PassportNumber)
+		sx.Assert().Equal(tu.TestPD.PassportSeries, res.PassportSeries)
+		sx.Assert().Equal(tu.TestPD.PassportIssuedBy, res.PassportIssuedBy)
 	})
 }
 
@@ -67,9 +67,9 @@ func (s *PersonalDataSuite) TestGetPersonalDataClassic(t provider.T) {
 		sx.Assert().Equal(tu.TestPD.FirstName, res.FirstName)
 		sx.Assert().Equal(tu.TestPD.LastName, res.LastName)
 		sx.Assert().Equal(tu.TestPD.MiddleName, res.MiddleName)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportNumber, res.ServicePassportData.PassportNumber)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportSeries, res.ServicePassportData.PassportSeries)
-		sx.Assert().Equal(tu.TestPD.ServicePassportData.PassportIssuedBy, res.ServicePassportData.PassportIssuedBy)
+		sx.Assert().Equal(tu.TestPD.PassportNumber, res.PassportNumber)
+		sx.Assert().Equal(tu.TestPD.PassportSeries, res.PassportSeries)
+		sx.Assert().Equal(tu.TestPD.PassportIssuedBy, res.PassportIssuedBy)
 	})
 }
 

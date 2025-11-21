@@ -2,15 +2,15 @@
 set -eu
 
 # Config (override via env if needed)
-BATCH_SIZE="${BATCH_SIZE:-95}"
+BATCH_SIZE="${BATCH_SIZE:-75}"
 POST_TEST_SLEEP="${POST_TEST_SLEEP:-15}"
-ITERATIONS="${ITERATIONS:-10}"
+ITERATIONS="${ITERATIONS:-20}"
 
 # Compose files for many_users batch pipeline
 BASE_COMPOSE="-f docker-compose.yml -f docker-compose.batch.yml"
 
 # Metrics directories (as used by the runner/collector)
-METRICS_DIR="metrics/degradation_many_user_test"
+METRICS_DIR="metrics/batch_many_user_test"
 CPU_DIR="${METRICS_DIR}/cpu"
 MEM_DIR="${METRICS_DIR}/memory"
 LAT_DIR="${METRICS_DIR}/latency_ms"

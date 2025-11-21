@@ -8,6 +8,7 @@ allure-results
 logs
 **/*.log
 .DS_Store
+**/.DS_Store
 .idea
 .vscode
 **/*.tar.gz

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-PROJECT_ROOT="/workspace"
+PROJECT_ROOT=${PROJECT_ROOT:-/workspace}
 cd "$PROJECT_ROOT"
 
 BACKEND_URL=${BACKEND_URL:-http://backend:8000}
@@ -63,9 +63,10 @@ fi
 
 if [ "$RUN_E2E" = "true" ]; then
   echo "Running e2e tests ..."
+  echo "Using BACKEND_URL: ${BACKEND_URL}"
   pushd "$PROJECT_ROOT/e2e" >/dev/null
   go mod tidy || true
-  go test -v
+  BACKEND_URL="${BACKEND_URL}" go test -v -timeout 300s
   popd >/dev/null
 else
   echo "Skipping e2e tests"

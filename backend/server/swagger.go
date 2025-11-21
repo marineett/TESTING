@@ -16,7 +16,11 @@ func SwaggerUIHandler() http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -29,7 +33,11 @@ func SwaggerSpecHandler() http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "application/yaml; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -42,7 +50,11 @@ func DocumentationHandler() http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -55,7 +67,11 @@ func ApiV2Handler() http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "application/yaml; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -87,7 +103,11 @@ func StaticFileHandler() http.HandlerFunc {
 		ctype := http.DetectContentType(data)
 		w.Header().Set("Content-Type", ctype)
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -119,6 +139,14 @@ func ReservedStaticFileHandler() http.HandlerFunc {
 		ctype := http.DetectContentType(data)
 		w.Header().Set("Content-Type", ctype)
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
+		_, err = w.Write(data)
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
+		if err != nil {
+			http.Error(w, "Error writing data", http.StatusInternalServerError)
+			return
+		}
 	}
 }

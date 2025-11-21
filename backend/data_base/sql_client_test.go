@@ -2,6 +2,7 @@ package data_base
 
 import (
 	tu "data_base_project/test_database_utility"
+	"data_base_project/types"
 	"database/sql"
 	"fmt"
 	"testing"
@@ -38,7 +39,12 @@ func TestCreateSqlClientRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	ClientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
 	if ClientRepository == nil {
 		t.Fatalf("Error creating Client repository: %v", err)
@@ -50,13 +56,18 @@ func TestInsertClientCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Client tables: %v", err)
 	}
 	ClientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
-	ClientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
+	_, err = ClientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
 	if err != nil {
 		t.Fatalf("Error inserting Client: %v", err)
 	}
@@ -66,7 +77,12 @@ func TestGetClientCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Client tables: %v", err)
@@ -96,7 +112,12 @@ func TestGetClientIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Client tables: %v", err)
@@ -108,12 +129,34 @@ func TestGetClientIncorrect(t *testing.T) {
 	}
 }
 
+func CheckClient(
+	t *testing.T,
+	Client *types.DBClientData,
+	ClientID int64,
+	SummaryRating int64,
+	ReviewsCount int64,
+) {
+	if Client.ID != ClientID {
+		t.Fatalf("Client not found: %v", Client)
+	}
+	if Client.SummaryRating != SummaryRating {
+		t.Fatalf("Client not found: %v", Client)
+	}
+	if Client.ReviewsCount != ReviewsCount {
+		t.Fatalf("Client not found: %v", Client)
+	}
+}
 func TestUpdateClientPersonalDataCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Client tables: %v", err)
@@ -134,15 +177,7 @@ func TestUpdateClientPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting Client: %v", err)
 	}
-	if Client.ID != ClientID {
-		t.Fatalf("Client not found: %v", Client)
-	}
-	if Client.SummaryRating != tu.TestClient.SummaryRating {
-		t.Fatalf("Client not found: %v", Client)
-	}
-	if Client.ReviewsCount != tu.TestClient.ReviewsCount {
-		t.Fatalf("Client not found: %v", Client)
-	}
+	CheckClient(t, Client, ClientID, tu.TestClient.SummaryRating, tu.TestClient.ReviewsCount)
 }
 
 func TestUpdateClientPersonalDataIncorrect(t *testing.T) {
@@ -150,7 +185,12 @@ func TestUpdateClientPersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -167,7 +207,12 @@ func TestUpdateClientPasswordCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -188,7 +233,12 @@ func TestUpdateClientPasswordIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupClientTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)

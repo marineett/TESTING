@@ -33,7 +33,11 @@ func RepetitorGetHandlerV2(repetitorService service_logic.IRepetitorService) htt
 			return
 		}
 		serverRepetitor := types.MapperRepetitorProfileServiceToServerV2(repetitor)
-		json.NewEncoder(w).Encode(serverRepetitor)
+		err = json.NewEncoder(w).Encode(serverRepetitor)
+		if err != nil {
+			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -67,7 +71,11 @@ func RepetitorAssignContractHandlerV2(contractService service_logic.IContractSer
 			return
 		}
 		resp := types.MapperContractServiceToServerV2(contract)
-		json.NewEncoder(w).Encode(resp)
+		err = json.NewEncoder(w).Encode(resp)
+		if err != nil {
+			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -133,7 +141,11 @@ func RepetitorGetProfileHandler(repetitorService service_logic.IRepetitorService
 		logger.Printf("Repetitor retrieved: %v", repetitor)
 		serverRepetitor := types.MapperRepetitorProfileServiceToServer(repetitor)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverRepetitor)
+		err = json.NewEncoder(w).Encode(serverRepetitor)
+		if err != nil {
+			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -188,7 +200,11 @@ func RepetitorGetContractsHandler(contractService service_logic.IContractService
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -239,7 +255,11 @@ func RepetitorGetAvailableContractsHandler(
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 

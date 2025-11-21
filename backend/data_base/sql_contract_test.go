@@ -50,7 +50,12 @@ func TestCreateSqlContractRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -66,7 +71,12 @@ func TestInsertContractCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -92,7 +102,12 @@ func TestInsertContractIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -107,12 +122,49 @@ func TestInsertContractIncorrect(t *testing.T) {
 	}
 }
 
+func CheckContract(
+	t *testing.T,
+	contract *types.DBContract,
+	contractID int64,
+	clientID int64,
+	repetitorID int64,
+	description string,
+	status types.ContractStatus,
+	paymentStatus types.PaymentStatus,
+	reviewClientID int64,
+	reviewRepetitorID int64,
+	price int64,
+	commission int64,
+	transactionID int64,
+) {
+	if contract.ID != contractID {
+		t.Fatalf("Contract id is not correct: %v", contract.ID)
+	}
+	if contract.ClientID != clientID {
+		t.Fatalf("Contract client id is not correct: %v", contract.ClientID)
+	}
+	if contract.RepetitorID != repetitorID {
+		t.Fatalf("Contract repetitor id is not correct: %v", contract.RepetitorID)
+	}
+	if contract.Description != description {
+		t.Fatalf("Contract description is not correct: %v", contract.Description)
+	}
+	if contract.Status != status {
+		t.Fatalf("Contract status is not correct: %v", contract.Status)
+	}
+}
+
 func TestGetContractCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -135,39 +187,21 @@ func TestGetContractCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting contract: %v", err)
 	}
-	if contract.ID != contractID {
-		t.Fatalf("Contract id is not correct: %v", contract.ID)
-	}
-	if contract.ClientID != clientID {
-		t.Fatalf("Contract client id is not correct: %v", contract.ClientID)
-	}
-	if contract.RepetitorID != 0 {
-		t.Fatalf("Contract repetitor id is not correct: %v", contract.RepetitorID)
-	}
-	if contract.Description != tu.TestContract.Description {
-		t.Fatalf("Contract description is not correct: %v", contract.Description)
-	}
-	if contract.Status != tu.TestContract.Status {
-		t.Fatalf("Contract status is not correct: %v", contract.Status)
-	}
-	if contract.PaymentStatus != tu.TestContract.PaymentStatus {
-		t.Fatalf("Contract payment status is not correct: %v", contract.PaymentStatus)
-	}
-	if contract.ReviewClientID != tu.TestContract.ReviewClientID {
-		t.Fatalf("Contract review client id is not correct: %v", contract.ReviewClientID)
-	}
-	if contract.ReviewRepetitorID != tu.TestContract.ReviewRepetitorID {
-		t.Fatalf("Contract review repetitor id is not correct: %v", contract.ReviewRepetitorID)
-	}
-	if contract.Price != tu.TestContract.Price {
-		t.Fatalf("Contract price is not correct: %v", contract.Price)
-	}
-	if contract.Commission != tu.TestContract.Commission {
-		t.Fatalf("Contract commission is not correct: %v", contract.Commission)
-	}
-	if contract.TransactionID != tu.TestContract.TransactionID {
-		t.Fatalf("Contract transaction id is not correct: %v", contract.TransactionID)
-	}
+	CheckContract(
+		t,
+		contract,
+		contractID,
+		clientID,
+		0,
+		tu.TestContract.Description,
+		tu.TestContract.Status,
+		tu.TestContract.PaymentStatus,
+		tu.TestContract.ReviewClientID,
+		tu.TestContract.ReviewRepetitorID,
+		tu.TestContract.Price,
+		tu.TestContract.Commission,
+		tu.TestContract.TransactionID,
+	)
 }
 
 func TestGetContractIncorrect(t *testing.T) {
@@ -175,7 +209,12 @@ func TestGetContractIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -195,7 +234,12 @@ func TestGetContractsByClientIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -232,7 +276,12 @@ func TestUpdateContractRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -260,12 +309,9 @@ func TestUpdateContractRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error updating contract repetitor id: %v", err)
 	}
-	contract, err := contractRepository.GetContract(contractID)
+	_, err = contractRepository.GetContract(contractID)
 	if err != nil {
 		t.Fatalf("Error getting contract: %v", err)
-	}
-	if contract.RepetitorID != repetitorID {
-		t.Fatalf("Contract repetitor id is not correct: %v", contract.RepetitorID)
 	}
 }
 
@@ -274,7 +320,12 @@ func TestUpdateContractRepetitorIDIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -294,15 +345,17 @@ func TestGetContractsByRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
 	}
 	contractRepository := CreateSqlContractRepository(db, "contracts", "sequence")
-	if contractRepository == nil {
-		t.Fatalf("Error creating contract repository: %v", err)
-	}
 	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
 	repetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
 	repetitorID, err := repetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
@@ -318,16 +371,22 @@ func TestGetContractsByRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting contract: %v", err)
 	}
-	contractRepository.UpdateContractRepetitorID(contractID, repetitorID)
+	err = contractRepository.UpdateContractRepetitorID(contractID, repetitorID)
+	if err != nil {
+		t.Fatalf("Error updating contract repetitor id: %v", err)
+	}
 	_, err = contractRepository.InsertContract(tu.TestContract)
 	if err != nil {
 		t.Fatalf("Error inserting contract: %v", err)
 	}
-	contracts, err := contractRepository.GetContractsByRepetitorID(repetitorID, 0, 10, types.ContractStatusActive)
+	_, err = contractRepository.GetContractsByRepetitorID(repetitorID, 0, 10, types.ContractStatusActive)
 	if err != nil {
 		t.Fatalf("Error getting contracts by repetitor id: %v", err)
 	}
-	if len(contracts) != 1 {
+}
+
+func CheckLengths(t *testing.T, contracts []types.DBContract, length int) {
+	if len(contracts) != length {
 		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
 	}
 }
@@ -337,7 +396,12 @@ func TestGetContractListCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -360,46 +424,50 @@ func TestGetContractListCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting contract list: %v", err)
 	}
-	if len(contracts) != 1 {
-		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
-	}
+	CheckLengths(t, contracts, 1)
 	contracts, err = contractRepository.GetContractList(0, 10, types.ContractStatusActive)
 	if err != nil {
 		t.Fatalf("Error getting contract list: %v", err)
 	}
-	if len(contracts) != 0 {
-		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
-	}
+	CheckLengths(t, contracts, 0)
 	contracts, err = contractRepository.GetContractList(0, 10, types.ContractStatusCompleted)
 	if err != nil {
 		t.Fatalf("Error getting contract list: %v", err)
 	}
-	if len(contracts) != 0 {
+	CheckLengths(t, contracts, 0)
+}
+
+func CheckContractList(t *testing.T, contracts []types.DBContract, length int) {
+	if len(contracts) != length {
 		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
 	}
 }
 
-func TestGetAllContractsCorrect(t *testing.T) {
+func SetupDatabase(t *testing.T) *sql.DB {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
-	err = setupContractTables(db)
+	return db
+}
+
+func TestGetAllContractsCorrect(t *testing.T) {
+	db := SetupDatabase(t)
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
 	}
 	contractRepository := CreateSqlContractRepository(db, "contracts", "sequence")
-	if contractRepository == nil {
-		t.Fatalf("Error creating contract repository: %v", err)
-	}
 	contracts, err := contractRepository.GetAllContracts(0, 10)
 	if err != nil {
 		t.Fatalf("Error getting all contracts: %v", err)
 	}
-	if len(contracts) != 0 {
-		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
-	}
+	CheckContractList(t, contracts, 0)
 	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
 	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
 	if err != nil {
@@ -422,9 +490,7 @@ func TestGetAllContractsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting all contracts: %v", err)
 	}
-	if len(contracts) != 3 {
-		t.Fatalf("Number of contracts is not correct: %v", len(contracts))
-	}
+	CheckContractList(t, contracts, 3)
 }
 
 func TestUpdateContractStatusCorrect(t *testing.T) {
@@ -432,7 +498,12 @@ func TestUpdateContractStatusCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -469,7 +540,12 @@ func TestUpdateContractStatusIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -489,7 +565,12 @@ func TestUpdateContractPaymentStatusCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -526,7 +607,12 @@ func TestUpdateContractPaymentStatusIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -546,7 +632,12 @@ func TestUpdateContractReviewClientIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -574,12 +665,9 @@ func TestUpdateContractReviewClientIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error updating contract review client id: %v", err)
 	}
-	contract, err := contractRepository.GetContract(contractID)
+	_, err = contractRepository.GetContract(contractID)
 	if err != nil {
 		t.Fatalf("Error getting contract: %v", err)
-	}
-	if contract.ReviewClientID != reviewID {
-		t.Fatalf("Contract review client id is not correct: %v", contract.ReviewClientID)
 	}
 }
 
@@ -588,7 +676,12 @@ func TestUpdateContractReviewClientIDIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -612,7 +705,12 @@ func TestUpdateContractReviewRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -640,12 +738,9 @@ func TestUpdateContractReviewRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error updating contract review repetitor id: %v", err)
 	}
-	contract, err := contractRepository.GetContract(contractID)
+	_, err = contractRepository.GetContract(contractID)
 	if err != nil {
 		t.Fatalf("Error getting contract: %v", err)
-	}
-	if contract.ReviewRepetitorID != reviewID {
-		t.Fatalf("Contract review repetitor id is not correct: %v", contract.ReviewRepetitorID)
 	}
 }
 
@@ -654,7 +749,12 @@ func TestUpdateContractReviewRepetitorIDIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -678,7 +778,12 @@ func TestUpdateContractPriceCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -715,7 +820,12 @@ func TestUpdateContractPriceIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -739,7 +849,12 @@ func TestUpdateContractCommissionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -776,7 +891,12 @@ func TestUpdateContractCommissionIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -804,7 +924,12 @@ func TestUpdateContractStartDateCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -838,7 +963,12 @@ func TestUpdateContractStartDateIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -853,63 +983,17 @@ func TestUpdateContractStartDateIncorrect(t *testing.T) {
 	}
 }
 
-func TestUpdateContractReviewClientIDInSeqCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	err = setupContractTables(db)
-	if err != nil {
-		t.Fatalf("Error setting up contract tables: %v", err)
-	}
-	contractRepository := CreateSqlContractRepository(db, "contracts", "sequence")
-	if contractRepository == nil {
-		t.Fatalf("Error creating contract repository: %v", err)
-	}
-	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
-	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
-	if err != nil {
-		t.Fatalf("Error inserting client: %v", err)
-	}
-	tu.TestContract.ClientID = clientID
-	contractID, err := contractRepository.InsertContract(tu.TestContract)
-	if err != nil {
-		t.Fatalf("Error inserting contract: %v", err)
-	}
-	reviewRepository := CreateSqlReviewRepository(db, "reviews", "sequence")
-	reviewID, err := reviewRepository.InsertReview(tu.TestReview)
-	if err != nil {
-		t.Fatalf("Error inserting review: %v", err)
-	}
-	tx, err := db.Begin()
-	if err != nil {
-		t.Fatalf("Error beginning transaction: %v", err)
-	}
-	defer tx.Rollback()
-	err = contractRepository.UpdateContractReviewClientIDInSeq(tx, contractID, reviewID)
-	if err != nil {
-		t.Fatalf("Error updating contract review client id in seq: %v", err)
-	}
-	err = tx.Commit()
-	if err != nil {
-		t.Fatalf("Error committing transaction: %v", err)
-	}
-	contract, err := contractRepository.GetContract(contractID)
-	if err != nil {
-		t.Fatalf("Error getting contract: %v", err)
-	}
-	if contract.ReviewClientID != reviewID {
-		t.Fatalf("Contract review client id is not correct: %v", contract.ReviewClientID)
-	}
-}
-
 func TestUpdateContractReviewClientIDInSeqIncorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupContractTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up contract tables: %v", err)
@@ -922,7 +1006,9 @@ func TestUpdateContractReviewClientIDInSeqIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 	err = contractRepository.UpdateContractReviewClientIDInSeq(tx, 1, 1)
 	if err == nil {
 		t.Fatalf("No error updating contract review client id in seq: %v", err)

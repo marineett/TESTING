@@ -31,7 +31,11 @@ func AdminGetProfileHandlerV2(adminService service_logic.IAdminService) http.Han
 			return
 		}
 		serverAdminProfile := *types.MapperAdminProfileServiceToServer(adminProfile)
-		json.NewEncoder(w).Encode(serverAdminProfile)
+		err = json.NewEncoder(w).Encode(serverAdminProfile)
+		if err != nil {
+			http.Error(w, "Error encoding admin profile", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -71,8 +75,10 @@ func AdminGetProfileHandler(adminService service_logic.IAdminService, logger *lo
 		}
 		serverAdminProfile := types.MapperAdminProfileServiceToServer(adminProfile)
 		logger.Printf("Got admin profile: %v", serverAdminProfile)
-		json.NewEncoder(w).Encode(serverAdminProfile)
+		err = json.NewEncoder(w).Encode(serverAdminProfile)
+		if err != nil {
+			http.Error(w, "Error encoding admin profile", http.StatusInternalServerError)
+			return
+		}
 	}
 }
-
-// moved V1 moderator handlers to moderator.go

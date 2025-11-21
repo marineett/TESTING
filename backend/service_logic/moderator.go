@@ -81,10 +81,7 @@ func (s *ModeratorService) UpdateModeratorPersonalData(user_id int64, personal_d
 }
 
 func (s *ModeratorService) UpdateModeratorPassword(user_id int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.moderatorRepository.UpdateModeratorPassword(user_id, types.DBAuthData{
-		Login:    authData.Login,
-		Password: authData.Password,
-	}, newPassword)
+	return s.moderatorRepository.UpdateModeratorPassword(user_id, *types.MapperAuthDataServiceToDB(&authData), newPassword)
 }
 
 func (s *ModeratorService) GetModeratorProfile(user_id int64) (*types.ServiceModeratorProfile, error) {

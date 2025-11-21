@@ -87,7 +87,21 @@ type APISuite struct {
 }
 
 func (s *APISuite) BeforeAll(t provider.T) {
-	s.c = NewAPIClient("http://backend:8000")
+	base := "http://localhost:8000"
+	fmt.Printf("[E2E] Using backend URL: %s\n", base)
+	s.c = NewAPIClient(base)
+
+	// Test connection immediately
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	resp, err := s.c.makeRequest(ctx, "GET", "/api/health", nil)
+	if err != nil {
+		t.Fatalf("Failed to connect to backend at %s: %v", base, err)
+	}
+	if resp != nil {
+		resp.Body.Close()
+		fmt.Printf("[E2E] Successfully connected to backend\n")
+	}
 }
 
 func randHex(nBytes int) string {

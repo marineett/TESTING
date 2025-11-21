@@ -253,7 +253,10 @@ func (r *TestAdminRepository) UpdateAdminPersonalData(adminId int64, personalDat
 	if _, ok := r.data[adminId]; !ok {
 		return errors.New("admin not found")
 	}
-	r.personalDataRepository.UpdatePersonalData(adminId, personalData)
+	err := r.personalDataRepository.UpdatePersonalData(adminId, personalData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -261,7 +264,10 @@ func (r *TestAdminRepository) UpdateAdminPassword(adminId int64, authData types.
 	if _, ok := r.data[adminId]; !ok {
 		return errors.New("admin not found")
 	}
-	r.authRepository.ChangePassword(adminId, authData, newPassword)
+	err := r.authRepository.ChangePassword(adminId, authData, newPassword)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -344,7 +350,10 @@ func (r *TestModeratorRepository) UpdateModeratorPersonalData(moderatorId int64,
 	if _, ok := r.data[moderatorId]; !ok {
 		return errors.New("moderator not found")
 	}
-	r.personalDataRepository.UpdatePersonalData(moderatorId, personalData)
+	err := r.personalDataRepository.UpdatePersonalData(moderatorId, personalData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -352,7 +361,10 @@ func (r *TestModeratorRepository) UpdateModeratorPassword(moderatorId int64, aut
 	if _, ok := r.data[moderatorId]; !ok {
 		return errors.New("moderator not found")
 	}
-	r.authRepository.ChangePassword(moderatorId, authData, newPassword)
+	err := r.authRepository.ChangePassword(moderatorId, authData, newPassword)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -436,7 +448,10 @@ func (r *TestRepetiorRepository) UpdateRepetitorPersonalData(repetitorId int64, 
 	if _, ok := r.data[repetitorId]; !ok {
 		return errors.New("repetitor not found")
 	}
-	r.personalDataRepository.UpdatePersonalData(repetitorId, personalData)
+	err := r.personalDataRepository.UpdatePersonalData(repetitorId, personalData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -444,7 +459,10 @@ func (r *TestRepetiorRepository) UpdateRepetitorPassword(repetitorId int64, auth
 	if _, ok := r.data[repetitorId]; !ok {
 		return errors.New("repetitor not found")
 	}
-	r.authRepository.ChangePassword(repetitorId, authData, newPassword)
+	err := r.authRepository.ChangePassword(repetitorId, authData, newPassword)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -511,7 +529,10 @@ func (r *TestClientRepository) UpdateClientPersonalData(clientId int64, personal
 	if _, ok := r.data[clientId]; !ok {
 		return errors.New("client not found")
 	}
-	r.personalDataRepository.UpdatePersonalData(clientId, personalData)
+	err := r.personalDataRepository.UpdatePersonalData(clientId, personalData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -519,7 +540,10 @@ func (r *TestClientRepository) UpdateClientPassword(clientId int64, authData typ
 	if _, ok := r.data[clientId]; !ok {
 		return errors.New("client not found")
 	}
-	r.authRepository.ChangePassword(clientId, authData, newPassword)
+	err := r.authRepository.ChangePassword(clientId, authData, newPassword)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

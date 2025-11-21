@@ -4,6 +4,7 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -23,6 +24,28 @@ func SetupRegistrationRouterV2(
 	router := mux.NewRouter()
 	router.HandleFunc(REGISTRATION_API_V2, RegistrationHandlerV2(clientService, moderatorService, adminService, repetitorService, authService)).Methods("POST")
 	return router
+}
+
+func ChooseRole(
+	role string,
+	clientService service_logic.IClientService,
+	moderatorService service_logic.IModeratorService,
+	adminService service_logic.IAdminService,
+	repetitorService service_logic.IRepetitorService,
+	registrationData types.ServerRegistrationDataV2,
+) error {
+	switch role {
+	case "client":
+		return clientService.CreateClient(*types.MapperRegistrationV2ToServiceInitClient(&registrationData))
+	case "moderator":
+		return moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData))
+	case "admin":
+		return adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData))
+	case "repetitor":
+		return repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData))
+	default:
+		return fmt.Errorf("invalid role: %s", role)
+	}
 }
 
 func RegistrationHandlerV2(
@@ -47,19 +70,7 @@ func RegistrationHandlerV2(
 			http.Error(w, "Invalid request format", http.StatusBadRequest)
 			return
 		}
-		switch registrationData.Role {
-		case "client":
-			err = clientService.CreateClient(*types.MapperRegistrationV2ToServiceInitClient(&registrationData))
-		case "moderator":
-			err = moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData))
-		case "admin":
-			err = adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData))
-		case "repetitor":
-			err = repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData))
-		default:
-			http.Error(w, "Invalid user type", http.StatusBadRequest)
-			return
-		}
+		err = ChooseRole(registrationData.Role, clientService, moderatorService, adminService, repetitorService, registrationData)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

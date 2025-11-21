@@ -3,6 +3,7 @@ package data_base
 import (
 	"data_base_project/types"
 	"database/sql"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -79,7 +80,12 @@ func (r *SqlLessonRepository) GetLessons(contractID int64, from int64, size int6
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	lessons := []types.DBLesson{}
 	for rows.Next() {
 		var lesson types.DBLesson

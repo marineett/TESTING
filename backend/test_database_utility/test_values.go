@@ -106,6 +106,8 @@ var (
 		Title:       "Test Resume",
 		Description: "Test Description",
 		Prices:      map[string]int{"Test": 100},
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 	TestResumePrices = map[string]int{"Test": 100}
 )

@@ -2,6 +2,7 @@ package data_base
 
 import (
 	tu "data_base_project/test_database_utility"
+	"data_base_project/types"
 	"database/sql"
 	"fmt"
 	"testing"
@@ -44,7 +45,12 @@ func TestCreateSqlLessonRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupLessonTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up lesson tables: %v", err)
@@ -60,7 +66,12 @@ func TestInsertLessonCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupLessonTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up lesson tables: %v", err)
@@ -98,7 +109,12 @@ func TestInsertLessonIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupLessonTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up lesson tables: %v", err)
@@ -113,13 +129,21 @@ func TestInsertLessonIncorrect(t *testing.T) {
 	}
 }
 
-func TestGetLessonsCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
+func CheckLengthsLessons(t *testing.T, lessons []types.DBLesson, length int) {
+	if len(lessons) != length {
+		t.Fatalf("Number of lessons is not correct: %v", len(lessons))
 	}
-	defer db.Close()
-	err = setupLessonTables(db)
+}
+
+func TestGetLessonsCorrect(t *testing.T) {
+	db := SetupDatabase(t)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupLessonTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up lesson tables: %v", err)
 	}
@@ -143,9 +167,6 @@ func TestGetLessonsCorrect(t *testing.T) {
 	}
 	tu.TestLesson.ContractID = contractID
 	lessonRepository := CreateSqlLessonRepository(db, "lesson", "contract", "transaction", "sequence")
-	if lessonRepository == nil {
-		t.Fatalf("Error creating lesson repository: %v", err)
-	}
 	_, err = lessonRepository.InsertLesson(tu.TestLesson)
 	if err != nil {
 		t.Fatalf("Error inserting lesson: %v", err)
@@ -158,7 +179,5 @@ func TestGetLessonsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting lessons: %v", err)
 	}
-	if len(lessons) != 2 {
-		t.Fatalf("Lessons list is not correct: %v", lessons)
-	}
+	CheckLengthsLessons(t, lessons, 2)
 }

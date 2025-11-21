@@ -67,7 +67,9 @@ func (r *SqlRepetitorRepository) InsertRepetitor(repetitor types.DBRepetitorData
 	if err != nil {
 		return 0, err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 	personalData.ID, err = r.personalDataRepository.InsertPersonalDataInSeq(tx, personalData)
 	if err != nil {
 		return 0, err

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
 	"github.com/gorilla/mux"
 )
 
@@ -34,7 +35,11 @@ func ClientGetHandlerV2(clientService service_logic.IClientService) http.Handler
 			return
 		}
 		serverClient := types.MapperClientProfileServiceToServerV2(client)
-		json.NewEncoder(w).Encode(serverClient)
+		err = json.NewEncoder(w).Encode(serverClient)
+		if err != nil {
+			http.Error(w, "Error encoding client", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -92,7 +97,11 @@ func ClientGetProfileHandler(clientService service_logic.IClientService, logger 
 		serverClient := types.MapperClientProfileServiceToServer(client)
 		logger.Printf("Client retrieved: %v", serverClient)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverClient)
+		err = json.NewEncoder(w).Encode(serverClient)
+		if err != nil {
+			http.Error(w, "Error encoding client", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -126,7 +135,11 @@ func ClientCreateContractHandler(contractService service_logic.IContractService,
 			return
 		}
 		logger.Printf("Contract created with ID: %d", contractID)
-		json.NewEncoder(w).Encode(contractID)
+		err = json.NewEncoder(w).Encode(contractID)
+		if err != nil {
+			http.Error(w, "Error encoding contract ID", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -183,7 +196,11 @@ func ClientGetContractsHandler(contractService service_logic.IContractService, l
 		}
 		logger.Printf("Contracts retrieved: %v", serverContracts)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -225,7 +242,11 @@ func ClientMakeReviewHandler(contractService service_logic.IContractService, log
 			return
 		}
 		logger.Printf("Review made: %v", review)
-		json.NewEncoder(w).Encode(review)
+		err = json.NewEncoder(w).Encode(review)
+		if err != nil {
+			http.Error(w, "Error encoding review", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }

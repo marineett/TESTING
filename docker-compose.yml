@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - app-network
+      - backend
 
   backend:
     build:
@@ -33,12 +33,9 @@ services:
       BACKEND_PORT: "8000"
       JWT_SECRET: "dev-secret"
     networks:
-      - app-network
+      - backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./logs:/build/logs
-      - ./README.md:/build/README.md:ro
 
 
   # frontend:
@@ -63,10 +60,10 @@ services:
   #   depends_on:
   #     - backend
   #   networks:
-  #     - app-network
+  #     - backend
 
 networks:
-  app-network:
+  backend:
+    name: backend
     driver: bridge
-    # No hardcoded name; Compose will create <project>_app-network per run
 

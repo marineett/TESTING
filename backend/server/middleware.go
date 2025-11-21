@@ -24,14 +24,22 @@ func JWTAuthMiddleware(next http.Handler) http.Handler {
 		authz := r.Header.Get("Authorization")
 		if !strings.HasPrefix(strings.ToLower(authz), "bearer ") {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(ERR_MSG_NO_TOKEN))
+			_, err := w.Write([]byte(ERR_MSG_NO_TOKEN))
+			if err != nil {
+				http.Error(w, "Error writing data", http.StatusInternalServerError)
+				return
+			}
 			return
 		}
 		token := strings.TrimSpace(authz[len("Bearer "):])
 		claims, err := verifyJWT(token, os.Getenv("JWT_SECRET"))
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(ERR_MSG_BAD_TOKEN))
+			_, err = w.Write([]byte(ERR_MSG_BAD_TOKEN))
+			if err != nil {
+				http.Error(w, "Error writing data", http.StatusInternalServerError)
+				return
+			}
 			return
 		}
 		ctx := r.Context()

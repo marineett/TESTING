@@ -31,7 +31,7 @@ var (
 
 const (
 	defaultBaseURL = "http://backend:8000"
-	defaultOutDir  = "/metrics/degradation_many_user_test"
+	defaultOutDir  = "/metrics/degradation_find_test"
 )
 
 var hardcodedBatchSizes = []int{
@@ -204,6 +204,16 @@ func main() {
 	batchSizes := hardcodedBatchSizes
 	messagesSize := 150
 
+	// Create output directory and write START_TS immediately to capture entire test period
+	mustMkdirAll(outputDir)
+	tsPath := outputDir + "/timestamps.env"
+	startTs := time.Now().Unix()
+	if err := os.WriteFile(tsPath, []byte(fmt.Sprintf("START_TS=%d\n", startTs)), 0o644); err != nil {
+		fmt.Printf("ERROR: failed to write timestamps file: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("Created timestamps file: %s (START_TS=%d)\n", tsPath, startTs)
+
 	if bs := os.Getenv("BATCH_SIZE"); bs != "" {
 		sz, err := strconv.Atoi(bs)
 		if err != nil || sz <= 0 {
@@ -225,7 +235,6 @@ func main() {
 			}
 		}
 
-		mustMkdirAll(outputDir)
 		f, err := os.Create(latencyFile)
 		if err != nil {
 			fmt.Printf("ERROR: create latency file: %v\n", err)
@@ -241,6 +250,23 @@ func main() {
 			fmt.Printf("ERROR: testBatch failed for size %d: %v\n", sz, err)
 			os.Exit(1)
 		}
+
+		// Optional post-test sleep to let Prometheus scrape final samples
+		time.Sleep(11 * time.Second)
+
+		// Append END_TS
+		endTs := time.Now().Unix()
+		if fh, err := os.OpenFile(tsPath, os.O_WRONLY|os.O_APPEND, 0o644); err == nil {
+			if _, err := fh.WriteString(fmt.Sprintf("END_TS=%d\n", endTs)); err != nil {
+				fmt.Printf("WARNING: failed to append END_TS: %v\n", err)
+			} else {
+				fmt.Printf("Appended END_TS to timestamps file\n")
+			}
+			_ = fh.Close()
+		} else {
+			fmt.Printf("WARNING: failed to open timestamps file for append: %v\n", err)
+		}
+
 		// Emit result
 		res := result{SelectedIndex: 0, SelectedSize: sz, Timestamp: time.Now().Unix()}
 		bs, _ := json.Marshal(res)
@@ -264,7 +290,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	mustMkdirAll(outputDir)
+
 	f, err := os.Create(latencyFile)
 	if err != nil {
 		fmt.Printf("ERROR: create latency file: %v\n", err)
@@ -281,6 +307,23 @@ func main() {
 		os.Exit(1)
 	}
 	selected := batchSizes[idx]
+	
+	// Optional post-test sleep to let Prometheus scrape final samples
+	time.Sleep(11 * time.Second)
+
+	// Append END_TS
+	endTs := time.Now().Unix()
+	if fh, err := os.OpenFile(tsPath, os.O_WRONLY|os.O_APPEND, 0o644); err == nil {
+		if _, err := fh.WriteString(fmt.Sprintf("END_TS=%d\n", endTs)); err != nil {
+			fmt.Printf("WARNING: failed to append END_TS: %v\n", err)
+		} else {
+			fmt.Printf("Appended END_TS to timestamps file\n")
+		}
+		_ = fh.Close()
+	} else {
+		fmt.Printf("WARNING: failed to open timestamps file for append: %v\n", err)
+	}
+
 	res := result{SelectedIndex: idx, SelectedSize: selected, Timestamp: time.Now().Unix()}
 	bsBytes, _ := json.Marshal(res)
 	_ = os.WriteFile(resultFile, bsBytes, 0o644)

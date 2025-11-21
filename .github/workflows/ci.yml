@@ -7,7 +7,45 @@ on:
     branches: [main, master, lab1, lab2]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Install linters
+        working-directory: backend
+        run: |
+          # golangci-lint v2 (config uses version: 2)
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+          # gocyclo for standalone complexity check
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Run golangci-lint
+        working-directory: backend
+        run: golangci-lint run
+
+      - name: Run gocyclo
+        working-directory: backend
+        run: gocyclo -over 10 .
+
   unit-tests:
+    needs: lint
     runs-on: ubuntu-latest
     continue-on-error: true
     outputs:
@@ -40,6 +78,23 @@ jobs:
             ~/.cache/go-build
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-go-
+
+      - name: Install linters
+        working-directory: backend
+        run: |
+          # golangci-lint v2 (config uses version: 2)
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+          # gocyclo for standalone complexity check
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Run golangci-lint
+        working-directory: backend
+        run: golangci-lint run
+
+      - name: Run gocyclo
+        working-directory: backend
+        run: gocyclo -over 10 .
 
       - name: Run unit tests (both modules)
         id: run_unit
@@ -151,154 +206,46 @@ jobs:
     if: ${{ needs.integration-tests.outputs.tests_ok == 'true' }}
     runs-on: ubuntu-latest
     continue-on-error: true
+    outputs:
+      tests_ok: ${{ steps.run_e2e.outputs.tests_ok }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set compose project name
-        run: echo "COMPOSE_PROJECT_NAME=ci_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
-
-      - name: Start services (reuse cache)
-        run: docker compose up -d --build
-
-      - name: Wait for backend health
+      - name: Install Apache Arrow C headers (Ubuntu)
         run: |
-          for i in {1..60}; do
-            if curl -sf http://localhost:8000/api/health >/dev/null; then
-              echo "Backend is healthy"; exit 0; fi
-            echo "Waiting for backend ($i/60)..."; sleep 2;
-          done
-          echo "Backend did not become healthy in time" >&2
-          docker compose logs backend || true
-          exit 1
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
 
-      - name: Build test runner image (e2e only)
-        run: docker build -f e2e/Dockerfile.test-runner -t e2e-test-runner:latest .
-
-      - name: Install tcpdump on host
-        run: sudo apt-get update && sudo apt-get install -y tcpdump
-
-      - name: Run e2e tests with host bridge capture
-        env:
-          COMPOSE_PROJECT_NAME: ${{ env.COMPOSE_PROJECT_NAME }}
-        run: |
-          NET="${COMPOSE_PROJECT_NAME}_app-network"
-          echo "Using network: $NET"
-          mkdir -p pcap
-          echo "Resolving backend container ID"
-          BACKEND_CID=$(docker ps \
-            --filter "label=com.docker.compose.service=backend" \
-            --filter "label=com.docker.compose.project=${COMPOSE_PROJECT_NAME}" \
-            --format "{{.ID}}" | head -n1)
-          echo "Backend CID: $BACKEND_CID"
-          echo "Starting inside-backend tcpdump sidecar"
-          docker pull nicolaka/netshoot:latest >/dev/null 2>&1 || true
-          docker run -d --name capture-backend \
-            --network container:${BACKEND_CID} \
-            -v "${GITHUB_WORKSPACE}/pcap:/captures" \
-            nicolaka/netshoot:latest \
-            tcpdump -i any -s 0 -U -w /captures/backend.pcap tcp port 8000 || true
-          BRIDGE_ID=$(docker network inspect "$NET" -f '{{.Id}}')
-          IFACE="br-${BRIDGE_ID:0:12}"
-          echo "Capturing on host bridge: $IFACE"
-          sudo tcpdump -i "$IFACE" -s 0 -U -w pcap/e2e-bridge.pcap &
-          TP=$!
-          docker run --rm --network "$NET" \
-            -v "${GITHUB_WORKSPACE}:/workspace" \
-            -e BACKEND_URL=http://backend:8000 \
-            -e RUN_UNIT=false -e RUN_INTEGRATION=false -e RUN_E2E=true \
-            -e ALLURE_OUTPUT_PATH=/workspace/e2e/allure-results \
-            --name e2e-e2e-runner e2e-test-runner:latest
-          EC=$?
-          echo "Stopping inside-backend tcpdump sidecar"
-          docker stop capture-backend >/dev/null 2>&1 || true
-          docker rm capture-backend >/dev/null 2>&1 || true
-          sudo kill -INT $TP >/dev/null 2>&1 || true
-          wait $TP >/dev/null 2>&1 || true
-          exit $EC
-
-      - name: Fix permissions for Allure dir (e2e)
-        if: ${{ always() }}
-        run: |
-          sudo mkdir -p "${GITHUB_WORKSPACE}/e2e"
-          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
-
-      - name: Upload e2e PCAP
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          name: e2e-pcap-${{ github.run_id }}-${{ github.run_attempt }}
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
           path: |
-            pcap/**/*.pcap
-            pcap/backend.pcap
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
 
-      - name: Collect Allure results (e2e)
-        if: ${{ always() }}
+      - name: Run integration tests
+        id: run_integration
         env:
-          PROJECT_ROOT: ${{ github.workspace }}
-          CLEAN: false
-        run: bash e2e/collect-allure.sh
-
-      - name: Upload Allure results (e2e)
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-e2e-${{ github.run_id }}-${{ github.run_attempt }}
-          path: e2e/allure-results
-
-      - name: Teardown
-        if: ${{ always() }}
-        run: docker compose down -v --remove-orphans
-
-  integration-allure-placeholder:
-    needs: unit-tests
-    if: ${{ needs.unit-tests.outputs.tests_ok != 'true' }}
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Create placeholder Allure for integration
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/integration_tests/allure-results
         run: |
-          mkdir -p e2e/allure-results
-          echo "Integration tests were skipped (gated by unit)." > e2e/allure-results/placeholder.txt
-
-      - name: Upload Allure results (integration placeholder)
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-integration-${{ github.run_id }}-${{ github.run_attempt }}
-          path: e2e/allure-results
-
-  e2e-allure-placeholder:
-    needs: [unit-tests, integration-tests]
-    if: ${{ needs.integration-tests.result != 'success' }}
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Create placeholder Allure for e2e
-        run: |
-          mkdir -p e2e/allure-results
-          echo "E2E tests were skipped (gated by integration)." > e2e/allure-results/placeholder.txt
-
-      - name: Fix permissions for Allure dir (e2e placeholder)
-        if: ${{ always() }}
-        run: |
-          sudo mkdir -p "${GITHUB_WORKSPACE}/e2e"
-          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
-
-      - name: Collect Allure results (e2e placeholder)
-        if: ${{ always() }}
-        env:
-          PROJECT_ROOT: ${{ github.workspace }}
-          CLEAN: false
-        run: bash e2e/collect-allure.sh
-
-      - name: Upload Allure results (e2e placeholder)
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-e2e-${{ github.run_id }}-${{ github.run_attempt }}
-          path: e2e/allure-results
+          set +e
+          cd backend
+          go test -v ./integration_tests -run Test -count=1
+          CODE=$?
+          if [ "$CODE" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0

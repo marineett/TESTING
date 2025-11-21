@@ -189,7 +189,12 @@ func (r *SqlContractRepository) GetContractsByRepetitorID(repetitorID int64, fro
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -242,7 +247,12 @@ func (r *SqlContractRepository) GetContractsByClientID(clientID int64, from int6
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -298,7 +308,12 @@ func (r *SqlContractRepository) GetContractList(from int64, size int64, status t
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -352,7 +367,12 @@ func (r *SqlContractRepository) GetAllContracts(from int64, size int64) ([]types
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -423,7 +443,9 @@ func (r *SqlContractRepository) UpdateContractReviewClientID(id int64, reviewCli
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	query := `
 	UPDATE ` + r.contractTable + ` SET review_client_id = $1 WHERE id = $2
@@ -561,7 +583,12 @@ func (r *SqlContractRepository) GetContracts(clientID int64, repetitorID int64, 
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract

@@ -39,7 +39,12 @@ func TestCreateSqlTransactionTable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -55,7 +60,12 @@ func TestInsertTransactionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -84,7 +94,12 @@ func TestInsertTransactionIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -96,13 +111,40 @@ func TestInsertTransactionIncorrect(t *testing.T) {
 	}
 }
 
-func TestGetTransactionCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
+func CheckTransaction(
+	t *testing.T,
+	transaction *types.DBTransaction,
+	transactionID int64,
+	userID int64,
+	amount int64,
+	status types.TransactionStatus,
+	transactionType types.TransactionType,
+) {
+	if transaction.ID != transactionID {
+		t.Fatalf("Transaction id not correct: %v", transaction.ID)
 	}
-	defer db.Close()
-	err = setupTransactionTables(db)
+	if transaction.UserID != userID {
+		t.Fatalf("Transaction user id not correct: %v", transaction.UserID)
+	}
+	if transaction.Amount != amount {
+		t.Fatalf("Transaction amount not correct: %v", transaction.Amount)
+	}
+	if transaction.Status != status {
+		t.Fatalf("Transaction status not correct: %v", transaction.Status)
+	}
+	if transaction.Type != transactionType {
+		t.Fatalf("Transaction type not correct: %v", transaction.Type)
+	}
+}
+func TestGetTransactionCorrect(t *testing.T) {
+	db := SetupDatabase(t)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
 	}
@@ -127,21 +169,15 @@ func TestGetTransactionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting transaction: %v", err)
 	}
-	if transaction.ID != transactionID {
-		t.Fatalf("Transaction id not updated: %v", transaction)
-	}
-	if transaction.UserID != userID {
-		t.Fatalf("Transaction user id not updated: %v", transaction)
-	}
-	if transaction.Amount != tu.TestTransaction.Amount {
-		t.Fatalf("Transaction amount not updated: %v", transaction)
-	}
-	if transaction.Status != tu.TestTransaction.Status {
-		t.Fatalf("Transaction status not updated: %v", transaction)
-	}
-	if transaction.Type != tu.TestTransaction.Type {
-		t.Fatalf("Transaction type not updated: %v", transaction)
-	}
+	CheckTransaction(
+		t,
+		transaction,
+		transactionID,
+		userID,
+		tu.TestTransaction.Amount,
+		tu.TestTransaction.Status,
+		tu.TestTransaction.Type,
+	)
 }
 
 func TestGetTransactionIncorrect(t *testing.T) {
@@ -149,7 +185,12 @@ func TestGetTransactionIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -161,13 +202,21 @@ func TestGetTransactionIncorrect(t *testing.T) {
 	}
 }
 
-func TestGetTransactionsListCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
+func CheckTransactionsLength(t *testing.T, transactions []types.DBTransaction, length int) {
+	if len(transactions) != length {
+		t.Fatalf("Transactions not updated: %v", transactions)
 	}
-	defer db.Close()
-	err = setupTransactionTables(db)
+}
+
+func TestGetTransactionsListCorrect(t *testing.T) {
+	db := SetupDatabase(t)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
 	}
@@ -197,33 +246,9 @@ func TestGetTransactionsListCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("No error getting transaction: %v", err)
 	}
-	if len(list) != 2 {
-		t.Fatalf("Transactions list is not correct: %v", list)
-	}
-	if list[0].UserID != userID {
-		t.Fatalf("Transaction user id not updated: %v", list)
-	}
-	if list[0].Amount != tu.TestTransaction.Amount {
-		t.Fatalf("Transaction amount not updated: %v", list)
-	}
-	if list[0].Status != tu.TestTransaction.Status {
-		t.Fatalf("Transaction status not updated: %v", list)
-	}
-	if list[0].Type != tu.TestTransaction.Type {
-		t.Fatalf("Transaction type not updated: %v", list)
-	}
-	if list[1].UserID != userID {
-		t.Fatalf("Transaction user id not updated: %v", list)
-	}
-	if list[1].Amount != tu.TestTransaction.Amount {
-		t.Fatalf("Transaction amount not updated: %v", list)
-	}
-	if list[1].Status != tu.TestTransaction.Status {
-		t.Fatalf("Transaction status not updated: %v", list)
-	}
-	if list[1].Type != tu.TestTransaction.Type {
-		t.Fatalf("Transaction type not updated: %v", list)
-	}
+	CheckTransactionsLength(t, list, 2)
+	CheckTransaction(t, &list[0], list[0].ID, userID, tu.TestTransaction.Amount, tu.TestTransaction.Status, tu.TestTransaction.Type)
+	CheckTransaction(t, &list[1], list[1].ID, userID, tu.TestTransaction.Amount, tu.TestTransaction.Status, tu.TestTransaction.Type)
 }
 
 func TestInsertPendingContractPaymentTransactionCorrect(t *testing.T) {
@@ -231,7 +256,12 @@ func TestInsertPendingContractPaymentTransactionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -267,7 +297,12 @@ func TestInsertPendingContractPaymentTransactionIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -283,13 +318,34 @@ func TestInsertPendingContractPaymentTransactionIncorrect(t *testing.T) {
 	}
 }
 
-func TestGetPendingContractPaymentTransactionCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
+func CheckPendingContractPaymentTransaction(
+	t *testing.T,
+	PendingContractPaymentTransaction *types.DBPendingContractPaymentTransaction,
+	PendingContractPaymentTransactionID int64,
+	UserID int64,
+	TransactionID int64,
+	Amount int64,
+) {
+	if PendingContractPaymentTransaction.UserID != UserID {
+		t.Fatalf("Pending contract payment transaction user id not updated: %v", PendingContractPaymentTransaction)
 	}
-	defer db.Close()
-	err = setupTransactionTables(db)
+	if PendingContractPaymentTransaction.TransactionID != TransactionID {
+		t.Fatalf("Pending contract payment transaction transaction id not updated: %v", PendingContractPaymentTransaction)
+	}
+	if PendingContractPaymentTransaction.Amount != Amount {
+		t.Fatalf("Pending contract payment transaction amount not updated: %v", PendingContractPaymentTransaction)
+	}
+}
+
+func TestGetPendingContractPaymentTransactionCorrect(t *testing.T) {
+	db := SetupTestDb(t)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
 	}
@@ -321,24 +377,18 @@ func TestGetPendingContractPaymentTransactionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting pending contract payment transaction: %v", err)
 	}
-	if transaction.UserID != userID {
-		t.Fatalf("Transaction user id not updated: %v", transaction)
-	}
-	if transaction.Amount != tu.TestPendingContractPaymentTransaction.Amount {
-		t.Fatalf("Transaction amount not updated: %v", transaction)
-	}
-	if transaction.TransactionID != tu.TestTransaction.ID {
-		t.Fatalf("Transaction transaction id not updated: %v", transaction)
-	}
+	CheckPendingContractPaymentTransaction(t, transaction, transactionID, userID, transactionID, tu.TestPendingContractPaymentTransaction.Amount)
 }
 
 func TestApproveTransactionCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	err = setupTransactionTables(db)
+	db := SetupTestDb(t)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
+	err := setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
 	}
@@ -380,7 +430,12 @@ func TestChangeTransactionStatusCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupTransactionTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)

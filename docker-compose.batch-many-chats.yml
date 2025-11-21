@@ -58,11 +58,12 @@ services:
 
   node-exporter:
     image: prom/node-exporter:v1.8.1
-    pid: host
+    # pid: host  # Not supported on macOS Docker Desktop
     command:
       - "--path.rootfs=/host"
+      - "--no-collector.filesystem.mount-points"
     volumes:
-      - /:/host:ro,rslave
+      - /:/host:ro  # Removed rslave - not supported on macOS
     networks:
       - app-network
 

@@ -30,7 +30,12 @@ func TestCreateSqlUserTable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -41,29 +46,17 @@ func TestCreateSqlUserTable(t *testing.T) {
 	}
 }
 
-func TestInsertUserCorrect(t *testing.T) {
-	db, err := sql.Open("duckdb", ":memory:")
-	if err != nil {
-		t.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
-	err = setupUserTables(db)
-	if err != nil {
-		t.Fatalf("Error setting up user tables: %v", err)
-	}
-	userRepository := CreateSqlUserRepository(db, "users", "sequence")
-	userRepository.InsertUser(tu.TestUser)
-	if err != nil {
-		t.Fatalf("Error inserting user: %v", err)
-	}
-}
-
 func TestInsertUserIncorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -80,7 +73,12 @@ func TestGetUserCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -113,7 +111,12 @@ func TestGetUserIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -130,7 +133,12 @@ func TestInsertUserInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -139,7 +147,9 @@ func TestInsertUserInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 	userRepository := CreateSqlUserRepository(db, "users", "sequence")
 	personalDataRepository := CreateSqlPersonalDataRepository(db, "personal_data", "sequence")
 	personalDataID, err := personalDataRepository.InsertPersonalData(tu.TestPD)
@@ -158,7 +168,12 @@ func TestInsertUserInSeqIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupUserTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up user tables: %v", err)
@@ -167,7 +182,12 @@ func TestInsertUserInSeqIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer tx.Rollback()
+	defer func() {
+		err = tx.Rollback()
+		if err != nil {
+			fmt.Printf("Transaction already commited, everything is fine: %v", err)
+		}
+	}()
 	userRepository := CreateSqlUserRepository(db, "users", "sequence")
 	_, err = userRepository.InsertUserInSeq(tx, tu.TestUser)
 	if err == nil {

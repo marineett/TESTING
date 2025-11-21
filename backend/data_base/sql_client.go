@@ -52,7 +52,9 @@ func (r *SqlClientRepository) InsertClient(client types.DBClientData, personalDa
 	if err != nil {
 		return 0, err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 	personalDataID, err := r.personalDataRepository.InsertPersonalData(personalData)
 	if err != nil {
 		return 0, err

@@ -41,7 +41,11 @@ func UpdateMessageContentHandlerV2(chatService service_logic.IChatService) http.
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(types.MapperMessageServiceToServerV2(updated))
+		err = json.NewEncoder(w).Encode(types.MapperMessageServiceToServerV2(updated))
+		if err != nil {
+			http.Error(w, "Error encoding message", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
