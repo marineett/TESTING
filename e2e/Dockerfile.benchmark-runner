@@ -1,0 +1,46 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    jq \
+    ca-certificates \
+    git \
+    unzip \
+    wget \
+    make \
+    build-essential \
+    cmake \
+    pkg-config \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://go.dev/dl/go1.24.7.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.24.7.linux-amd64.tar.gz && \
+    rm go1.24.7.linux-amd64.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+WORKDIR /workspace
+
+COPY . /workspace
+
+# Pre-fetch go modules to speed up runs
+RUN cd /workspace/backend && go mod download && \
+    cd /workspace/e2e && go mod tidy || true
+
+COPY e2e/run-bench.sh /usr/local/bin/run-bench.sh
+RUN chmod +x /usr/local/bin/run-bench.sh
+
+# Collector script for Prometheus
+COPY monitoring/collect_prometheus.sh /usr/local/bin/collect_prometheus.sh
+RUN chmod +x /usr/local/bin/collect_prometheus.sh
+
+ENV BACKEND_URL=http://backend:8000 \
+    WAIT_MAX_ATTEMPTS=120 \
+    E2E_TEST_REGEX=TestRunAPISuite \
+    POST_TEST_SLEEP=0
+
+ENTRYPOINT ["/usr/local/bin/run-bench.sh"]
+
+

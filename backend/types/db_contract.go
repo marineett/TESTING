@@ -24,6 +24,7 @@ type DBContract struct {
 
 type DBReview struct {
 	ID          int64     `json:"id"`
+	ContractID  int64     `json:"contract_id"`
 	ClientID    int64     `json:"client_id"`
 	RepetitorID int64     `json:"repetitor_id"`
 	Rating      int       `json:"rating"`

@@ -27,6 +27,7 @@ func SqlSetup(db *sql.DB) *data_base.DataBaseModule {
 		os.Getenv("TRANSACTION_TABLE_NAME"),
 		os.Getenv("PENDING_CONTRACT_PAYMENT_TRANSACTIONS_TABLE_NAME"),
 		os.Getenv("LESSON_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	if err != nil {
 		log.Fatalf("Error creating tables: %v", err)
@@ -37,6 +38,7 @@ func SqlSetup(db *sql.DB) *data_base.DataBaseModule {
 		os.Getenv("USER_TABLE_NAME"),
 		os.Getenv("ADMIN_TABLE_NAME"),
 		os.Getenv("AUTH_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	moderatorRepository := data_base.CreateSqlModeratorRepository(
 		db,
@@ -44,6 +46,7 @@ func SqlSetup(db *sql.DB) *data_base.DataBaseModule {
 		os.Getenv("USER_TABLE_NAME"),
 		os.Getenv("MODERATOR_TABLE_NAME"),
 		os.Getenv("AUTH_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	clientRepository := data_base.CreateSqlClientRepository(
 		db,
@@ -51,6 +54,7 @@ func SqlSetup(db *sql.DB) *data_base.DataBaseModule {
 		os.Getenv("USER_TABLE_NAME"),
 		os.Getenv("CLIENT_TABLE_NAME"),
 		os.Getenv("AUTH_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	repetitorRepository := data_base.CreateSqlRepetitorRepository(
 		db,
@@ -60,52 +64,69 @@ func SqlSetup(db *sql.DB) *data_base.DataBaseModule {
 		os.Getenv("AUTH_TABLE_NAME"),
 		os.Getenv("RESUME_TABLE_NAME"),
 		os.Getenv("REVIEW_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	contractRepository := data_base.CreateSqlContractRepository(
 		db,
 		os.Getenv("CONTRACT_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	chatRepository := data_base.CreateSqlChatRepository(
 		db,
 		os.Getenv("CHAT_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	messageRepository := data_base.CreateSqlMessageRepository(
 		db,
 		os.Getenv("MESSAGE_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	resumeRepository := data_base.CreateSqlResumeRepository(
 		db,
 		os.Getenv("RESUME_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	transactionRepository := data_base.CreateSqlTransactionRepository(
 		db,
 		os.Getenv("TRANSACTION_TABLE_NAME"),
 		os.Getenv("PENDING_CONTRACT_PAYMENT_TRANSACTIONS"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	reviewRepository := data_base.CreateSqlReviewRepository(
 		db,
 		os.Getenv("REVIEW_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	authRepository := data_base.CreateSqlAuthRepository(
 		db,
 		os.Getenv("AUTH_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	departmentRepository := data_base.CreateSqlDepartmentRepository(
 		db,
 		os.Getenv("DEPARTMENT_TABLE_NAME"),
 		os.Getenv("HIRE_INFO_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	personalDataRepository := data_base.CreateSqlPersonalDataRepository(
 		db,
 		os.Getenv("PERSONAL_DATA_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	lessonRepository := data_base.CreateSqlLessonRepository(
 		db,
 		os.Getenv("LESSON_TABLE_NAME"),
 		os.Getenv("CONTRACT_TABLE_NAME"),
 		os.Getenv("TRANSACTION_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
+	)
+	userRepository := data_base.CreateSqlUserRepository(
+		db,
+		os.Getenv("USER_TABLE_NAME"),
+		os.Getenv("SEQUENCE_NAME"),
 	)
 	return data_base.CreateDataBaseModule(
+		userRepository,
 		authRepository,
 		adminRepository,
 		moderatorRepository,

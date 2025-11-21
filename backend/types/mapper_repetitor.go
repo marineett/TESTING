@@ -170,3 +170,53 @@ func MapperInitRepetitorServerToService(data *ServerInitRepetitorData) *ServiceI
 		},
 	}
 }
+
+// --- V2 Repetitor mappers ---
+func MapperRepetitorProfileServiceToServerV2(profile *ServiceRepetitorProfile) *ServerRepetitorProfileV2 {
+	if profile == nil {
+		return nil
+	}
+	return &ServerRepetitorProfileV2{
+		FirstName:       profile.FirstName,
+		LastName:        profile.LastName,
+		MiddleName:      profile.MiddleName,
+		Email:           profile.Email,
+		TelephoneNumber: profile.TelephoneNumber,
+		Raiting:         profile.MeanRating,
+		Resume:          profile.ResumeDescription,
+	}
+}
+
+func MapperRepetitorProfileV2ServerToService(profile *ServerRepetitorProfileV2) *ServiceRepetitorProfile {
+	if profile == nil {
+		return nil
+	}
+	return &ServiceRepetitorProfile{
+		FirstName:         profile.FirstName,
+		LastName:          profile.LastName,
+		MiddleName:        profile.MiddleName,
+		TelephoneNumber:   profile.TelephoneNumber,
+		Email:             profile.Email,
+		MeanRating:        profile.Raiting,
+		ResumeTitle:       "",
+		ResumeDescription: profile.Resume,
+		ResumePrices:      map[string]int{},
+	}
+}
+
+func MapperRepetitorProfileWithIDServiceToServerV2(id int64, profile *ServiceRepetitorProfile) *ServerRepetitorProfileWithIDV2 {
+	if profile == nil {
+		return &ServerRepetitorProfileWithIDV2{ID: id}
+	}
+	return &ServerRepetitorProfileWithIDV2{
+		ID:        id,
+		Repetitor: *MapperRepetitorProfileServiceToServerV2(profile),
+	}
+}
+
+func MapperRepetitorProfileWithIDServerV2ToService(wrapper *ServerRepetitorProfileWithIDV2) (int64, *ServiceRepetitorProfile) {
+	if wrapper == nil {
+		return 0, nil
+	}
+	return wrapper.ID, MapperRepetitorProfileV2ServerToService(&wrapper.Repetitor)
+}

@@ -1,11 +1,15 @@
 package types
 
+import "time"
+
 func MapperChatDBToService(chat *DBChat) *ServiceChat {
 	if chat == nil {
 		return nil
 	}
 	return &ServiceChat{
 		ID:          chat.ID,
+		Type:        chat.Type,
+		Status:      chat.Status,
 		ClientID:    chat.ClientID,
 		RepetitorID: chat.RepetitorID,
 		ModeratorID: chat.ModeratorID,
@@ -23,6 +27,8 @@ func MapperChatServiceToDB(chat *ServiceChat) *DBChat {
 		RepetitorID: chat.RepetitorID,
 		ModeratorID: chat.ModeratorID,
 		CreatedAt:   chat.CreatedAt,
+		Type:        chat.Type,
+		Status:      chat.Status,
 	}
 }
 
@@ -97,5 +103,60 @@ func MapperMessageServerToService(message *ServerMessage) *ServiceMessage {
 		SenderID:  message.SenderID,
 		Content:   message.Content,
 		CreatedAt: message.CreatedAt,
+	}
+}
+
+func MapperChatServiceToServerV2(chat *ServiceChat) *ServerChatV2 {
+	if chat == nil {
+		return nil
+	}
+	return &ServerChatV2{
+		ID:          chat.ID,
+		Type:        chat.Type,
+		ClientID:    chat.ClientID,
+		RepetitorID: chat.RepetitorID,
+		ModeratorID: chat.ModeratorID,
+		CreatedAt:   chat.CreatedAt,
+		Status:      chat.Status,
+	}
+}
+
+func MapperChatServerV2ToService(chat *ServerChatV2) *ServiceChat {
+	if chat == nil {
+		return nil
+	}
+	return &ServiceChat{
+		ID:          chat.ID,
+		Type:        chat.Type,
+		ClientID:    chat.ClientID,
+		RepetitorID: chat.RepetitorID,
+		ModeratorID: chat.ModeratorID,
+		CreatedAt:   chat.CreatedAt,
+		Status:      chat.Status,
+	}
+}
+
+// --- V2 Message mappers ---
+func MapperMessageServiceToServerV2(msg *ServiceMessage) *ServerMessageV2 {
+	if msg == nil {
+		return nil
+	}
+	return &ServerMessageV2{
+		ID:        msg.ID,
+		SenderID:  msg.SenderID,
+		Content:   msg.Content,
+		CreatedAt: msg.CreatedAt,
+	}
+}
+
+func MapperMessageCreateV2ServerToService(chatID int64, senderID int64, req *ServerMessageCreateV2) *ServiceMessage {
+	if req == nil {
+		return nil
+	}
+	return &ServiceMessage{
+		ChatID:    chatID,
+		SenderID:  senderID,
+		Content:   req.Content,
+		CreatedAt: time.Now(),
 	}
 }

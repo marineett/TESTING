@@ -8,6 +8,7 @@ import (
 
 type ITransactionRepository interface {
 	InsertTransaction(transaction types.DBTransaction) (int64, error)
+	GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.DBTransaction, error)
 	UpdateTransactionStatus(transactionId int64, status types.TransactionStatus) error
 	GetTransaction(transactionId int64) (*types.DBTransaction, error)
 	GetTransactionsList(userId int64, from int64, size int64) ([]types.DBTransaction, error)
@@ -24,11 +25,11 @@ func CreateSqlTransactionTable(db *sql.DB, transactionTableName string, userTabl
 	CREATE TABLE IF NOT EXISTS ` + transactionTableName + ` (
 		id INTEGER PRIMARY KEY,
 		user_id INTEGER NOT NULL,
+        contract_id INTEGER NOT NULL,
 		amount INTEGER NOT NULL,
 		status INTEGER NOT NULL,
 		created_at TIMESTAMP NOT NULL,
-		type INTEGER NOT NULL,
-		FOREIGN KEY (user_id) REFERENCES ` + userTableName + `(id)
+		type INTEGER NOT NULL
 	)`
 	_, err := db.Exec(query)
 	if err != nil {
@@ -49,10 +50,10 @@ func CreateSqlPendingContractPaymentTransactionsTable(
 	CREATE TABLE IF NOT EXISTS ` + pendingContractPaymentTransactionsTableName + ` (
 		id INTEGER PRIMARY KEY,
 		user_id INTEGER NOT NULL,
+        contract_id INTEGER NOT NULL,
 		amount INTEGER NOT NULL,
 		created_at TIMESTAMP NOT NULL,
 		transaction_id INTEGER NOT NULL,
-		FOREIGN KEY (user_id) REFERENCES ` + userTableName + `(id),
 		FOREIGN KEY (transaction_id) REFERENCES ` + transactionTableName + `(id)
 	)`
 	_, err := db.Exec(query)
@@ -90,10 +91,10 @@ func (r *SqlTransactionRepository) InsertTransaction(transaction types.DBTransac
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.transactionTable + ` (id, user_id, amount, status, created_at, type)
-	VALUES ($1, $2, $3, $4, $5, $6)
-	`
-	_, err = r.db.Exec(query, id, transaction.UserID, transaction.Amount, transaction.Status, transaction.CreatedAt, transaction.Type)
+    INSERT INTO ` + r.transactionTable + ` (id, user_id, contract_id, amount, status, created_at, type)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `
+	_, err = r.db.Exec(query, id, transaction.UserID, transaction.ContractID, transaction.Amount, transaction.Status, transaction.CreatedAt, transaction.Type)
 	if err != nil {
 		return 0, err
 	}
@@ -124,7 +125,7 @@ func (r *SqlTransactionRepository) GetTransaction(id int64) (*types.DBTransactio
 	`
 	row := r.db.QueryRow(query, id)
 	var transaction types.DBTransaction
-	err := row.Scan(&transaction.ID, &transaction.UserID, &transaction.Amount, &transaction.Status, &transaction.CreatedAt, &transaction.Type)
+	err := row.Scan(&transaction.ID, &transaction.UserID, &transaction.ContractID, &transaction.Amount, &transaction.Status, &transaction.CreatedAt, &transaction.Type)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +147,7 @@ func (r *SqlTransactionRepository) GetTransactionsList(userId int64, from int64,
 	var transactions []types.DBTransaction
 	for rows.Next() {
 		var transaction types.DBTransaction
-		err := rows.Scan(&transaction.ID, &transaction.UserID, &transaction.Amount, &transaction.Status, &transaction.CreatedAt, &transaction.Type)
+		err := rows.Scan(&transaction.ID, &transaction.UserID, &transaction.ContractID, &transaction.Amount, &transaction.Status, &transaction.CreatedAt, &transaction.Type)
 		if err != nil {
 			return nil, err
 		}
@@ -164,8 +165,8 @@ func (r *SqlTransactionRepository) InsertPendingContractPaymentTransaction(
 	if err != nil {
 		return 0, err
 	}
-	query := `INSERT INTO ` + r.pendingContractPaymentTransactionsTable + ` (id, user_id, amount, created_at, transaction_id) VALUES ($1, $2, $3, $4, $5) RETURNING id`
-	_, err = r.db.Exec(query, id, transactionPendingContractPayment.UserID, transactionPendingContractPayment.Amount, transactionPendingContractPayment.CreatedAt, transaction.ID)
+	query := `INSERT INTO ` + r.pendingContractPaymentTransactionsTable + ` (id, user_id, contract_id, amount, created_at, transaction_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	_, err = r.db.Exec(query, id, transactionPendingContractPayment.UserID, transactionPendingContractPayment.ContractID, transactionPendingContractPayment.Amount, transactionPendingContractPayment.CreatedAt, transaction.ID)
 	if err != nil {
 		return 0, err
 	}
@@ -178,7 +179,7 @@ func (r *SqlTransactionRepository) GetPendingContractPaymentTransaction() (*type
 	`
 	row := r.db.QueryRow(query)
 	var transaction types.DBPendingContractPaymentTransaction
-	err := row.Scan(&transaction.ID, &transaction.UserID, &transaction.Amount, &transaction.CreatedAt, &transaction.TransactionID)
+	err := row.Scan(&transaction.ID, &transaction.UserID, &transaction.ContractID, &transaction.Amount, &transaction.CreatedAt, &transaction.TransactionID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -189,12 +190,33 @@ func (r *SqlTransactionRepository) GetPendingContractPaymentTransaction() (*type
 }
 
 func (r *SqlTransactionRepository) ApproveTransaction(transactionId int64) error {
-	query := `
-	DELETE FROM ` + r.pendingContractPaymentTransactionsTable + ` WHERE id = $1
-	`
-	_, err := r.db.Exec(query, transactionId)
+	_, err := r.db.Exec(`UPDATE `+r.transactionTable+` SET status = $1 WHERE id = $2`, types.TransactionStatusPaid, transactionId)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (r *SqlTransactionRepository) GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.DBTransaction, error) {
+	query := `
+	SELECT * FROM ` + r.transactionTable + ` WHERE contract_id = $1
+	ORDER BY created_at DESC
+	LIMIT $2 OFFSET $3
+	`
+	rows, err := r.db.Query(query, contract_id, size, from)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var transactions []types.DBTransaction
+	for rows.Next() {
+		var transaction types.DBTransaction
+		err := rows.Scan(&transaction.ID, &transaction.UserID, &transaction.ContractID, &transaction.Amount, &transaction.Status, &transaction.CreatedAt, &transaction.Type)
+		if err != nil {
+			return nil, err
+		}
+		transactions = append(transactions, transaction)
+	}
+	return transactions, nil
 }

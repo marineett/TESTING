@@ -1,1 +1,13 @@
 backend/go1.24.7.linux-amd64.tar.gz
+.git
+**/node_modules
+**/dist
+**/build
+allure-report
+allure-results
+logs
+**/*.log
+.DS_Store
+.idea
+.vscode
+**/*.tar.gz

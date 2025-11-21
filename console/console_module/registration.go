@@ -64,7 +64,12 @@ func RegisterClient(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Client registered successfully")
+	verdict, err := serviceModule.AuthService.Authorize(types.ServiceAuthData{Login: authData.Login, Password: authData.Password})
+	if err == nil {
+		fmt.Println("Client registered successfully with ID:", verdict.UserID)
+	} else {
+		fmt.Println("Client registered successfully")
+	}
 }
 
 func RegisterRepetitor(serviceModule *service_logic.ServiceModule) {
@@ -81,7 +86,12 @@ func RegisterRepetitor(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Repetitor registered successfully")
+	verdict, err := serviceModule.AuthService.Authorize(types.ServiceAuthData{Login: authData.Login, Password: authData.Password})
+	if err == nil {
+		fmt.Println("Repetitor registered successfully with ID:", verdict.UserID)
+	} else {
+		fmt.Println("Repetitor registered successfully")
+	}
 }
 
 func RegisterModerator(serviceModule *service_logic.ServiceModule) {
@@ -98,7 +108,12 @@ func RegisterModerator(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Moderator registered successfully")
+	verdict, err := serviceModule.AuthService.Authorize(types.ServiceAuthData{Login: authData.Login, Password: authData.Password})
+	if err == nil {
+		fmt.Println("Moderator registered successfully with ID:", verdict.UserID)
+	} else {
+		fmt.Println("Moderator registered successfully")
+	}
 }
 
 func RegisterAdmin(serviceModule *service_logic.ServiceModule) {
@@ -116,7 +131,12 @@ func RegisterAdmin(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Admin registered successfully")
+	verdict, err := serviceModule.AuthService.Authorize(types.ServiceAuthData{Login: authData.Login, Password: authData.Password})
+	if err == nil {
+		fmt.Println("Admin registered successfully with ID:", verdict.UserID)
+	} else {
+		fmt.Println("Admin registered successfully")
+	}
 }
 
 func PrintRegistrationMenu() {

@@ -37,7 +37,7 @@ func PayForContract(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Invalid amount")
 		return
 	}
-	transactionID, err := serviceModule.TransactionService.CreateContractPaymentTransaction(amount, contract.RepetitorID)
+	transactionID, err := serviceModule.TransactionService.CreateContractPaymentTransaction(amount, contract.RepetitorID, contract.ID)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -100,7 +100,8 @@ func TransactionWork(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("1. Pay for contract")
 		fmt.Println("2. Get transaction info")
 		fmt.Println("3. Get transaction list")
-		fmt.Println("4. Exit")
+		fmt.Println("4. Approve transaction")
+		fmt.Println("5. Exit")
 		choiceStr := ""
 		fmt.Scanln(&choiceStr)
 		choice, err := strconv.Atoi(choiceStr)
@@ -108,7 +109,7 @@ func TransactionWork(serviceModule *service_logic.ServiceModule) {
 			fmt.Println("Error:", err)
 			return
 		}
-		if choice < 1 || choice > 4 {
+		if choice < 1 || choice > 5 {
 			fmt.Println("Invalid choice")
 			continue
 		}
@@ -120,9 +121,32 @@ func TransactionWork(serviceModule *service_logic.ServiceModule) {
 		case 3:
 			GetTransactionList(serviceModule)
 		case 4:
+			ApproveTransactionGlobal(serviceModule)
+		case 5:
 			return
 		default:
 			fmt.Println("Invalid choice")
 		}
 	}
+}
+
+func ApproveTransactionGlobal(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter transaction ID:")
+	txIDStr := ""
+	fmt.Scanln(&txIDStr)
+	txID, err := strconv.ParseInt(txIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if err := serviceModule.TransactionService.ApproveTransaction(txID); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	tx, err := serviceModule.TransactionService.GetTransaction(txID)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	PrintTransaction(tx)
 }

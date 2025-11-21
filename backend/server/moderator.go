@@ -4,10 +4,64 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupModeratorRouterV2(moderatorService service_logic.IModeratorService) *mux.Router {
+	r := mux.NewRouter()
+	r.HandleFunc(MODERATORS_V2, ModeratorsListHandlerV2(moderatorService)).Methods("GET")
+	r.HandleFunc(MODERATOR_SALARY_V2, ModeratorSalaryPatchHandlerV2(moderatorService)).Methods("PATCH")
+	return r
+}
+
+func ModeratorSalaryPatchHandlerV2(moderatorService service_logic.IModeratorService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		moderatorID := mux.Vars(r)["moderatorId"]
+		moderatorIDInt, err := strconv.Atoi(moderatorID)
+		if err != nil {
+			http.Error(w, "Invalid moderator ID", http.StatusBadRequest)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
+			return
+		}
+		var req types.ModeratorSalaryPatch
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		err = moderatorService.UpdateModeratorSalary(int64(moderatorIDInt), int64(req.Salary))
+		if err != nil {
+			http.Error(w, "Error updating moderator salary", http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func ModeratorsListHandlerV2(moderatorService service_logic.IModeratorService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		moderators, err := moderatorService.GetModerators()
+		if err != nil {
+			http.Error(w, "Error getting moderators", http.StatusBadRequest)
+			return
+		}
+		serverModerators := make([]types.ServerModeratorProfileWithID, len(moderators))
+		for i, moderator := range moderators {
+			serverModerators[i] = *types.MapperModeratorProfileWithIDServiceToServer(moderator)
+		}
+		json.NewEncoder(w).Encode(serverModerators)
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupModeratorRouter(
 	transactionService service_logic.ITransactionService,
@@ -21,7 +75,70 @@ func SetupModeratorRouter(
 	router.HandleFunc(MODERATOR_APPROVE_TRANSACTION, ModeratorApproveTransactionHandler(transactionService, logger))
 	router.HandleFunc(MODERATOR_GET_CONTRACTS, ModeratorGetContractsHandler(contractService, logger))
 	router.HandleFunc(MODERATOR_BAN_CONTRACT, ModeratorBanContractHandler(contractService, logger))
+	router.HandleFunc(ADMIN_GET_MODERATORS, AdminGetModeratorsHandler(moderatorService, logger))
+	router.HandleFunc(ADMIN_CHANGE_MODERATOR_SALARY, AdminChangeModeratorSalaryHandler(moderatorService, logger))
 	return router
+}
+
+func AdminGetModeratorsHandler(moderatorService service_logic.IModeratorService, logger *log.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
+		if r.Method != "GET" {
+			logger.Printf("Method not allowed: %s", r.Method)
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		moderators, err := moderatorService.GetModerators()
+		if err != nil {
+			logger.Printf("Failed to get moderators: %v", err)
+			http.Error(w, "Failed to get moderators", http.StatusBadRequest)
+			return
+		}
+		serverModerators := make([]types.ServerModeratorProfileWithID, len(moderators))
+		for i, moderator := range moderators {
+			serverModerators[i] = *types.MapperModeratorProfileWithIDServiceToServer(moderator)
+		}
+		logger.Printf("Got moderators: %v", serverModerators)
+		json.NewEncoder(w).Encode(serverModerators)
+	}
+}
+
+func AdminChangeModeratorSalaryHandler(
+	moderatorService service_logic.IModeratorService,
+	logger *log.Logger,
+) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
+		if r.Method != "GET" {
+			logger.Printf("Method not allowed: %s", r.Method)
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		newSalaryStr := r.URL.Query().Get("salary")
+		newSalary, err := strconv.ParseInt(newSalaryStr, 10, 64)
+		if err != nil {
+			logger.Printf("Invalid salary: %v", err)
+			http.Error(w, "Invalid department ID", http.StatusBadRequest)
+			return
+		}
+		logger.Printf("New salary: %v", newSalary)
+		moderatorIDStr := r.URL.Query().Get("m_id")
+		moderatorID, err := strconv.ParseInt(moderatorIDStr, 10, 64)
+		if err != nil {
+			logger.Printf("Invalid moderator ID: %v", err)
+			http.Error(w, "Invalid moderator ID", http.StatusBadRequest)
+			return
+		}
+		logger.Printf("Moderator ID: %v", moderatorID)
+		err = moderatorService.UpdateModeratorSalary(moderatorID, newSalary)
+		if err != nil {
+			logger.Printf("Failed to change moderator salary: %v", err)
+			http.Error(w, "Failed to change moderator salary", http.StatusBadRequest)
+			return
+		}
+		logger.Printf("Changed moderator salary successfully")
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 func ModeratorGetProfileHandler(moderatorService service_logic.IModeratorService, logger *log.Logger) http.HandlerFunc {
@@ -43,7 +160,7 @@ func ModeratorGetProfileHandler(moderatorService service_logic.IModeratorService
 		moderator, err := moderatorService.GetModeratorProfile(moderatorID)
 		if err != nil {
 			logger.Printf("Error getting moderator: %v", err)
-			http.Error(w, "Error getting moderator", http.StatusInternalServerError)
+			http.Error(w, "Error getting moderator", http.StatusBadRequest)
 			return
 		}
 		serverModerator := types.MapperModeratorProfileServiceToServer(moderator)
@@ -64,7 +181,7 @@ func ModeratorGetTransactionsToApproveHandler(transactionService service_logic.I
 		transaction, err := transactionService.GetPendingContractPaymentTransaction()
 		if err != nil {
 			logger.Printf("Error getting transaction: %v", err)
-			http.Error(w, "Error getting transaction", http.StatusInternalServerError)
+			http.Error(w, "Error getting transaction", http.StatusBadRequest)
 			return
 		}
 		serverTransaction := types.ServerPendingContractPaymentTransaction(*transaction)
@@ -99,7 +216,7 @@ func ModeratorApproveTransactionHandler(transactionService service_logic.ITransa
 		err = transactionService.ApproveTransaction(transactionID)
 		if err != nil {
 			logger.Printf("Error approving transaction: %v", err)
-			http.Error(w, "Error approving transaction", http.StatusInternalServerError)
+			http.Error(w, "Error approving transaction", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Transaction approved")
@@ -146,7 +263,7 @@ func ModeratorGetContractsHandler(contractService service_logic.IContractService
 		contracts, err := contractService.GetAllContracts(from, size)
 		if err != nil {
 			logger.Printf("Error getting contracts: %v", err)
-			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
 		serverContracts := make([]types.ServerContract, len(contracts))
@@ -184,7 +301,7 @@ func ModeratorBanContractHandler(contractService service_logic.IContractService,
 		contract, err := contractService.GetContract(contractID)
 		if err != nil {
 			logger.Printf("Error getting contract: %v", err)
-			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			http.Error(w, "Error getting contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract retrieved: %v", contract)
@@ -196,7 +313,7 @@ func ModeratorBanContractHandler(contractService service_logic.IContractService,
 		err = contractService.UpdateContractStatus(contractID, types.ContractStatusBanned)
 		if err != nil {
 			logger.Printf("Error banning contract: %v", err)
-			http.Error(w, "Error banning contract", http.StatusInternalServerError)
+			http.Error(w, "Error banning contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract banned")

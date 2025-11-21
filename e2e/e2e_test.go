@@ -1,155 +1,135 @@
 package integration
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/ozontech/allure-go/pkg/framework/suite"
 )
 
-type APIClient struct {
-	baseURL    string
-	httpClient *http.Client
-}
-
-func NewAPIClient(baseURL string) *APIClient {
-	return &APIClient{
-		baseURL: baseURL,
-		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
-		},
-	}
-}
-
-func (c *APIClient) makeRequest(ctx context.Context, method string, query string, body io.Reader) (*http.Response, error) {
-	url := c.baseURL + query
-	req, err := http.NewRequestWithContext(ctx, method, url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	return c.httpClient.Do(req)
-}
-
-func (c *APIClient) makeRequestWithBody(ctx context.Context, method, endpoint string, body interface{}) (*http.Response, error) {
-	var bodyReader io.Reader
-	if body != nil {
-		jsonData, err := json.Marshal(body)
-		if err != nil {
-			return nil, err
-		}
-		bodyReader = bytes.NewBuffer(jsonData)
-	}
-	return c.makeRequest(ctx, method, endpoint, bodyReader)
-}
-
-type APISuite struct {
-	suite.Suite
-	c *APIClient
-}
-
-func (s *APISuite) BeforeAll(t provider.T) {
-	s.c = NewAPIClient("http://backend:8000")
-}
-
 func (s *APISuite) TestCreateUsersAndChats(t provider.T) {
 	var (
-		ctx         = context.Background()
-		clientID    int
-		repetitorID int
-		moderatorID int
+		ctx            = context.Background()
+		clientID       int64
+		repetitorID    int64
+		moderatorID    int64
+		clientToken    string
+		repetitorToken string
+		cClient        *APIClient
+		cRep           *APIClient
 	)
 
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {})
 
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/registration/client", testClientData)
+		type chatResp struct {
+			ID int64 `json:"id"`
+		}
+		var authResp struct {
+			Token  string `json:"token"`
+			Role   string `json:"role"`
+			UserID int64  `json:"user_id"`
+		}
+
+		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", testClientData)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
 		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
-
-		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/registration/repetitor", testRepetitorData)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
-
-		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/registration/moderator", testModeratorData)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
-
-		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testClientAuthData)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 		b, err := io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		var auth struct {
-			ID int `json:"id"`
+		sx.Require().NoError(json.Unmarshal(b, &authResp))
+		clientID = authResp.UserID
+		clientToken = authResp.Token
+
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", testRepetitorData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		b, err = io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		sx.Require().NoError(json.Unmarshal(b, &authResp))
+		repetitorID = authResp.UserID
+		repetitorToken = authResp.Token
+
+		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", testModeratorData)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		b, err = io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		sx.Require().NoError(json.Unmarshal(b, &authResp))
+		moderatorID = authResp.UserID
+
+		cClient = s.c.WithToken(clientToken)
+		cRep = s.c.WithToken(repetitorToken)
+
+		body := map[string]interface{}{
+			"type":         "client_repetitor",
+			"client_id":    clientID,
+			"repetitor_id": repetitorID,
+			"moderator_id": 0,
 		}
-		sx.Require().NoError(json.Unmarshal(b, &auth))
-		clientID = auth.ID
-
-		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testRepetitorAuthData)
+		resp, err = cClient.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var crResp chatResp
 		b, err = io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		sx.Require().NoError(json.Unmarshal(b, &auth))
-		repetitorID = auth.ID
+		sx.Require().NoError(json.Unmarshal(b, &crResp))
+		crChatID := crResp.ID
 
-		resp, err = s.c.makeRequestWithBody(ctx, "POST", "/api/auth/authorize", testModeratorAuthData)
+		body = map[string]interface{}{
+			"type":         "client_moderator",
+			"client_id":    clientID,
+			"moderator_id": moderatorID,
+		}
+		resp, err = cClient.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var cmResp chatResp
 		b, err = io.ReadAll(resp.Body)
 		sx.Require().NoError(err)
-		sx.Require().NoError(json.Unmarshal(b, &auth))
-		moderatorID = auth.ID
+		sx.Require().NoError(json.Unmarshal(b, &cmResp))
 
-		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cr_chat?c_id=%d&r_id=%d", clientID, repetitorID), nil)
+		body = map[string]interface{}{
+			"type":         "repetitor_moderator",
+			"repetitor_id": repetitorID,
+			"moderator_id": moderatorID,
+		}
+		resp, err = cRep.makeRequestWithBody(ctx, "POST", "/api/v2/chats", body)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		var rmResp chatResp
+		b, err = io.ReadAll(resp.Body)
+		sx.Require().NoError(err)
+		sx.Require().NoError(json.Unmarshal(b, &rmResp))
+
+		resp, err = cClient.makeRequest(ctx, "PUT", fmt.Sprintf("/api/v2/chats/%d", crChatID), nil)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
 		sx.Require().Equal(http.StatusOK, resp.StatusCode)
 
-		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_cm_chat?c_id=%d&m_id=%d", clientID, moderatorID), nil)
+		msg := map[string]interface{}{
+			"senderId": clientID,
+			"content":  "test",
+		}
+		resp, err = cClient.makeRequestWithBody(ctx, "POST", fmt.Sprintf("/api/v2/chats/%d/messages", crChatID), msg)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
 
-		resp, err = s.c.makeRequest(ctx, "POST", fmt.Sprintf("/api/chat/start_rm_chat?r_id=%d&m_id=%d", repetitorID, moderatorID), nil)
+		resp, err = cClient.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/v2/chats/%d", crChatID), nil)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-
-		resp, err = s.c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-
-		resp, err = s.c.makeRequest(ctx, "DELETE", fmt.Sprintf("/api/chat/delete_chat?id=%d", 0), nil)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-
-		resp, err = s.c.makeRequest(ctx, "PUT", fmt.Sprintf("/api/chat/clear_messages?id=%d", 0), nil)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusOK, resp.StatusCode)
-
-		resp, err = s.c.makeRequest(ctx, "PATCH", fmt.Sprintf("/api/chat/send_message?id=%d&message=test", 0), nil)
-		sx.Require().NoError(err)
-		defer resp.Body.Close()
-		sx.Assert().NotEqual(http.StatusOK, resp.StatusCode)
+		sx.Require().Equal(http.StatusNoContent, resp.StatusCode)
 	})
 
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {})

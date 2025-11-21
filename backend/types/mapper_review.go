@@ -5,6 +5,8 @@ func MapperReviewDBToService(review *DBReview) *ServiceReview {
 		return nil
 	}
 	return &ServiceReview{
+		ID:          review.ID,
+		ContractID:  review.ContractID,
 		ClientID:    review.ClientID,
 		RepetitorID: review.RepetitorID,
 		Rating:      review.Rating,
@@ -18,6 +20,8 @@ func MapperReviewServiceToDB(review *ServiceReview) *DBReview {
 		return nil
 	}
 	return &DBReview{
+		ID:          review.ID,
+		ContractID:  review.ContractID,
 		ClientID:    review.ClientID,
 		RepetitorID: review.RepetitorID,
 		Rating:      review.Rating,

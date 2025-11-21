@@ -6,6 +6,7 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/utility_module"
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -216,7 +217,11 @@ func main() {
 		os.Getenv("LESSON_TABLE_NAME"),
 		os.Getenv("SEQUENCE_NAME"),
 	)
-
+	fmt.Println("Server starting on port before setup", os.Getenv("BACKEND_PORT"))
 	server := server.SetupServer(serviceModule, os.Getenv("BACKEND_PORT"), log.Default())
-	server.ListenAndServe()
+	fmt.Println("Server starting on port ", os.Getenv("BACKEND_PORT"))
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }

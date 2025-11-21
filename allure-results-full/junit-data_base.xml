@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="151">
+	<testsuite name="./data_base" tests="151" failures="0" errors="0" id="0" hostname="MacBook-Pro-Marina.local" time="2.320" timestamp="2025-10-30T22:03:53+03:00">
+		<testcase name="TestCreateSqlAdminRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertAdminCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetAdminCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetAdminIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateAdminPasswordCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminPasswordIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateAdminDepartmentCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminDepartmentIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateAdminSalaryCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminSalaryIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlAuthRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertAuthCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestChangePasswordCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestChangePasswordIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestAuthorizeCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestAuthorizeIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCheckLoginCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCheckLoginIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlChatTable" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertChatCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetChatCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetChatIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetChatListByClientIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetChatListByModeratorIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetChatListByRepetitorIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetChatIdByCIDAndMIDCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetChatIdByCIDAndRIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetChatIdByMIDAndRIDCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestCreateSqlClientRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertClientCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetClientCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetClientIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateClientPersonalDataCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateClientPersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateClientPasswordCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateClientPasswordIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlContractRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertContractCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestInsertContractIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetContractCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetContractIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetContractsByClientIDCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractRepetitorIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestUpdateContractRepetitorIDIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetContractsByRepetitorIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetContractListCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetAllContractsCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractStatusCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractStatusIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractPaymentStatusCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractPaymentStatusIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractReviewClientIDCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractReviewClientIDIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractReviewRepetitorIDCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractReviewRepetitorIDIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractPriceCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractPriceIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractCommissionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractCommissionIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractStartDateCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractStartDateIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateContractReviewClientIDInSeqCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateContractReviewClientIDInSeqIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlDepartmentTable" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertDepartmentCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentsByHeadIDCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentIDByNameCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentIDByNameIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestChangeDepartmentHeadCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestChangeDepartmentHeadIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestHireInfoInsertCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestHireInfoDeleteCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestHireInfoDeleteIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetUserDepartmentsIDsCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetDepartmentUsersIDsCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlLessonRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertLessonCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestInsertLessonIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetLessonsCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestCreateSqlMessageTable" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertMessageCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestInsertMessageIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetMessagesCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestCreateSqlModeratorRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertModeratorCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetModeratorCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetModeratorIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateModeratorPasswordCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorPasswordIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateModeratorSalaryCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorSalaryIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetModeratorsCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetModeratorsIncorrect" classname="./data_base" time="0.050"></testcase>
+		<testcase name="TestInsertPersonalDataCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertPersonalDataInSeqCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetPersonalDataCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetPersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdatePersonalDataCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdatePersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestCreateSqlRepetitorRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertRepetitorCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetRepetitorCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetRepetitorIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetRepetitorsIdsCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestCreateSqlResumeRepositoryCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertResumeCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertResumeInSeqCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetResumeCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetResumeIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateResumeTitleCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateResumeDescriptionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateResumeDescriptionIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateResumePricesCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestUpdateResumePricesIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestDeleteResumeCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestDeleteResumeIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertReviewCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestInsertReviewInSeqCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetReviewCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetReviewIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestUpdateReviewCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetReviewsByRepetitorIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestGetReviewsByClientIDCorrect" classname="./data_base" time="0.030"></testcase>
+		<testcase name="TestCreateSqlTransactionTable" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertTransactionCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertTransactionIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetTransactionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestGetTransactionIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetTransactionsListCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestInsertPendingContractPaymentTransactionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestInsertPendingContractPaymentTransactionIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetPendingContractPaymentTransactionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestApproveTransactionCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestChangeTransactionStatusCorrect" classname="./data_base" time="0.020"></testcase>
+		<testcase name="TestCreateSqlUserTable" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertUserCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertUserIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetUserCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestGetUserIncorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertUserInSeqCorrect" classname="./data_base" time="0.010"></testcase>
+		<testcase name="TestInsertUserInSeqIncorrect" classname="./data_base" time="0.010"></testcase>
+		<system-out><![CDATA[{"Time":"2025-10-30T22:03:50.163261+03:00","Action":"start","Package":"data_base_project/data_base"}
+{"Time":"2025-10-30T22:03:51.299454+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlAdminRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:51.299496+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlAdminRepositoryCorrect","Output":"=== RUN   TestCreateSqlAdminRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:51.311046+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlAdminRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.311114+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlAdminRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.311147+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertAdminCorrect"}
+{"Time":"2025-10-30T22:03:51.311152+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertAdminCorrect","Output":"=== RUN   TestInsertAdminCorrect\n"}
+{"Time":"2025-10-30T22:03:51.329205+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertAdminCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.329229+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertAdminCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.329235+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetAdminCorrect"}
+{"Time":"2025-10-30T22:03:51.329238+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAdminCorrect","Output":"=== RUN   TestGetAdminCorrect\n"}
+{"Time":"2025-10-30T22:03:51.345589+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAdminCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.345624+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetAdminCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.345632+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetAdminIncorrect"}
+{"Time":"2025-10-30T22:03:51.345635+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAdminIncorrect","Output":"=== RUN   TestGetAdminIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.356757+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAdminIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.356783+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetAdminIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.356798+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:51.356802+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataCorrect","Output":"=== RUN   TestUpdateAdminPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:51.375827+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.375854+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.375861+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:51.375872+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataIncorrect","Output":"=== RUN   TestUpdateAdminPersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.38699+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.387016+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminPersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.387035+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordCorrect"}
+{"Time":"2025-10-30T22:03:51.387039+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordCorrect","Output":"=== RUN   TestUpdateAdminPasswordCorrect\n"}
+{"Time":"2025-10-30T22:03:51.406114+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.406135+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.406143+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordIncorrect"}
+{"Time":"2025-10-30T22:03:51.406147+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordIncorrect","Output":"=== RUN   TestUpdateAdminPasswordIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.417026+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.417052+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminPasswordIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.417059+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentCorrect"}
+{"Time":"2025-10-30T22:03:51.417115+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentCorrect","Output":"=== RUN   TestUpdateAdminDepartmentCorrect\n"}
+{"Time":"2025-10-30T22:03:51.43418+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.43421+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.434218+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentIncorrect"}
+{"Time":"2025-10-30T22:03:51.434221+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentIncorrect","Output":"=== RUN   TestUpdateAdminDepartmentIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.444841+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.444866+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminDepartmentIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.444887+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryCorrect"}
+{"Time":"2025-10-30T22:03:51.444891+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryCorrect","Output":"=== RUN   TestUpdateAdminSalaryCorrect\n"}
+{"Time":"2025-10-30T22:03:51.462555+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.462586+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.462601+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryIncorrect"}
+{"Time":"2025-10-30T22:03:51.462605+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryIncorrect","Output":"=== RUN   TestUpdateAdminSalaryIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.473002+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.473044+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateAdminSalaryIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.473059+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlAuthRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:51.473064+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlAuthRepositoryCorrect","Output":"=== RUN   TestCreateSqlAuthRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:51.48048+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlAuthRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.480498+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlAuthRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.480504+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertAuthCorrect"}
+{"Time":"2025-10-30T22:03:51.480508+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertAuthCorrect","Output":"=== RUN   TestInsertAuthCorrect\n"}
+{"Time":"2025-10-30T22:03:51.491155+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertAuthCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.49118+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertAuthCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.491188+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestChangePasswordCorrect"}
+{"Time":"2025-10-30T22:03:51.491191+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangePasswordCorrect","Output":"=== RUN   TestChangePasswordCorrect\n"}
+{"Time":"2025-10-30T22:03:51.503419+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangePasswordCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.503445+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestChangePasswordCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.503452+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestChangePasswordIncorrect"}
+{"Time":"2025-10-30T22:03:51.503456+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangePasswordIncorrect","Output":"=== RUN   TestChangePasswordIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.515087+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangePasswordIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.515113+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestChangePasswordIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.515129+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestAuthorizeCorrect"}
+{"Time":"2025-10-30T22:03:51.515141+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestAuthorizeCorrect","Output":"=== RUN   TestAuthorizeCorrect\n"}
+{"Time":"2025-10-30T22:03:51.52671+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestAuthorizeCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.526735+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestAuthorizeCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.526742+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestAuthorizeIncorrect"}
+{"Time":"2025-10-30T22:03:51.526746+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestAuthorizeIncorrect","Output":"=== RUN   TestAuthorizeIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.538229+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestAuthorizeIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.538254+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestAuthorizeIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.53826+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCheckLoginCorrect"}
+{"Time":"2025-10-30T22:03:51.538263+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCheckLoginCorrect","Output":"=== RUN   TestCheckLoginCorrect\n"}
+{"Time":"2025-10-30T22:03:51.549713+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCheckLoginCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.54974+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCheckLoginCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.549754+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCheckLoginIncorrect"}
+{"Time":"2025-10-30T22:03:51.549758+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCheckLoginIncorrect","Output":"=== RUN   TestCheckLoginIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.560985+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCheckLoginIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.561011+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCheckLoginIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.561017+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlChatTable"}
+{"Time":"2025-10-30T22:03:51.561042+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlChatTable","Output":"=== RUN   TestCreateSqlChatTable\n"}
+{"Time":"2025-10-30T22:03:51.571751+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlChatTable","Output":"
+{"Time":"2025-10-30T22:03:51.571781+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlChatTable","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.571788+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertChatCorrect"}
+{"Time":"2025-10-30T22:03:51.571791+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertChatCorrect","Output":"=== RUN   TestInsertChatCorrect\n"}
+{"Time":"2025-10-30T22:03:51.595188+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertChatCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.595216+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertChatCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.595224+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatCorrect"}
+{"Time":"2025-10-30T22:03:51.595227+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatCorrect","Output":"=== RUN   TestGetChatCorrect\n"}
+{"Time":"2025-10-30T22:03:51.619374+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.619404+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.619411+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatIncorrect"}
+{"Time":"2025-10-30T22:03:51.619415+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIncorrect","Output":"=== RUN   TestGetChatIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.631222+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.63125+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.631257+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatListByClientIDCorrect"}
+{"Time":"2025-10-30T22:03:51.63126+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByClientIDCorrect","Output":"=== RUN   TestGetChatListByClientIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.666006+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByClientIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.666066+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatListByClientIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:51.666074+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatListByModeratorIDCorrect"}
+{"Time":"2025-10-30T22:03:51.666077+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByModeratorIDCorrect","Output":"=== RUN   TestGetChatListByModeratorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.70093+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByModeratorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.70096+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatListByModeratorIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:51.700967+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatListByRepetitorIDCorrect"}
+{"Time":"2025-10-30T22:03:51.70097+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByRepetitorIDCorrect","Output":"=== RUN   TestGetChatListByRepetitorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.735127+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatListByRepetitorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.735159+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatListByRepetitorIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:51.735167+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndMIDCorrect"}
+{"Time":"2025-10-30T22:03:51.73517+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndMIDCorrect","Output":"=== RUN   TestGetChatIdByCIDAndMIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.759837+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndMIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.759867+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndMIDCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.759875+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndRIDCorrect"}
+{"Time":"2025-10-30T22:03:51.759895+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndRIDCorrect","Output":"=== RUN   TestGetChatIdByCIDAndRIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.784979+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndRIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.78501+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatIdByCIDAndRIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:51.785017+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetChatIdByMIDAndRIDCorrect"}
+{"Time":"2025-10-30T22:03:51.78502+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByMIDAndRIDCorrect","Output":"=== RUN   TestGetChatIdByMIDAndRIDCorrect\n"}
+{"Time":"2025-10-30T22:03:51.80952+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetChatIdByMIDAndRIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.809549+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetChatIdByMIDAndRIDCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.809557+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlClientRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:51.80956+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlClientRepositoryCorrect","Output":"=== RUN   TestCreateSqlClientRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:51.817214+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlClientRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.817237+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlClientRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.817244+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertClientCorrect"}
+{"Time":"2025-10-30T22:03:51.817248+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertClientCorrect","Output":"=== RUN   TestInsertClientCorrect\n"}
+{"Time":"2025-10-30T22:03:51.834193+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertClientCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.834221+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertClientCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.834228+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetClientCorrect"}
+{"Time":"2025-10-30T22:03:51.834232+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetClientCorrect","Output":"=== RUN   TestGetClientCorrect\n"}
+{"Time":"2025-10-30T22:03:51.854168+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetClientCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.854198+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetClientCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.854228+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetClientIncorrect"}
+{"Time":"2025-10-30T22:03:51.854234+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetClientIncorrect","Output":"=== RUN   TestGetClientIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.864887+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetClientIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.864908+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetClientIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.864914+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:51.864918+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataCorrect","Output":"=== RUN   TestUpdateClientPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:51.882916+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.882946+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.882953+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:51.882956+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataIncorrect","Output":"=== RUN   TestUpdateClientPersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.89321+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.893256+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateClientPersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.893284+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordCorrect"}
+{"Time":"2025-10-30T22:03:51.893289+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordCorrect","Output":"=== RUN   TestUpdateClientPasswordCorrect\n"}
+{"Time":"2025-10-30T22:03:51.910776+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.910803+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.910817+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordIncorrect"}
+{"Time":"2025-10-30T22:03:51.91082+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordIncorrect","Output":"=== RUN   TestUpdateClientPasswordIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.921189+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.921213+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateClientPasswordIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.921219+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlContractRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:51.921222+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlContractRepositoryCorrect","Output":"=== RUN   TestCreateSqlContractRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:51.932231+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlContractRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.932259+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlContractRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.932266+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertContractCorrect"}
+{"Time":"2025-10-30T22:03:51.932269+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertContractCorrect","Output":"=== RUN   TestInsertContractCorrect\n"}
+{"Time":"2025-10-30T22:03:51.950632+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertContractCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.950659+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertContractCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.950666+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertContractIncorrect"}
+{"Time":"2025-10-30T22:03:51.95067+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertContractIncorrect","Output":"=== RUN   TestInsertContractIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.964209+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertContractIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.964235+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertContractIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.964242+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetContractCorrect"}
+{"Time":"2025-10-30T22:03:51.964245+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractCorrect","Output":"=== RUN   TestGetContractCorrect\n"}
+{"Time":"2025-10-30T22:03:51.9838+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractCorrect","Output":"
+{"Time":"2025-10-30T22:03:51.983839+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetContractCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:51.98385+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetContractIncorrect"}
+{"Time":"2025-10-30T22:03:51.983855+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractIncorrect","Output":"=== RUN   TestGetContractIncorrect\n"}
+{"Time":"2025-10-30T22:03:51.996307+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractIncorrect","Output":"
+{"Time":"2025-10-30T22:03:51.996338+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetContractIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:51.996363+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetContractsByClientIDCorrect"}
+{"Time":"2025-10-30T22:03:51.996368+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractsByClientIDCorrect","Output":"=== RUN   TestGetContractsByClientIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.015261+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractsByClientIDCorrect","Output":"contracts\n"}
+{"Time":"2025-10-30T22:03:52.019017+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractsByClientIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.019044+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetContractsByClientIDCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.019051+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDCorrect"}
+{"Time":"2025-10-30T22:03:52.019055+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDCorrect","Output":"=== RUN   TestUpdateContractRepetitorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.045059+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.045086+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:52.045094+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDIncorrect"}
+{"Time":"2025-10-30T22:03:52.045097+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDIncorrect","Output":"=== RUN   TestUpdateContractRepetitorIDIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.056803+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.056831+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractRepetitorIDIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.056839+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetContractsByRepetitorIDCorrect"}
+{"Time":"2025-10-30T22:03:52.056845+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractsByRepetitorIDCorrect","Output":"=== RUN   TestGetContractsByRepetitorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.085612+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractsByRepetitorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.08564+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetContractsByRepetitorIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:52.085647+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetContractListCorrect"}
+{"Time":"2025-10-30T22:03:52.08565+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractListCorrect","Output":"=== RUN   TestGetContractListCorrect\n"}
+{"Time":"2025-10-30T22:03:52.108963+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetContractListCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.108993+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetContractListCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.109+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetAllContractsCorrect"}
+{"Time":"2025-10-30T22:03:52.109011+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAllContractsCorrect","Output":"=== RUN   TestGetAllContractsCorrect\n"}
+{"Time":"2025-10-30T22:03:52.133766+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetAllContractsCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.133797+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetAllContractsCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.133803+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusCorrect"}
+{"Time":"2025-10-30T22:03:52.133808+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusCorrect","Output":"=== RUN   TestUpdateContractStatusCorrect\n"}
+{"Time":"2025-10-30T22:03:52.154185+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.154213+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.15422+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusIncorrect"}
+{"Time":"2025-10-30T22:03:52.154224+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusIncorrect","Output":"=== RUN   TestUpdateContractStatusIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.165914+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.165945+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractStatusIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.165954+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusCorrect"}
+{"Time":"2025-10-30T22:03:52.165959+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusCorrect","Output":"=== RUN   TestUpdateContractPaymentStatusCorrect\n"}
+{"Time":"2025-10-30T22:03:52.18655+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.186577+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.186584+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusIncorrect"}
+{"Time":"2025-10-30T22:03:52.186588+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusIncorrect","Output":"=== RUN   TestUpdateContractPaymentStatusIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.198424+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.198449+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractPaymentStatusIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.198457+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDCorrect"}
+{"Time":"2025-10-30T22:03:52.198461+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDCorrect","Output":"=== RUN   TestUpdateContractReviewClientIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.220619+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.220649+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.220657+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDIncorrect"}
+{"Time":"2025-10-30T22:03:52.22066+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDIncorrect","Output":"=== RUN   TestUpdateContractReviewClientIDIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.233855+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.233893+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.2339+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDCorrect"}
+{"Time":"2025-10-30T22:03:52.233913+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDCorrect","Output":"=== RUN   TestUpdateContractReviewRepetitorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.256211+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.25624+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.256247+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDIncorrect"}
+{"Time":"2025-10-30T22:03:52.256251+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDIncorrect","Output":"=== RUN   TestUpdateContractReviewRepetitorIDIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.2688+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.268834+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewRepetitorIDIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.268843+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceCorrect"}
+{"Time":"2025-10-30T22:03:52.268846+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceCorrect","Output":"=== RUN   TestUpdateContractPriceCorrect\n"}
+{"Time":"2025-10-30T22:03:52.289006+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.289033+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.28904+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceIncorrect"}
+{"Time":"2025-10-30T22:03:52.289043+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceIncorrect","Output":"=== RUN   TestUpdateContractPriceIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.301824+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.301855+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractPriceIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.301863+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionCorrect"}
+{"Time":"2025-10-30T22:03:52.301867+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionCorrect","Output":"=== RUN   TestUpdateContractCommissionCorrect\n"}
+{"Time":"2025-10-30T22:03:52.323364+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.323395+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.323402+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionIncorrect"}
+{"Time":"2025-10-30T22:03:52.323405+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionIncorrect","Output":"=== RUN   TestUpdateContractCommissionIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.337315+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.33734+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractCommissionIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.337355+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateCorrect"}
+{"Time":"2025-10-30T22:03:52.33737+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateCorrect","Output":"=== RUN   TestUpdateContractStartDateCorrect\n"}
+{"Time":"2025-10-30T22:03:52.357753+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.357791+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.357798+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateIncorrect"}
+{"Time":"2025-10-30T22:03:52.357803+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateIncorrect","Output":"=== RUN   TestUpdateContractStartDateIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.369635+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.369661+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractStartDateIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.369668+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqCorrect"}
+{"Time":"2025-10-30T22:03:52.369672+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqCorrect","Output":"=== RUN   TestUpdateContractReviewClientIDInSeqCorrect\n"}
+{"Time":"2025-10-30T22:03:52.39186+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.391887+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.391896+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqIncorrect"}
+{"Time":"2025-10-30T22:03:52.391915+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqIncorrect","Output":"=== RUN   TestUpdateContractReviewClientIDInSeqIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.404399+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.404428+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateContractReviewClientIDInSeqIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.404435+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlDepartmentTable"}
+{"Time":"2025-10-30T22:03:52.404455+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlDepartmentTable","Output":"=== RUN   TestCreateSqlDepartmentTable\n"}
+{"Time":"2025-10-30T22:03:52.415327+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlDepartmentTable","Output":"
+{"Time":"2025-10-30T22:03:52.415356+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlDepartmentTable","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.415363+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertDepartmentCorrect"}
+{"Time":"2025-10-30T22:03:52.415366+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertDepartmentCorrect","Output":"=== RUN   TestInsertDepartmentCorrect\n"}
+{"Time":"2025-10-30T22:03:52.42709+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertDepartmentCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.427116+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertDepartmentCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.427132+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentCorrect"}
+{"Time":"2025-10-30T22:03:52.427135+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentCorrect","Output":"=== RUN   TestGetDepartmentCorrect\n"}
+{"Time":"2025-10-30T22:03:52.439745+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.439784+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.439791+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentIncorrect"}
+{"Time":"2025-10-30T22:03:52.439795+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIncorrect","Output":"=== RUN   TestGetDepartmentIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.450627+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.450657+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.450664+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentsByHeadIDCorrect"}
+{"Time":"2025-10-30T22:03:52.450667+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentsByHeadIDCorrect","Output":"=== RUN   TestGetDepartmentsByHeadIDCorrect\n"}
+{"Time":"2025-10-30T22:03:52.465188+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentsByHeadIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.465217+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentsByHeadIDCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.465224+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameCorrect"}
+{"Time":"2025-10-30T22:03:52.465228+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameCorrect","Output":"=== RUN   TestGetDepartmentIDByNameCorrect\n"}
+{"Time":"2025-10-30T22:03:52.477302+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.477326+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.477333+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameIncorrect"}
+{"Time":"2025-10-30T22:03:52.477337+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameIncorrect","Output":"=== RUN   TestGetDepartmentIDByNameIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.488071+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.488099+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentIDByNameIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.488105+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadCorrect"}
+{"Time":"2025-10-30T22:03:52.488108+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadCorrect","Output":"=== RUN   TestChangeDepartmentHeadCorrect\n"}
+{"Time":"2025-10-30T22:03:52.501224+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.501256+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.501264+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadIncorrect"}
+{"Time":"2025-10-30T22:03:52.501268+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadIncorrect","Output":"=== RUN   TestChangeDepartmentHeadIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.512303+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.512351+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestChangeDepartmentHeadIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.512359+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestHireInfoInsertCorrect"}
+{"Time":"2025-10-30T22:03:52.512363+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoInsertCorrect","Output":"=== RUN   TestHireInfoInsertCorrect\n"}
+{"Time":"2025-10-30T22:03:52.530053+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoInsertCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.530096+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestHireInfoInsertCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.530103+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteCorrect"}
+{"Time":"2025-10-30T22:03:52.530111+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteCorrect","Output":"=== RUN   TestHireInfoDeleteCorrect\n"}
+{"Time":"2025-10-30T22:03:52.542597+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.542624+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.542635+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteIncorrect"}
+{"Time":"2025-10-30T22:03:52.542641+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteIncorrect","Output":"=== RUN   TestHireInfoDeleteIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.553695+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.553722+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestHireInfoDeleteIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.553729+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetUserDepartmentsIDsCorrect"}
+{"Time":"2025-10-30T22:03:52.553732+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserDepartmentsIDsCorrect","Output":"=== RUN   TestGetUserDepartmentsIDsCorrect\n"}
+{"Time":"2025-10-30T22:03:52.568173+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserDepartmentsIDsCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.568198+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetUserDepartmentsIDsCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.568205+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetDepartmentUsersIDsCorrect"}
+{"Time":"2025-10-30T22:03:52.568208+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentUsersIDsCorrect","Output":"=== RUN   TestGetDepartmentUsersIDsCorrect\n"}
+{"Time":"2025-10-30T22:03:52.582591+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetDepartmentUsersIDsCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.582617+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetDepartmentUsersIDsCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.582624+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlLessonRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:52.582628+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlLessonRepositoryCorrect","Output":"=== RUN   TestCreateSqlLessonRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:52.59313+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlLessonRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.593157+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlLessonRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.593164+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertLessonCorrect"}
+{"Time":"2025-10-30T22:03:52.593167+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertLessonCorrect","Output":"=== RUN   TestInsertLessonCorrect\n"}
+{"Time":"2025-10-30T22:03:52.612493+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertLessonCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.612524+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertLessonCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.612536+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertLessonIncorrect"}
+{"Time":"2025-10-30T22:03:52.61254+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertLessonIncorrect","Output":"=== RUN   TestInsertLessonIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.624606+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertLessonIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.624631+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertLessonIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.624637+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetLessonsCorrect"}
+{"Time":"2025-10-30T22:03:52.624641+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetLessonsCorrect","Output":"=== RUN   TestGetLessonsCorrect\n"}
+{"Time":"2025-10-30T22:03:52.6472+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetLessonsCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.647233+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetLessonsCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.64724+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlMessageTable"}
+{"Time":"2025-10-30T22:03:52.647243+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlMessageTable","Output":"=== RUN   TestCreateSqlMessageTable\n"}
+{"Time":"2025-10-30T22:03:52.658564+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlMessageTable","Output":"
+{"Time":"2025-10-30T22:03:52.658596+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlMessageTable","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.658603+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertMessageCorrect"}
+{"Time":"2025-10-30T22:03:52.658607+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertMessageCorrect","Output":"=== RUN   TestInsertMessageCorrect\n"}
+{"Time":"2025-10-30T22:03:52.683964+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertMessageCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.683995+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertMessageCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:52.684002+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertMessageIncorrect"}
+{"Time":"2025-10-30T22:03:52.684006+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertMessageIncorrect","Output":"=== RUN   TestInsertMessageIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.696473+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertMessageIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.6965+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertMessageIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.696507+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetMessagesCorrect"}
+{"Time":"2025-10-30T22:03:52.69651+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetMessagesCorrect","Output":"=== RUN   TestGetMessagesCorrect\n"}
+{"Time":"2025-10-30T22:03:52.726963+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetMessagesCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.726994+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetMessagesCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:52.727001+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlModeratorRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:52.727004+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlModeratorRepositoryCorrect","Output":"=== RUN   TestCreateSqlModeratorRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:52.734635+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlModeratorRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.734656+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlModeratorRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.734673+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertModeratorCorrect"}
+{"Time":"2025-10-30T22:03:52.734701+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertModeratorCorrect","Output":"=== RUN   TestInsertModeratorCorrect\n"}
+{"Time":"2025-10-30T22:03:52.749549+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertModeratorCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.749575+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertModeratorCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.749581+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetModeratorCorrect"}
+{"Time":"2025-10-30T22:03:52.749584+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorCorrect","Output":"=== RUN   TestGetModeratorCorrect\n"}
+{"Time":"2025-10-30T22:03:52.765357+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.765382+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetModeratorCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.765389+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetModeratorIncorrect"}
+{"Time":"2025-10-30T22:03:52.765393+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorIncorrect","Output":"=== RUN   TestGetModeratorIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.775603+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.775628+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetModeratorIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.775634+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:52.775637+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataCorrect","Output":"=== RUN   TestUpdateModeratorPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:52.793596+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.793622+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.793648+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:52.793676+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataIncorrect","Output":"=== RUN   TestUpdateModeratorPersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.803972+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.804001+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.804008+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordCorrect"}
+{"Time":"2025-10-30T22:03:52.804011+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordCorrect","Output":"=== RUN   TestUpdateModeratorPasswordCorrect\n"}
+{"Time":"2025-10-30T22:03:52.820837+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.82087+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.820878+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordIncorrect"}
+{"Time":"2025-10-30T22:03:52.820882+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordIncorrect","Output":"=== RUN   TestUpdateModeratorPasswordIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.831185+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.831224+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorPasswordIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.831234+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryCorrect"}
+{"Time":"2025-10-30T22:03:52.831238+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryCorrect","Output":"=== RUN   TestUpdateModeratorSalaryCorrect\n"}
+{"Time":"2025-10-30T22:03:52.848+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.848026+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.848034+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryIncorrect"}
+{"Time":"2025-10-30T22:03:52.848039+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryIncorrect","Output":"=== RUN   TestUpdateModeratorSalaryIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.858442+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.85847+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateModeratorSalaryIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.858477+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetModeratorsCorrect"}
+{"Time":"2025-10-30T22:03:52.858481+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorsCorrect","Output":"=== RUN   TestGetModeratorsCorrect\n"}
+{"Time":"2025-10-30T22:03:52.879292+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorsCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.879327+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetModeratorsCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:52.879335+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetModeratorsIncorrect"}
+{"Time":"2025-10-30T22:03:52.879338+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorsIncorrect","Output":"=== RUN   TestGetModeratorsIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.927267+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetModeratorsIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.9273+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetModeratorsIncorrect","Elapsed":0.05}
+{"Time":"2025-10-30T22:03:52.92731+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:52.927316+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataCorrect","Output":"=== RUN   TestInsertPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:52.937335+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.93736+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.937374+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataInSeqCorrect"}
+{"Time":"2025-10-30T22:03:52.937378+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataInSeqCorrect","Output":"=== RUN   TestInsertPersonalDataInSeqCorrect\n"}
+{"Time":"2025-10-30T22:03:52.947658+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataInSeqCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.947685+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertPersonalDataInSeqCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.947692+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:52.947696+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPersonalDataCorrect","Output":"=== RUN   TestGetPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:52.958891+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.958916+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetPersonalDataCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.958924+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetPersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:52.958928+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPersonalDataIncorrect","Output":"=== RUN   TestGetPersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.96834+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.968365+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetPersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.968372+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:52.968376+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataCorrect","Output":"=== RUN   TestUpdatePersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:52.980906+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.980931+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.980939+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:52.980951+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataIncorrect","Output":"=== RUN   TestUpdatePersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:52.990225+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:52.990248+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdatePersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.990254+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlRepetitorRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:52.990271+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlRepetitorRepositoryCorrect","Output":"=== RUN   TestCreateSqlRepetitorRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:52.997947+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlRepetitorRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:52.99797+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlRepetitorRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:52.997976+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertRepetitorCorrect"}
+{"Time":"2025-10-30T22:03:52.99798+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertRepetitorCorrect","Output":"=== RUN   TestInsertRepetitorCorrect\n"}
+{"Time":"2025-10-30T22:03:53.013932+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertRepetitorCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.013959+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertRepetitorCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.013966+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetRepetitorCorrect"}
+{"Time":"2025-10-30T22:03:53.013976+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorCorrect","Output":"=== RUN   TestGetRepetitorCorrect\n"}
+{"Time":"2025-10-30T22:03:53.031084+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.03111+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetRepetitorCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.031116+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetRepetitorIncorrect"}
+{"Time":"2025-10-30T22:03:53.03112+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorIncorrect","Output":"=== RUN   TestGetRepetitorIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.042288+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.042315+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetRepetitorIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.042331+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataCorrect"}
+{"Time":"2025-10-30T22:03:53.042335+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataCorrect","Output":"=== RUN   TestUpdateRepetitorPersonalDataCorrect\n"}
+{"Time":"2025-10-30T22:03:53.061178+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.061203+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.061223+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataIncorrect"}
+{"Time":"2025-10-30T22:03:53.061227+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataIncorrect","Output":"=== RUN   TestUpdateRepetitorPersonalDataIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.07223+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.072259+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPersonalDataIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.072266+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordCorrect"}
+{"Time":"2025-10-30T22:03:53.072269+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordCorrect","Output":"=== RUN   TestUpdateRepetitorPasswordCorrect\n"}
+{"Time":"2025-10-30T22:03:53.090034+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.090059+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.090065+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordIncorrect"}
+{"Time":"2025-10-30T22:03:53.090082+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordIncorrect","Output":"=== RUN   TestUpdateRepetitorPasswordIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.101299+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.101322+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateRepetitorPasswordIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.101329+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetRepetitorsIdsCorrect"}
+{"Time":"2025-10-30T22:03:53.101332+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorsIdsCorrect","Output":"=== RUN   TestGetRepetitorsIdsCorrect\n"}
+{"Time":"2025-10-30T22:03:53.135333+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetRepetitorsIdsCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.1354+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetRepetitorsIdsCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:53.135411+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlResumeRepositoryCorrect"}
+{"Time":"2025-10-30T22:03:53.135417+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlResumeRepositoryCorrect","Output":"=== RUN   TestCreateSqlResumeRepositoryCorrect\n"}
+{"Time":"2025-10-30T22:03:53.145453+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlResumeRepositoryCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.145473+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlResumeRepositoryCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.145479+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertResumeCorrect"}
+{"Time":"2025-10-30T22:03:53.145483+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertResumeCorrect","Output":"=== RUN   TestInsertResumeCorrect\n"}
+{"Time":"2025-10-30T22:03:53.157078+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertResumeCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.157103+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertResumeCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.157109+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertResumeInSeqCorrect"}
+{"Time":"2025-10-30T22:03:53.157127+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertResumeInSeqCorrect","Output":"=== RUN   TestInsertResumeInSeqCorrect\n"}
+{"Time":"2025-10-30T22:03:53.168977+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertResumeInSeqCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.169001+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertResumeInSeqCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.169007+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetResumeCorrect"}
+{"Time":"2025-10-30T22:03:53.169011+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetResumeCorrect","Output":"=== RUN   TestGetResumeCorrect\n"}
+{"Time":"2025-10-30T22:03:53.187247+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetResumeCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.187273+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetResumeCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.187281+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetResumeIncorrect"}
+{"Time":"2025-10-30T22:03:53.187284+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetResumeIncorrect","Output":"=== RUN   TestGetResumeIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.198195+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetResumeIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.19824+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetResumeIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.198249+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateResumeTitleCorrect"}
+{"Time":"2025-10-30T22:03:53.198253+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeTitleCorrect","Output":"=== RUN   TestUpdateResumeTitleCorrect\n"}
+{"Time":"2025-10-30T22:03:53.217051+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeTitleCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.217079+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateResumeTitleCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.217114+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionCorrect"}
+{"Time":"2025-10-30T22:03:53.217126+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionCorrect","Output":"=== RUN   TestUpdateResumeDescriptionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.236177+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.236205+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.236213+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionIncorrect"}
+{"Time":"2025-10-30T22:03:53.236237+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionIncorrect","Output":"=== RUN   TestUpdateResumeDescriptionIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.247511+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.247538+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateResumeDescriptionIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.247545+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesCorrect"}
+{"Time":"2025-10-30T22:03:53.247549+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesCorrect","Output":"=== RUN   TestUpdateResumePricesCorrect\n"}
+{"Time":"2025-10-30T22:03:53.266525+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.266564+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.26657+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesIncorrect"}
+{"Time":"2025-10-30T22:03:53.266574+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesIncorrect","Output":"=== RUN   TestUpdateResumePricesIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.27743+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.277455+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateResumePricesIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.277462+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestDeleteResumeCorrect"}
+{"Time":"2025-10-30T22:03:53.277466+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestDeleteResumeCorrect","Output":"=== RUN   TestDeleteResumeCorrect\n"}
+{"Time":"2025-10-30T22:03:53.296123+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestDeleteResumeCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.296148+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestDeleteResumeCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.296155+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestDeleteResumeIncorrect"}
+{"Time":"2025-10-30T22:03:53.296159+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestDeleteResumeIncorrect","Output":"=== RUN   TestDeleteResumeIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.30728+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestDeleteResumeIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.307312+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestDeleteResumeIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.307318+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertReviewCorrect"}
+{"Time":"2025-10-30T22:03:53.307322+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertReviewCorrect","Output":"=== RUN   TestInsertReviewCorrect\n"}
+{"Time":"2025-10-30T22:03:53.330787+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertReviewCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.330833+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertReviewCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.330842+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertReviewInSeqCorrect"}
+{"Time":"2025-10-30T22:03:53.330846+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertReviewInSeqCorrect","Output":"=== RUN   TestInsertReviewInSeqCorrect\n"}
+{"Time":"2025-10-30T22:03:53.356003+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertReviewInSeqCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.356027+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertReviewInSeqCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:53.356034+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetReviewCorrect"}
+{"Time":"2025-10-30T22:03:53.356038+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewCorrect","Output":"=== RUN   TestGetReviewCorrect\n"}
+{"Time":"2025-10-30T22:03:53.379792+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.379829+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetReviewCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.379836+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetReviewIncorrect"}
+{"Time":"2025-10-30T22:03:53.37984+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewIncorrect","Output":"=== RUN   TestGetReviewIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.391157+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.391183+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetReviewIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.39119+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestUpdateReviewCorrect"}
+{"Time":"2025-10-30T22:03:53.391193+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateReviewCorrect","Output":"=== RUN   TestUpdateReviewCorrect\n"}
+{"Time":"2025-10-30T22:03:53.415514+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestUpdateReviewCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.415543+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestUpdateReviewCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.41555+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetReviewsByRepetitorIDCorrect"}
+{"Time":"2025-10-30T22:03:53.415554+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewsByRepetitorIDCorrect","Output":"=== RUN   TestGetReviewsByRepetitorIDCorrect\n"}
+{"Time":"2025-10-30T22:03:53.448309+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewsByRepetitorIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.448338+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetReviewsByRepetitorIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:53.448345+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetReviewsByClientIDCorrect"}
+{"Time":"2025-10-30T22:03:53.448348+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewsByClientIDCorrect","Output":"=== RUN   TestGetReviewsByClientIDCorrect\n"}
+{"Time":"2025-10-30T22:03:53.480701+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetReviewsByClientIDCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.480729+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetReviewsByClientIDCorrect","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:53.480736+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlTransactionTable"}
+{"Time":"2025-10-30T22:03:53.480739+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlTransactionTable","Output":"=== RUN   TestCreateSqlTransactionTable\n"}
+{"Time":"2025-10-30T22:03:53.491659+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlTransactionTable","Output":"
+{"Time":"2025-10-30T22:03:53.491688+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlTransactionTable","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.491695+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertTransactionCorrect"}
+{"Time":"2025-10-30T22:03:53.491698+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertTransactionCorrect","Output":"=== RUN   TestInsertTransactionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.506583+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertTransactionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.506607+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertTransactionCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.506614+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertTransactionIncorrect"}
+{"Time":"2025-10-30T22:03:53.506618+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertTransactionIncorrect","Output":"=== RUN   TestInsertTransactionIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.518539+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertTransactionIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.518563+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertTransactionIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.518569+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetTransactionCorrect"}
+{"Time":"2025-10-30T22:03:53.518573+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionCorrect","Output":"=== RUN   TestGetTransactionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.534212+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.534253+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetTransactionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.534261+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetTransactionIncorrect"}
+{"Time":"2025-10-30T22:03:53.534268+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionIncorrect","Output":"=== RUN   TestGetTransactionIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.545533+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.545564+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetTransactionIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.545571+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetTransactionsListCorrect"}
+{"Time":"2025-10-30T22:03:53.545575+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionsListCorrect","Output":"=== RUN   TestGetTransactionsListCorrect\n"}
+{"Time":"2025-10-30T22:03:53.563323+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetTransactionsListCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.563348+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetTransactionsListCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.563355+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionCorrect"}
+{"Time":"2025-10-30T22:03:53.563358+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionCorrect","Output":"=== RUN   TestInsertPendingContractPaymentTransactionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.579734+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.579765+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.579775+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionIncorrect"}
+{"Time":"2025-10-30T22:03:53.579779+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionIncorrect","Output":"=== RUN   TestInsertPendingContractPaymentTransactionIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.593217+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.593242+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertPendingContractPaymentTransactionIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.593258+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetPendingContractPaymentTransactionCorrect"}
+{"Time":"2025-10-30T22:03:53.593262+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPendingContractPaymentTransactionCorrect","Output":"=== RUN   TestGetPendingContractPaymentTransactionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.609901+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetPendingContractPaymentTransactionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.609927+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetPendingContractPaymentTransactionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.609935+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestApproveTransactionCorrect"}
+{"Time":"2025-10-30T22:03:53.609938+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestApproveTransactionCorrect","Output":"=== RUN   TestApproveTransactionCorrect\n"}
+{"Time":"2025-10-30T22:03:53.625857+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestApproveTransactionCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.625884+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestApproveTransactionCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.625893+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestChangeTransactionStatusCorrect"}
+{"Time":"2025-10-30T22:03:53.625898+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeTransactionStatusCorrect","Output":"=== RUN   TestChangeTransactionStatusCorrect\n"}
+{"Time":"2025-10-30T22:03:53.642025+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestChangeTransactionStatusCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.642053+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestChangeTransactionStatusCorrect","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:53.64206+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestCreateSqlUserTable"}
+{"Time":"2025-10-30T22:03:53.642063+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlUserTable","Output":"=== RUN   TestCreateSqlUserTable\n"}
+{"Time":"2025-10-30T22:03:53.650913+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestCreateSqlUserTable","Output":"
+{"Time":"2025-10-30T22:03:53.650935+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestCreateSqlUserTable","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.650942+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertUserCorrect"}
+{"Time":"2025-10-30T22:03:53.650946+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserCorrect","Output":"=== RUN   TestInsertUserCorrect\n"}
+{"Time":"2025-10-30T22:03:53.661197+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.661221+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertUserCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.661241+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertUserIncorrect"}
+{"Time":"2025-10-30T22:03:53.661245+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserIncorrect","Output":"=== RUN   TestInsertUserIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.671371+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.671394+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertUserIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.671414+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetUserCorrect"}
+{"Time":"2025-10-30T22:03:53.671418+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserCorrect","Output":"=== RUN   TestGetUserCorrect\n"}
+{"Time":"2025-10-30T22:03:53.684157+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.684183+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetUserCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.684198+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestGetUserIncorrect"}
+{"Time":"2025-10-30T22:03:53.684202+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserIncorrect","Output":"=== RUN   TestGetUserIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.693662+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestGetUserIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.693687+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestGetUserIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.693694+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqCorrect"}
+{"Time":"2025-10-30T22:03:53.693697+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqCorrect","Output":"=== RUN   TestInsertUserInSeqCorrect\n"}
+{"Time":"2025-10-30T22:03:53.705901+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqCorrect","Output":"
+{"Time":"2025-10-30T22:03:53.705994+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqCorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.70602+03:00","Action":"run","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqIncorrect"}
+{"Time":"2025-10-30T22:03:53.706028+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqIncorrect","Output":"=== RUN   TestInsertUserInSeqIncorrect\n"}
+{"Time":"2025-10-30T22:03:53.716641+03:00","Action":"output","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqIncorrect","Output":"
+{"Time":"2025-10-30T22:03:53.716669+03:00","Action":"pass","Package":"data_base_project/data_base","Test":"TestInsertUserInSeqIncorrect","Elapsed":0.01}
+{"Time":"2025-10-30T22:03:53.716677+03:00","Action":"output","Package":"data_base_project/data_base","Output":"PASS\n"}
+{"Time":"2025-10-30T22:03:53.71949+03:00","Action":"output","Package":"data_base_project/data_base","Output":"ok  \tdata_base_project/data_base\t3.556s\n"}
+{"Time":"2025-10-30T22:03:53.719539+03:00","Action":"pass","Package":"data_base_project/data_base","Elapsed":3.556}]]></system-out>
+	</testsuite>
+</testsuites>

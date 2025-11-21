@@ -542,7 +542,7 @@ func TestSendMessageCorrectLondon(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting chat: %v", err)
 	}
-	err = chatService.SendMessage(chatID, 1, "Hello")
+	_, err = chatService.SendMessage(chatID, 1, "Hello")
 	if err != nil {
 		t.Fatalf("Error sending message: %v", err)
 	}
@@ -604,7 +604,7 @@ func TestSendMessageCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting chat: %v", err)
 	}
-	err = chatService.SendMessage(chatID, result.UserID, "Hello")
+	_, err = chatService.SendMessage(chatID, result.UserID, "Hello")
 	if err != nil {
 		t.Fatalf("Error sending message: %v", err)
 	}

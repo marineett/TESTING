@@ -40,7 +40,7 @@ func CreateModeratorService(
 
 func (s *ModeratorService) transormInitModeratorData(init_data types.ServiceInitModeratorData) (*types.ServiceModeratorData, *types.ServicePersonalData, *types.ServiceAuthData) {
 	moderator := types.ServiceModeratorData{
-		Salary: 0,
+		Salary: int64(init_data.Salary),
 	}
 	return &moderator, &init_data.ServicePersonalData, &types.ServiceAuthData{
 		Login:    init_data.Login,

@@ -16,6 +16,7 @@ type IChatRepository interface {
 	GetChatIdByCIDAndRID(clientID int64, repetitorID int64) (int64, error)
 	GetChatIdByMIDAndRID(moderatorID int64, repetitorID int64) (int64, error)
 	DeleteChat(id int64) error
+	UpdateChat(chatID int64, chatStatus string) error
 }
 
 func CreateSqlChatTable(db *sql.DB, chatTableName string, userTableName string) error {
@@ -25,7 +26,9 @@ func CreateSqlChatTable(db *sql.DB, chatTableName string, userTableName string) 
 		client_id INTEGER NOT NULL,
 		repetitor_id INTEGER NOT NULL,
 		moderator_id INTEGER NOT NULL,
-		created_at TIMESTAMP NOT NULL
+		created_at TIMESTAMP NOT NULL,
+		type VARCHAR(255) NOT NULL,
+		status VARCHAR(255) NOT NULL
 	)`
 	_, err := db.Exec(query)
 	if err != nil {
@@ -55,10 +58,10 @@ func (r *SqlChatRepository) InsertChat(chat types.DBChat) (int64, error) {
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.chatTable + ` (id, client_id, repetitor_id, moderator_id, created_at) 
-	VALUES ($1, $2, $3, $4, $5)
+	INSERT INTO ` + r.chatTable + ` (id, client_id, repetitor_id, moderator_id, created_at, type, status) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
-	_, err = r.db.Exec(query, id, chat.ClientID, chat.RepetitorID, chat.ModeratorID, chat.CreatedAt)
+	_, err = r.db.Exec(query, id, chat.ClientID, chat.RepetitorID, chat.ModeratorID, chat.CreatedAt, chat.Type, chat.Status)
 	if err != nil {
 		return 0, err
 	}
@@ -71,7 +74,7 @@ func (r *SqlChatRepository) GetChat(id int64) (*types.DBChat, error) {
 	`
 	row := r.db.QueryRow(query, id)
 	var chat types.DBChat
-	err := row.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt)
+	err := row.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt, &chat.Type, &chat.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +93,7 @@ func (r *SqlChatRepository) GetChatListByClientID(clientID int64, from int64, si
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat
-		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt)
+		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt, &chat.Type, &chat.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -111,7 +114,7 @@ func (r *SqlChatRepository) GetChatListByRepetitorID(repetitorID int64, from int
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat
-		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt)
+		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt, &chat.Type, &chat.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -132,7 +135,7 @@ func (r *SqlChatRepository) GetChatListByModeratorID(moderatorID int64, from int
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat
-		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt)
+		err := rows.Scan(&chat.ID, &chat.ClientID, &chat.RepetitorID, &chat.ModeratorID, &chat.CreatedAt, &chat.Type, &chat.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -194,6 +197,17 @@ func (r *SqlChatRepository) DeleteChat(id int64) error {
 	DELETE FROM ` + r.chatTable + ` WHERE id = $1
 	`
 	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SqlChatRepository) UpdateChat(chatID int64, chatStatus string) error {
+	query := `
+	UPDATE ` + r.chatTable + ` SET status = $1 WHERE id = $2
+	`
+	_, err := r.db.Exec(query, chatStatus, chatID)
 	if err != nil {
 		return err
 	}
