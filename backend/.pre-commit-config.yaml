@@ -1,0 +1,24 @@
+repos:
+  - repo: local
+    hooks:
+      - id: golangci-lint-backend
+        name: golangci-lint (backend)
+        language: system
+        pass_filenames: false
+        always_run: true
+        entry: bash
+        args:
+          - -c
+          - |
+            cd backend && golangci-lint run --timeout=5m
+      
+      - id: gocyclo-backend
+        name: gocyclo (backend)
+        language: system
+        pass_filenames: false
+        always_run: true
+        entry: bash
+        args:
+          - -c
+          - |
+            cd backend && gocyclo -over=10 .
