@@ -40,7 +40,12 @@ func TestCreateSqlDepartmentTable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -56,7 +61,12 @@ func TestInsertDepartmentCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -76,7 +86,12 @@ func TestGetDepartmentCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -106,7 +121,12 @@ func TestGetDepartmentIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -126,7 +146,12 @@ func TestGetDepartmentsByHeadIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -163,7 +188,12 @@ func TestGetDepartmentIDByNameCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -187,7 +217,12 @@ func TestGetDepartmentIDByNameIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -207,7 +242,12 @@ func TestChangeDepartmentHeadCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -238,7 +278,12 @@ func TestChangeDepartmentHeadIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -258,7 +303,12 @@ func TestHireInfoInsertCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -292,7 +342,12 @@ func TestHireInfoDeleteCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -318,7 +373,12 @@ func TestHireInfoDeleteIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -338,7 +398,12 @@ func TestGetUserDepartmentsIDsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)
@@ -378,7 +443,12 @@ func TestGetDepartmentUsersIDsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	err = setupDepartmentTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up department tables: %v", err)

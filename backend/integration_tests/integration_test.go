@@ -280,7 +280,7 @@ func (s *ChatSuite) TestSendMessageCorrect(t provider.T) {
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).SendMessage(chatID, userID, "Hello")
+		_, err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).SendMessage(chatID, userID, "Hello")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {

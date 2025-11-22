@@ -4,12 +4,45 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupClientRouterV2(clientService service_logic.IClientService, contractService service_logic.IContractService) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(EXACT_CLIENT_V2, ClientGetHandlerV2(clientService)).Methods("GET")
+	return router
+}
+
+func ClientGetHandlerV2(clientService service_logic.IClientService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clientID := mux.Vars(r)["clientId"]
+		fmt.Printf("client ID: %s\n", clientID)
+		clientIDInt, err := strconv.Atoi(clientID)
+		if err != nil {
+			http.Error(w, "Invalid client ID", http.StatusBadRequest)
+			return
+		}
+		client, err := clientService.GetClientProfile(int64(clientIDInt), 0, 0)
+		if err != nil {
+			http.Error(w, "Client not found", http.StatusNotFound)
+			return
+		}
+		serverClient := types.MapperClientProfileServiceToServerV2(client)
+		err = json.NewEncoder(w).Encode(serverClient)
+		if err != nil {
+			http.Error(w, "Error encoding client", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupClientRouter(
 	clientService service_logic.IClientService,
@@ -58,13 +91,17 @@ func ClientGetProfileHandler(clientService service_logic.IClientService, logger 
 		logger.Printf("Reviews limit: %v", reviewsLimit)
 		client, err := clientService.GetClientProfile(int64(clientID), int64(reviewsOffset), int64(reviewsLimit))
 		if err != nil {
-			http.Error(w, "Error getting client", http.StatusInternalServerError)
+			http.Error(w, "Error getting client", http.StatusBadRequest)
 			return
 		}
 		serverClient := types.MapperClientProfileServiceToServer(client)
 		logger.Printf("Client retrieved: %v", serverClient)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverClient)
+		err = json.NewEncoder(w).Encode(serverClient)
+		if err != nil {
+			http.Error(w, "Error encoding client", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -94,11 +131,15 @@ func ClientCreateContractHandler(contractService service_logic.IContractService,
 		contractID, err := contractService.CreateContract(serviceContractInitInfo)
 		if err != nil {
 			logger.Printf("Error creating contract: %v", err)
-			http.Error(w, "Error creating contract", http.StatusInternalServerError)
+			http.Error(w, "Error creating contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract created with ID: %d", contractID)
-		json.NewEncoder(w).Encode(contractID)
+		err = json.NewEncoder(w).Encode(contractID)
+		if err != nil {
+			http.Error(w, "Error encoding contract ID", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -146,7 +187,7 @@ func ClientGetContractsHandler(contractService service_logic.IContractService, l
 		contracts, err := contractService.GetClientContractList(int64(clientID), int64(offset), int64(limit), types.ContractStatus(status))
 		if err != nil {
 			logger.Printf("Error getting contracts: %v", err)
-			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
 		serverContracts := make([]types.ServerContract, len(contracts))
@@ -155,7 +196,11 @@ func ClientGetContractsHandler(contractService service_logic.IContractService, l
 		}
 		logger.Printf("Contracts retrieved: %v", serverContracts)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -189,15 +234,19 @@ func ClientMakeReviewHandler(contractService service_logic.IContractService, log
 		}
 		review.CreatedAt = time.Now()
 		logger.Printf("Review: %v", review)
-		serviceReview := types.ServiceReview(review)
-		err = contractService.CreateContractReviewClient(int64(contractID), serviceReview)
+		serviceReview := types.MapperReviewServerToService(&review)
+		_, err = contractService.CreateContractReviewClient(int64(contractID), *serviceReview)
 		if err != nil {
 			logger.Printf("Error making review: %v", err)
-			http.Error(w, "Error making review", http.StatusInternalServerError)
+			http.Error(w, "Error making review", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Review made: %v", review)
-		json.NewEncoder(w).Encode(review)
+		err = json.NewEncoder(w).Encode(review)
+		if err != nil {
+			http.Error(w, "Error encoding review", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }

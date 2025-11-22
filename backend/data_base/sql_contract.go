@@ -21,6 +21,7 @@ type IContractRepository interface {
 	UpdateContractReviewRepetitorID(id int64, reviewRepetitorID int64) error
 	GetContractList(from int64, size int64, status types.ContractStatus) ([]types.DBContract, error)
 	GetAllContracts(from int64, size int64) ([]types.DBContract, error)
+	GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.DBContract, error)
 }
 
 func CreateSqlContractTable(
@@ -188,7 +189,12 @@ func (r *SqlContractRepository) GetContractsByRepetitorID(repetitorID int64, fro
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -241,7 +247,12 @@ func (r *SqlContractRepository) GetContractsByClientID(clientID int64, from int6
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -297,7 +308,12 @@ func (r *SqlContractRepository) GetContractList(from int64, size int64, status t
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -351,7 +367,12 @@ func (r *SqlContractRepository) GetAllContracts(from int64, size int64) ([]types
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 	contracts := []types.DBContract{}
 	for rows.Next() {
 		var contract types.DBContract
@@ -422,7 +443,9 @@ func (r *SqlContractRepository) UpdateContractReviewClientID(id int64, reviewCli
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback()
+	}()
 
 	query := `
 	UPDATE ` + r.contractTable + ` SET review_client_id = $1 WHERE id = $2
@@ -550,4 +573,47 @@ func (r *SqlContractRepository) UpdateContractReviewClientIDInSeq(tx *sql.Tx, id
 		return fmt.Errorf("contract not found")
 	}
 	return nil
+}
+
+func (r *SqlContractRepository) GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.DBContract, error) {
+	query := `
+	SELECT id, client_id, repetitor_id, created_at, description, status, payment_status, review_client_id, review_repetitor_id, price, commission, start_date, end_date FROM ` + r.contractTable + ` WHERE client_id = $1 AND repetitor_id = $2 ORDER BY created_at DESC LIMIT $3 OFFSET $4
+	`
+	rows, err := r.db.Query(query, clientID, repetitorID, size, from)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
+	contracts := []types.DBContract{}
+	for rows.Next() {
+		var contract types.DBContract
+		err := rows.Scan(
+			&contract.ID,
+			&contract.ClientID,
+			&contract.RepetitorID,
+			&contract.CreatedAt,
+			&contract.Description,
+			&contract.Status,
+			&contract.PaymentStatus,
+			&contract.ReviewClientID,
+			&contract.ReviewRepetitorID,
+			&contract.Price,
+			&contract.Commission,
+			&contract.StartDate,
+			&contract.EndDate,
+		)
+		if err != nil {
+			return nil, err
+		}
+		contracts = append(contracts, contract)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return contracts, nil
 }

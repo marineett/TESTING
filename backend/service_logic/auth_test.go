@@ -28,7 +28,8 @@ func (s *AuthSuite) TestAuthorizeCorrectLondon(t provider.T) {
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
 		repo = tu.CreateTestAuthRepository()
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err := repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		var err error
@@ -55,7 +56,8 @@ func (s *AuthSuite) TestAuthorizeCorrectClassic(t provider.T) {
 		mod, err := tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		repo = mod.AuthRepository
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err = repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		var err error
@@ -72,7 +74,8 @@ func (s *AuthSuite) TestAuthorizeIncorrectLoginLondon(t provider.T) {
 	var repo data_base.IAuthRepository
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
 		repo = tu.CreateTestAuthRepository()
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err := repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		bad := tu.TestAuth
@@ -93,7 +96,8 @@ func (s *AuthSuite) TestAuthorizeIncorrectClassic(t provider.T) {
 		mod, err := tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		repo = mod.AuthRepository
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err = repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		bad := tu.TestAuth
@@ -107,7 +111,8 @@ func (s *AuthSuite) TestAuthorizeIncorrectPasswordLondon(t provider.T) {
 	var repo data_base.IAuthRepository
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
 		repo = tu.CreateTestAuthRepository()
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err := repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		bad := tu.TestAuth
@@ -128,7 +133,8 @@ func (s *AuthSuite) TestAuthorizeIncorrectPasswordClassic(t provider.T) {
 		mod, err := tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		repo = mod.AuthRepository
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err = repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
 		bad := tu.TestAuth
@@ -143,7 +149,8 @@ func (s *AuthSuite) TestCheckLoginCorrectLondon(t provider.T) {
 	var exists bool
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
 		repo = tu.CreateTestAuthRepository()
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err := repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		var err error
@@ -167,7 +174,8 @@ func (s *AuthSuite) TestCheckLoginCorrectClassic(t provider.T) {
 		mod, err := tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		repo = mod.AuthRepository
-		repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		_, err = repo.InsertAuth(types.DBAuthInfo{UserID: 1, UserType: types.Admin, Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
+		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
 		var err error

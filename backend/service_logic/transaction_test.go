@@ -10,7 +10,7 @@ import (
 func TestCreateContractPaymentTransactionCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -28,7 +28,11 @@ func TestCreateContractPaymentTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -52,7 +56,7 @@ func TestCreateContractPaymentTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -74,7 +78,10 @@ func TestGetTransactionsListCorrectLondon(t *testing.T) {
 	if len(transactions) != 0 {
 		t.Fatalf("transactions list is not correct: %v", transactions)
 	}
-	transactionRepository.InsertTransaction(tu.TestTransaction)
+	_, err = transactionRepository.InsertTransaction(tu.TestTransaction)
+	if err != nil {
+		t.Fatalf("error inserting transaction: %v", err)
+	}
 	transactions, err = transactionService.GetTransactionsList(1, 0, 10)
 	if err != nil {
 		t.Fatalf("error getting transactions list: %v", err)
@@ -89,7 +96,11 @@ func TestGetTransactionsListCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -113,7 +124,7 @@ func TestGetTransactionsListCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	_, err = transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	_, err = transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -143,7 +154,11 @@ func TestGetTransactionsListIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -162,7 +177,7 @@ func TestGetTransactionsListIncorrectClassic(t *testing.T) {
 func TestChangeTransactionStatusCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -191,7 +206,11 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -215,7 +234,7 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -235,7 +254,7 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 func TestChangeTransactionStatusIncorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -268,7 +287,11 @@ func TestChangeTransactionStatusIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -283,7 +306,7 @@ func TestChangeTransactionStatusIncorrectClassic(t *testing.T) {
 func TestGetTransactionCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -304,7 +327,11 @@ func TestGetTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)
@@ -328,7 +355,7 @@ func TestGetTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -358,7 +385,11 @@ func TestGetTransactionIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			t.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up transaction tables: %v", err)

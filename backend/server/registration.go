@@ -4,10 +4,97 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
+	"time"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupRegistrationRouterV2(
+	authService service_logic.IAuthService,
+	moderatorService service_logic.IModeratorService,
+	clientService service_logic.IClientService,
+	adminService service_logic.IAdminService,
+	repetitorService service_logic.IRepetitorService,
+) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(REGISTRATION_API_V2, RegistrationHandlerV2(clientService, moderatorService, adminService, repetitorService, authService)).Methods("POST")
+	return router
+}
+
+func ChooseRole(
+	role string,
+	clientService service_logic.IClientService,
+	moderatorService service_logic.IModeratorService,
+	adminService service_logic.IAdminService,
+	repetitorService service_logic.IRepetitorService,
+	registrationData types.ServerRegistrationDataV2,
+) error {
+	switch role {
+	case "client":
+		return clientService.CreateClient(*types.MapperRegistrationV2ToServiceInitClient(&registrationData))
+	case "moderator":
+		return moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData))
+	case "admin":
+		return adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData))
+	case "repetitor":
+		return repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData))
+	default:
+		return fmt.Errorf("invalid role: %s", role)
+	}
+}
+
+func RegistrationHandlerV2(
+	clientService service_logic.IClientService,
+	moderatorService service_logic.IModeratorService,
+	adminService service_logic.IAdminService,
+	repetitorService service_logic.IRepetitorService,
+	authService service_logic.IAuthService,
+) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "POST" {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
+			return
+		}
+		var registrationData types.ServerRegistrationDataV2
+		if err := json.Unmarshal(body, &registrationData); err != nil {
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			return
+		}
+		err = ChooseRole(registrationData.Role, clientService, moderatorService, adminService, repetitorService, registrationData)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		verdict, err := authService.Authorize(types.ServiceAuthData{Login: registrationData.Login, Password: registrationData.Password})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		secret := os.Getenv("JWT_SECRET")
+		if secret == "" {
+			http.Error(w, "JWT secret is not configured", http.StatusBadRequest)
+			return
+		}
+		token, err := createJWT(verdict.UserID, verdict.UserType.String(), 24*time.Hour, secret)
+		if err != nil {
+			http.Error(w, "Failed to issue token", http.StatusBadRequest)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		_ = json.NewEncoder(w).Encode(types.ServerAuthResponseV2{Token: token, Role: verdict.UserType.String(), UserID: verdict.UserID})
+	}
+}
 
 func SetupRegistrationRouter(
 	authService service_logic.IAuthService,
@@ -57,7 +144,7 @@ func RegistrationModeratorHandler(
 		inSystem, err := authService.CheckLogin(initData.Login)
 		if err != nil {
 			logger.Printf("Error checking login: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		if inSystem {
@@ -70,7 +157,7 @@ func RegistrationModeratorHandler(
 		err = moderatorService.CreateModerator(*serviceInitData)
 		if err != nil {
 			logger.Printf("Error creating moderator: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 

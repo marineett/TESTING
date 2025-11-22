@@ -55,7 +55,11 @@ func GuestGetRepetitorsHandler(repetitorService service_logic.IRepetitorService,
 		for i, repetitor := range repetitors {
 			serverRepetitors[i] = *types.MapperRepetitorViewServiceToServer(repetitor)
 		}
-		json.NewEncoder(w).Encode(serverRepetitors)
+		err = json.NewEncoder(w).Encode(serverRepetitors)
+		if err != nil {
+			http.Error(w, "Error encoding repetitors", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 	}
 }

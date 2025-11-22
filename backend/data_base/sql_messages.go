@@ -10,6 +10,9 @@ type IMessageRepository interface {
 	InsertMessage(message types.DBMessage) (int64, error)
 	GetMessages(chatID int64, from int64, size int64) ([]types.DBMessage, error)
 	DeleteMessages(chatID int64) error
+	DeleteMessage(messageID int64) error
+	UpdateMessageContent(messageID int64, content string) error
+	GetMessage(messageID int64) (*types.DBMessage, error)
 }
 
 func CreateSqlMessageTable(db *sql.DB, messageTableName string, chatTableName string, userTableName string) error {
@@ -69,7 +72,12 @@ func (r *SqlMessageRepository) GetMessages(chatID int64, from int64, size int64)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Printf("Error closing rows: %v\n", err)
+		}
+	}()
 
 	messages := []types.DBMessage{}
 	for rows.Next() {
@@ -92,4 +100,38 @@ func (r *SqlMessageRepository) DeleteMessages(chatID int64) error {
 		return err
 	}
 	return nil
+}
+
+func (r *SqlMessageRepository) DeleteMessage(messageID int64) error {
+	query := `
+	DELETE FROM ` + r.messageTable + ` WHERE id = $1
+	`
+	_, err := r.db.Exec(query, messageID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SqlMessageRepository) UpdateMessageContent(messageID int64, content string) error {
+	query := `
+	UPDATE ` + r.messageTable + ` SET content = $1 WHERE id = $2
+	`
+	_, err := r.db.Exec(query, content, messageID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SqlMessageRepository) GetMessage(messageID int64) (*types.DBMessage, error) {
+	query := `
+	SELECT * FROM ` + r.messageTable + ` WHERE id = $1
+	`
+	var message types.DBMessage
+	err := r.db.QueryRow(query, messageID).Scan(&message.ID, &message.ChatID, &message.SenderID, &message.Content, &message.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &message, nil
 }

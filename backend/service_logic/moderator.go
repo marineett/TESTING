@@ -40,7 +40,7 @@ func CreateModeratorService(
 
 func (s *ModeratorService) transormInitModeratorData(init_data types.ServiceInitModeratorData) (*types.ServiceModeratorData, *types.ServicePersonalData, *types.ServiceAuthData) {
 	moderator := types.ServiceModeratorData{
-		Salary: 0,
+		Salary: int64(init_data.Salary),
 	}
 	return &moderator, &init_data.ServicePersonalData, &types.ServiceAuthData{
 		Login:    init_data.Login,
@@ -81,10 +81,7 @@ func (s *ModeratorService) UpdateModeratorPersonalData(user_id int64, personal_d
 }
 
 func (s *ModeratorService) UpdateModeratorPassword(user_id int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.moderatorRepository.UpdateModeratorPassword(user_id, types.DBAuthData{
-		Login:    authData.Login,
-		Password: authData.Password,
-	}, newPassword)
+	return s.moderatorRepository.UpdateModeratorPassword(user_id, *types.MapperAuthDataServiceToDB(&authData), newPassword)
 }
 
 func (s *ModeratorService) GetModeratorProfile(user_id int64) (*types.ServiceModeratorProfile, error) {

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func CreateDepartment(serviceModule *service_logic.ServiceModule) {
@@ -15,12 +16,12 @@ func CreateDepartment(serviceModule *service_logic.ServiceModule) {
 	buffer := bufio.NewReader(os.Stdin)
 	department.Name, _ = buffer.ReadString('\n')
 	department.HeadID = 0
-	err := serviceModule.DepartmentService.CreateDepartment(department)
+	id, err := serviceModule.DepartmentService.CreateDepartment(department)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Department created")
+	fmt.Println("Department created with ID:", id)
 }
 
 func AssignModeratorToDepartment(serviceModule *service_logic.ServiceModule) {
@@ -111,6 +112,109 @@ func GetDepartmentById(serviceModule *service_logic.ServiceModule) {
 	PrintDepartment(&department)
 }
 
+func ListAdminDepartments(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter admin ID:")
+	adminIDStr := ""
+	fmt.Scanln(&adminIDStr)
+	adminID, err := strconv.ParseInt(adminIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	departments, err := serviceModule.DepartmentService.GetDepartmentsByHeadIdWithModerators(adminID)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if len(departments) == 0 {
+		fmt.Println("No departments found")
+		return
+	}
+	for _, d := range departments {
+		fmt.Println("--- Department ---")
+		fmt.Println("ID:", d.ID)
+		fmt.Println("Name:", d.Name)
+		fmt.Println("Head ID:", d.HeadID)
+		if len(d.Moderators) == 0 {
+			fmt.Println("Moderators: <none>")
+		} else {
+			fmt.Println("Moderators:")
+			for _, m := range d.Moderators {
+				fmt.Printf("  - ID: %d, Name: %s %s\n", m.ID, m.Moderator.FirstName, m.Moderator.LastName)
+			}
+		}
+	}
+}
+
+func ReplaceDepartmentInfo(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter department ID:")
+	deptIDStr := ""
+	fmt.Scanln(&deptIDStr)
+	deptID, err := strconv.ParseInt(deptIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter new department name:")
+	reader := bufio.NewReader(os.Stdin)
+	name, _ := reader.ReadString('\n')
+	name = strings.TrimSpace(name)
+	if name == "" {
+		fmt.Println("Name cannot be empty")
+		return
+	}
+	if err := serviceModule.DepartmentService.UpdateDepartmentName(deptID, name); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	dept, err := serviceModule.DepartmentService.GetDepartment(deptID)
+	if err != nil {
+		fmt.Println("Updated, but failed to fetch department:", err)
+		return
+	}
+	PrintDepartment(&dept)
+}
+
+func DeleteDepartment(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter department ID:")
+	deptIDStr := ""
+	fmt.Scanln(&deptIDStr)
+	deptID, err := strconv.ParseInt(deptIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if err := serviceModule.DepartmentService.DeleteDepartment(deptID); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Department deleted")
+}
+
+func RemoveModeratorFromDepartment(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter department ID:")
+	deptIDStr := ""
+	fmt.Scanln(&deptIDStr)
+	deptID, err := strconv.ParseInt(deptIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter moderator ID:")
+	moderatorIDStr := ""
+	fmt.Scanln(&moderatorIDStr)
+	moderatorID, err := strconv.ParseInt(moderatorIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if err := serviceModule.DepartmentService.FireModeratorFromDepartment(moderatorID, deptID); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Moderator removed from department")
+}
+
 func DepartmentWork(serviceModule *service_logic.ServiceModule) {
 	for {
 		fmt.Println("Department work")
@@ -119,7 +223,11 @@ func DepartmentWork(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("3. Assign admin to department")
 		fmt.Println("4. Get department ID by name")
 		fmt.Println("5. Get department by ID")
-		fmt.Println("6. Exit")
+		fmt.Println("6. List admin departments")
+		fmt.Println("7. Replace department info")
+		fmt.Println("8. Delete department")
+		fmt.Println("9. Remove moderator from department")
+		fmt.Println("10. Exit")
 		choiceStr := ""
 		fmt.Scanln(&choiceStr)
 		choice, err := strconv.Atoi(choiceStr)
@@ -127,7 +235,7 @@ func DepartmentWork(serviceModule *service_logic.ServiceModule) {
 			fmt.Println("Error:", err)
 			return
 		}
-		if choice < 1 || choice > 6 {
+		if choice < 1 || choice > 10 {
 			fmt.Println("Invalid choice")
 			continue
 		}
@@ -143,6 +251,14 @@ func DepartmentWork(serviceModule *service_logic.ServiceModule) {
 		case 5:
 			GetDepartmentById(serviceModule)
 		case 6:
+			ListAdminDepartments(serviceModule)
+		case 7:
+			ReplaceDepartmentInfo(serviceModule)
+		case 8:
+			DeleteDepartment(serviceModule)
+		case 9:
+			RemoveModeratorFromDepartment(serviceModule)
+		case 10:
 			return
 		default:
 			fmt.Println("Invalid choice")

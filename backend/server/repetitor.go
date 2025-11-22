@@ -8,7 +8,77 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
+
+func SetupRepetitorRouterV2(repetitorService service_logic.IRepetitorService, contractService service_logic.IContractService, transactionService service_logic.ITransactionService, resumeService service_logic.IResumeService) *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc(EXACT_REPETITOR_V2, RepetitorGetHandlerV2(repetitorService)).Methods("GET")
+	router.HandleFunc(EXACT_REPETITOR_V2, RepetitorAssignContractHandlerV2(contractService)).Methods("PATCH")
+	return router
+}
+
+func RepetitorGetHandlerV2(repetitorService service_logic.IRepetitorService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		repetitorID := mux.Vars(r)["repetitorId"]
+		repetitorIDInt, err := strconv.Atoi(repetitorID)
+		if err != nil {
+			http.Error(w, "Invalid repetitor ID", http.StatusBadRequest)
+			return
+		}
+		repetitor, err := repetitorService.GetRepetitorProfile(int64(repetitorIDInt), 0, 0)
+		if err != nil {
+			http.Error(w, "Repetitor not found", http.StatusNotFound)
+			return
+		}
+		serverRepetitor := types.MapperRepetitorProfileServiceToServerV2(repetitor)
+		err = json.NewEncoder(w).Encode(serverRepetitor)
+		if err != nil {
+			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func RepetitorAssignContractHandlerV2(contractService service_logic.IContractService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		repetitorIDStr := mux.Vars(r)["repetitorId"]
+		repetitorID, err := strconv.ParseInt(repetitorIDStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid repetitor ID", http.StatusBadRequest)
+			return
+		}
+		contractIDStr := r.URL.Query().Get("contract_id")
+		contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+		if err != nil || contractID <= 0 {
+			http.Error(w, "Invalid contract_id", http.StatusBadRequest)
+			return
+		}
+		// Ensure contract exists first
+		if _, err := contractService.GetContract(contractID); err != nil {
+			http.Error(w, "Contract not found", http.StatusNotFound)
+			return
+		}
+		if err := contractService.UpdateContractRepetitorID(contractID, repetitorID); err != nil {
+			http.Error(w, "Error updating contract repetitor", http.StatusBadRequest)
+			return
+		}
+		contract, err := contractService.GetContract(contractID)
+		if err != nil {
+			http.Error(w, "Contract not found", http.StatusNotFound)
+			return
+		}
+		resp := types.MapperContractServiceToServerV2(contract)
+		err = json.NewEncoder(w).Encode(resp)
+		if err != nil {
+			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func SetupRepetitorRouter(
 	repetitorService service_logic.IRepetitorService,
@@ -65,13 +135,17 @@ func RepetitorGetProfileHandler(repetitorService service_logic.IRepetitorService
 		repetitor, err := repetitorService.GetRepetitorProfile(int64(repetitorID), int64(reviewsOffset), int64(reviewsLimit))
 		if err != nil {
 			logger.Printf("Error getting repetitor: %v", err)
-			http.Error(w, "Error getting repetitor", http.StatusInternalServerError)
+			http.Error(w, "Error getting repetitor", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Repetitor retrieved: %v", repetitor)
 		serverRepetitor := types.MapperRepetitorProfileServiceToServer(repetitor)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverRepetitor)
+		err = json.NewEncoder(w).Encode(serverRepetitor)
+		if err != nil {
+			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -117,7 +191,7 @@ func RepetitorGetContractsHandler(contractService service_logic.IContractService
 		contracts, err := contractService.GetRepetitorContractList(int64(repetitorID), int64(offset), int64(limit), types.ContractStatus(status))
 		if err != nil {
 			logger.Printf("Error getting contracts: %v", err)
-			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contracts retrieved: %v", contracts)
@@ -126,7 +200,11 @@ func RepetitorGetContractsHandler(contractService service_logic.IContractService
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -168,7 +246,7 @@ func RepetitorGetAvailableContractsHandler(
 		contracts, err := contractService.GetContractList(int64(offset), int64(limit), types.ContractStatus(status))
 		if err != nil {
 			logger.Printf("Error getting contracts: %v", err)
-			http.Error(w, "Error getting contracts", http.StatusInternalServerError)
+			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contracts retrieved: %v", contracts)
@@ -177,7 +255,11 @@ func RepetitorGetAvailableContractsHandler(
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(serverContracts)
+		err = json.NewEncoder(w).Encode(serverContracts)
+		if err != nil {
+			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -212,14 +294,14 @@ func RepetitorAcceptContractHandler(
 		_, err = repetitorService.GetRepetitorData(int64(repetitorID))
 		if err != nil {
 			logger.Printf("Error getting repetitor: %v", err)
-			http.Error(w, "Error getting repetitor", http.StatusInternalServerError)
+			http.Error(w, "Error getting repetitor", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Repetitor ID: %v", repetitorID)
 		err = contractService.UpdateContractRepetitorID(int64(contractID), int64(repetitorID))
 		if err != nil {
 			logger.Printf("Error updating contract repetitor: %v", err)
-			http.Error(w, "Error updating contract repetitor", http.StatusInternalServerError)
+			http.Error(w, "Error updating contract repetitor", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract %d updated with repetitor %d", contractID, repetitorID)
@@ -262,10 +344,10 @@ func RepetitorMakeReviewHandler(
 		}
 		logger.Printf("Review: %v", review)
 		serviceReview := types.MapperReviewServerToService(&review)
-		err = contractService.CreateContractReviewRepetitor(int64(contractID), *serviceReview)
+		_, err = contractService.CreateContractReviewRepetitor(int64(contractID), *serviceReview)
 		if err != nil {
 			logger.Printf("Error creating review: %v", err)
-			http.Error(w, "Error creating review", http.StatusInternalServerError)
+			http.Error(w, "Error creating review", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Review created: %v", review)
@@ -313,20 +395,20 @@ func RepetitorPayForContractHandler(
 		_, err = contractService.GetContract(int64(contractID))
 		if err != nil {
 			logger.Printf("Error getting contract: %v", err)
-			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			http.Error(w, "Error getting contract", http.StatusBadRequest)
 			return
 		}
-		transactionID, err := transactionService.CreateContractPaymentTransaction(int64(amount), int64(userID))
+		transactionID, err := transactionService.CreateContractPaymentTransaction(int64(amount), int64(userID), int64(contractID))
 		if err != nil {
 			logger.Printf("Error creating transaction: %v", err)
-			http.Error(w, "Error creating transaction", http.StatusInternalServerError)
+			http.Error(w, "Error creating transaction", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Transaction created: %v", transactionID)
 		err = contractService.UpdateContractPaymentStatus(int64(contractID), types.PaymentStatusPaid)
 		if err != nil {
 			logger.Printf("Error updating contract status: %v", err)
-			http.Error(w, "Error updating contract status", http.StatusInternalServerError)
+			http.Error(w, "Error updating contract status", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract status updated")
@@ -365,7 +447,7 @@ func RepetitorCancelContractHandler(
 		contract, err := contractService.GetContract(int64(contractID))
 		if err != nil {
 			logger.Printf("Error getting contract: %v", err)
-			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			http.Error(w, "Error getting contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract: %v", contract)
@@ -382,7 +464,7 @@ func RepetitorCancelContractHandler(
 		err = contractService.UpdateContractStatus(int64(contractID), types.ContractStatusCancelled)
 		if err != nil {
 			logger.Printf("Error updating contract status: %v", err)
-			http.Error(w, "Error updating contract status", http.StatusInternalServerError)
+			http.Error(w, "Error updating contract status", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract status updated")
@@ -421,7 +503,7 @@ func RepetitorCompleteContractHandler(
 		contract, err := contractService.GetContract(int64(contractID))
 		if err != nil {
 			logger.Printf("Error getting contract: %v", err)
-			http.Error(w, "Error getting contract", http.StatusInternalServerError)
+			http.Error(w, "Error getting contract", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract: %v", contract)
@@ -433,7 +515,7 @@ func RepetitorCompleteContractHandler(
 		err = contractService.UpdateContractStatus(int64(contractID), types.ContractStatusCompleted)
 		if err != nil {
 			logger.Printf("Error updating contract status: %v", err)
-			http.Error(w, "Error updating contract status", http.StatusInternalServerError)
+			http.Error(w, "Error updating contract status", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Contract status updated")
@@ -471,7 +553,7 @@ func RepetitorChangeResumeHandler(
 		repetitor, err := repetitorService.GetRepetitorData(repetitorID)
 		if err != nil {
 			logger.Printf("Error getting repetitor: %v", err)
-			http.Error(w, "Error getting repetitor", http.StatusInternalServerError)
+			http.Error(w, "Error getting repetitor", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Request body: %s", string(body))
@@ -485,20 +567,20 @@ func RepetitorChangeResumeHandler(
 		err = resumeService.UpdateResumeTitle(repetitor.ResumeID, resume.Title)
 		if err != nil {
 			logger.Printf("Error updating repetitor resume: %v", err)
-			http.Error(w, "Error updating repetitor resume", http.StatusInternalServerError)
+			http.Error(w, "Error updating repetitor resume", http.StatusBadRequest)
 			return
 		}
 		err = resumeService.UpdateResumeDescription(repetitor.ResumeID, resume.Description)
 		if err != nil {
 			logger.Printf("Error updating repetitor resume: %v", err)
-			http.Error(w, "Error updating repetitor resume", http.StatusInternalServerError)
+			http.Error(w, "Error updating repetitor resume", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Resume title updated")
 		err = resumeService.UpdateResumePrices(repetitor.ResumeID, resume.Prices)
 		if err != nil {
 			logger.Printf("Error updating repetitor resume: %v", err)
-			http.Error(w, "Error updating repetitor resume", http.StatusInternalServerError)
+			http.Error(w, "Error updating repetitor resume", http.StatusBadRequest)
 			return
 		}
 		logger.Printf("Resume prices updated")

@@ -11,8 +11,8 @@ type IContractService interface {
 	GetContract(contractID int64) (*types.ServiceContract, error)
 	UpdateContractStatus(contractID int64, status types.ContractStatus) error
 	UpdateContractPaymentStatus(contractID int64, paymentStatus types.PaymentStatus) error
-	CreateContractReviewClient(contractID int64, review types.ServiceReview) error
-	CreateContractReviewRepetitor(contractID int64, review types.ServiceReview) error
+	CreateContractReviewClient(contractID int64, review types.ServiceReview) (int64, error)
+	CreateContractReviewRepetitor(contractID int64, review types.ServiceReview) (int64, error)
 	UpdateContractReviewClient(contractID int64, review types.ServiceReview) error
 	UpdateContractReviewRepetitor(contractID int64, review types.ServiceReview) error
 	UpdateContractRepetitorID(contractID int64, repetitorID int64) error
@@ -20,6 +20,7 @@ type IContractService interface {
 	GetRepetitorContractList(repetitorID int64, from int64, size int64, status types.ContractStatus) ([]types.ServiceContract, error)
 	GetContractList(from int64, size int64, status types.ContractStatus) ([]types.ServiceContract, error)
 	GetAllContracts(from int64, size int64) ([]types.ServiceContract, error)
+	GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.ServerContractV2, error)
 }
 
 type ContractService struct {
@@ -55,7 +56,12 @@ func (s *ContractService) CreateContract(initInfo types.ServiceContractInitData)
 		return 0, err
 	}
 	contract.CreatedAt = time.Now()
-	return s.contractRepository.InsertContract(*types.MapperContractServiceToDB(contract))
+	contractID, err := s.contractRepository.InsertContract(*types.MapperContractServiceToDB(contract))
+	if err != nil {
+		return 0, err
+	}
+	contract.ID = contractID
+	return contractID, nil
 }
 
 func (s *ContractService) GetContract(contractID int64) (*types.ServiceContract, error) {
@@ -74,48 +80,58 @@ func (s *ContractService) UpdateContractPaymentStatus(contractID int64, paymentS
 	return s.contractRepository.UpdateContractPaymentStatus(contractID, paymentStatus)
 }
 
-func (s *ContractService) CreateContractReviewClient(contractID int64, review types.ServiceReview) error {
+func (s *ContractService) CreateContractReviewClient(contractID int64, review types.ServiceReview) (int64, error) {
 	tx, err := s.contractRepository.BeginTx()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if tx != nil {
-		defer tx.Rollback()
+		defer func() {
+			_ = tx.Rollback()
+		}()
 	}
 	reviewID, err := s.reviewRepository.InsertReviewInSeq(tx, *types.MapperReviewServiceToDB(&review))
 	if err != nil {
-		return err
+		return 0, err
 	}
 	err = s.contractRepository.UpdateContractReviewClientIDInSeq(tx, contractID, reviewID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if tx != nil {
-		return tx.Commit()
+		err = tx.Commit()
+		if err != nil {
+			return 0, err
+		}
 	}
-	return nil
+	return reviewID, nil
 }
 
-func (s *ContractService) CreateContractReviewRepetitor(contractID int64, review types.ServiceReview) error {
+func (s *ContractService) CreateContractReviewRepetitor(contractID int64, review types.ServiceReview) (int64, error) {
 	tx, err := s.contractRepository.BeginTx()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if tx != nil {
-		defer tx.Rollback()
+		defer func() {
+			_ = tx.Rollback()
+		}()
 	}
 	reviewID, err := s.reviewRepository.InsertReviewInSeq(tx, *types.MapperReviewServiceToDB(&review))
 	if err != nil {
-		return err
+		return 0, err
 	}
 	err = s.contractRepository.UpdateContractReviewRepetitorID(contractID, reviewID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if tx != nil {
-		return tx.Commit()
+		err = tx.Commit()
+		if err != nil {
+			return 0, err
+		}
 	}
-	return nil
+	return reviewID, nil
 }
 
 func (s *ContractService) UpdateContractReviewClient(contractID int64, review types.ServiceReview) error {
@@ -176,4 +192,19 @@ func (s *ContractService) GetAllContracts(from int64, size int64) ([]types.Servi
 		serviceContracts[i] = *types.MapperContractDBToService(&dbContract)
 	}
 	return serviceContracts, nil
+}
+
+func (s *ContractService) GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.ServerContractV2, error) {
+	dbContracts, err := s.contractRepository.GetContracts(clientID, repetitorID, from, size)
+	if err != nil {
+		return nil, err
+	}
+	serverContracts := make([]types.ServerContractV2, len(dbContracts))
+	for i, dbContract := range dbContracts {
+		conv := types.MapperContractDBToServerV2(&dbContract)
+		if conv != nil {
+			serverContracts[i] = *conv
+		}
+	}
+	return serverContracts, nil
 }

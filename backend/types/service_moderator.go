@@ -2,6 +2,7 @@ package types
 
 type ServiceInitModeratorData struct {
 	ServiceInitUserData
+	Salary int
 }
 
 type ServiceModeratorProfile struct {

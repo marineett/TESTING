@@ -1,0 +1,5 @@
+[
+  {"name": "Unit Tests", "matchedStatuses": ["passed", "failed", "broken"], "messageRegex": ".*"},
+  {"name": "Integration Tests", "matchedStatuses": ["passed", "failed", "broken"], "messageRegex": ".*"},
+  {"name": "E2E Tests", "matchedStatuses": ["passed", "failed", "broken"], "messageRegex": ".*"}
+]

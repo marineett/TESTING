@@ -1,13 +1,11 @@
 package console_module
 
 import (
-	"data_base_project/data_base"
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"database/sql"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 )
 
@@ -43,7 +41,6 @@ func BenchMark(size int64, serviceModule *service_logic.ServiceModule, db *sql.D
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("Time taken without index with %d users: %d ms\n", size, elapsed.Milliseconds())
-	data_base.ApplyAuthIndex(db, os.Getenv("AUTH_TABLE_NAME"))
 	start = time.Now()
 	for i := int64(0); i < size; i++ {
 		generateUserIndex := rand.Intn(int(size))

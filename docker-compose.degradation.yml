@@ -1,0 +1,88 @@
+services:
+  backend:
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=2h"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro,cached
+      - prom_data:/prometheus
+    networks: [app-network]
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    command: ["--disable_metrics=percpu,sched,tcp,udp,advtcp,referenced_memory"]
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [app-network]
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.1
+    command: ["--path.rootfs=/host", "--no-collector.filesystem.mount-points"]
+    volumes:
+      - /:/host:ro
+    networks: [app-network]
+
+  degradation-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.degradation-runner
+    depends_on:
+      backend:
+        condition: service_healthy
+      prometheus:
+        condition: service_started
+      cadvisor:
+        condition: service_started
+      node-exporter:
+        condition: service_started
+    networks: [app-network]
+    volumes:
+      - ./metrics:/metrics:rw,cached
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_find_test && chmod 777 /metrics/degradation_find_test && exec /usr/local/bin/degradation"]
+    user: "0:0"
+    restart: "no"
+
+  metrics-collector:
+    image: alpine:3.19
+    depends_on:
+      degradation-runner:
+        condition: service_completed_successfully
+      backend:
+        condition: service_started
+      prometheus:
+        condition: service_started
+    environment:
+      PROM_URL: http://prometheus:9090
+      STEP: 5s
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend"}[60s])) or sum(rate(container_cpu_usage_seconds_total{job="cadvisor",name=~".*backend.*"}[60s])) or sum(rate(container_cpu_usage_seconds_total{job="cadvisor",id=~".*backend.*"}[60s]))'
+      PROMQL_MEM: 'sum(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend"}) or sum(container_memory_working_set_bytes{job="cadvisor",name=~".*backend.*"}) or sum(container_memory_working_set_bytes{job="cadvisor",id=~".*backend.*"})'
+    entrypoint:
+      ["sh","-lc","apk add --no-cache curl jq >/dev/null; echo 'Waiting for Prometheus...'; for i in $$(seq 1 60); do if curl -sf $${PROM_URL:-http://prometheus:9090}/-/ready >/dev/null; then echo 'Prometheus is ready'; break; else echo \"... waiting for Prometheus ($$i/60)\"; sleep 2; fi; done; echo 'Waiting for timestamps.env...'; MAX_WAIT=300; WAITED=0; while [ $$WAITED -lt $$MAX_WAIT ]; do if [ -f /metrics/degradation_find_test/timestamps.env ] && grep -q '^END_TS=' /metrics/degradation_find_test/timestamps.env; then echo 'Found timestamps.env with END_TS'; break; fi; sleep 2; WAITED=$$((WAITED + 2)); done; if [ ! -f /metrics/degradation_find_test/timestamps.env ]; then echo 'ERROR: timestamps.env not found after waiting'; exit 1; fi; OUTPUT_DIR=/metrics/degradation_find_test sh /collect.sh; echo 'Collection done.'"]
+    networks: [app-network]
+    volumes:
+      - ./metrics:/metrics:rw,cached
+      - ./monitoring/collect_prometheus.sh:/collect.sh:ro
+
+networks:
+  app-network:
+    external: false
+
+volumes:
+  prom_data: {}
+
+

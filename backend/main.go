@@ -4,8 +4,8 @@ import (
 	"data_base_project/data_base"
 	"data_base_project/server"
 	"data_base_project/service_logic"
-	"data_base_project/utility_module"
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -19,21 +19,32 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error opening log file: %v", err)
 	}
-	defer logger.Close()
+	defer func() {
+		err = logger.Close()
+		if err != nil {
+			log.Fatalf("Error closing log file: %v", err)
+		}
+	}()
 	log.Printf("Log file opened")
 	log.SetOutput(logger)
 	err = godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+		// In container/CI we often don't have a .env file and rely on environment variables.
+		// Treat missing .env as non-fatal: log and continue.
+		log.Printf("Warning loading .env file (using environment only): %v", err)
 	}
-	defer utility_module.UnsetEnv()
 	log.Printf("Connection string: %s", data_base.GetSqlConnectionString())
 	//db, err := data_base.CreateSqlConnection(data_base.GetSqlConnectionString())
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
-	defer db.Close()
+	defer func() {
+		err = db.Close()
+		if err != nil {
+			log.Fatalf("Error closing database: %v", err)
+		}
+	}()
 	/*
 		err = data_base.DropTables(
 			db,
@@ -195,7 +206,7 @@ func main() {
 		personalDataRepository,
 		lessonRepository,
 	)
-	data_base.SetupRoles(
+	err = data_base.SetupRoles(
 		db,
 		os.Getenv("PERSONAL_DATA_TABLE_NAME"),
 		os.Getenv("USER_TABLE_NAME"),
@@ -215,8 +226,17 @@ func main() {
 		os.Getenv("PENDING_CONTRACT_PAYMENT_TRANSACTIONS"),
 		os.Getenv("LESSON_TABLE_NAME"),
 		os.Getenv("SEQUENCE_NAME"),
+		false,
 	)
-
+	if err != nil {
+		log.Fatalf("Error setting up roles: %v", err)
+		return
+	}
+	fmt.Println("Server starting on port before setup", os.Getenv("BACKEND_PORT"))
 	server := server.SetupServer(serviceModule, os.Getenv("BACKEND_PORT"), log.Default())
-	server.ListenAndServe()
+	fmt.Println("Server starting on port ", os.Getenv("BACKEND_PORT"))
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }

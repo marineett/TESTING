@@ -1,0 +1,251 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, lab1, lab2]
+  pull_request:
+    branches: [main, master, lab1, lab2]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Install linters
+        working-directory: backend
+        run: |
+          # golangci-lint v2 (config uses version: 2)
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+          # gocyclo for standalone complexity check
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Run golangci-lint
+        working-directory: backend
+        run: golangci-lint run
+
+      - name: Run gocyclo
+        working-directory: backend
+        run: gocyclo -over 10 .
+
+  unit-tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      tests_ok: ${{ steps.run_unit.outputs.tests_ok }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Install linters
+        working-directory: backend
+        run: |
+          # golangci-lint v2 (config uses version: 2)
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+          # gocyclo for standalone complexity check
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Run golangci-lint
+        working-directory: backend
+        run: golangci-lint run
+
+      - name: Run gocyclo
+        working-directory: backend
+        run: gocyclo -over 10 .
+
+      - name: Run unit tests (both modules)
+        id: run_unit
+        working-directory: backend
+        env:
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/data_base/allure-results
+        run: |
+          set +e
+          go test -v ./data_base -run Test -count=1
+          CODE1=$?
+          ALLURE_OUTPUT_PATH="${{ github.workspace }}/backend/service_logic/allure-results" \
+            go test -v ./service_logic -run Test -count=1
+          CODE2=$?
+          if [ "$CODE1" -eq 0 ] && [ "$CODE2" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Ensure Allure target dir exists (unit)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
+      - name: Collect Allure results
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: true
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (unit)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-unit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: unit-tests
+    if: ${{ needs.unit-tests.outputs.tests_ok == 'true' }}
+    outputs:
+      tests_ok: ${{ steps.run_integration.outputs.tests_ok }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Run integration tests
+        id: run_integration
+        env:
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/integration_tests/allure-results
+        run: |
+          set +e
+          cd backend
+          go test -v ./integration_tests -run Test -count=1
+          CODE=$?
+          if [ "$CODE" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Ensure Allure target dir exists (integration)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
+      - name: Collect Allure results (integration)
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: true
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (integration)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+  e2e-tests:
+    needs: integration-tests
+    if: ${{ needs.integration-tests.outputs.tests_ok == 'true' }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      tests_ok: ${{ steps.run_e2e.outputs.tests_ok }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Run integration tests
+        id: run_integration
+        env:
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/integration_tests/allure-results
+        run: |
+          set +e
+          cd backend
+          go test -v ./integration_tests -run Test -count=1
+          CODE=$?
+          if [ "$CODE" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0

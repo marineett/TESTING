@@ -12,6 +12,21 @@ const (
 	Admin
 )
 
+func (u UserType) String() string {
+	switch u {
+	case Client:
+		return "client"
+	case Repetitor:
+		return "repetitor"
+	case Moderator:
+		return "moderator"
+	case Admin:
+		return "admin"
+	default:
+		return "guest"
+	}
+}
+
 type DBUserData struct {
 	ID               int64     `json:"id"`
 	RegistrationDate time.Time `json:"registration_date"`
