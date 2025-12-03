@@ -4,7 +4,6 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/types"
 	"encoding/json"
-	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -56,39 +55,9 @@ func ChatGetChatsHandlerV2(chatService service_logic.IChatService) http.HandlerF
 		for _, chat := range chats {
 			serverChats = append(serverChats, *types.MapperChatServiceToServer(&chat))
 		}
-		err = json.NewEncoder(w).Encode(serverChats)
-		if err != nil {
-			http.Error(w, "Error encoding chats", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChats)
 		w.WriteHeader(http.StatusOK)
 	}
-}
-
-func ParseChatCreateRequest(chat types.ServerChatV2, chatService service_logic.IChatService, w http.ResponseWriter) (int64, error) {
-	if chat.Type == "client_moderator" {
-		chatID, err := chatService.CreateCMChat(chat.ClientID, chat.ModeratorID)
-		if err != nil {
-			return 0, err
-		}
-		return chatID, nil
-	}
-	if chat.Type == "repetitor_moderator" {
-		chatID, err := chatService.CreateRMChat(chat.RepetitorID, chat.ModeratorID)
-		if err != nil {
-			return 0, err
-		}
-		return chatID, nil
-	}
-	if chat.Type == "client_repetitor" {
-		chatID, err := chatService.CreateCRChat(chat.ClientID, chat.RepetitorID)
-		if err != nil {
-			return 0, err
-		}
-		return chatID, nil
-	}
-	return 0, errors.New("invalid chat type")
-
 }
 
 func ChatCreateChatHandlerV2(chatService service_logic.IChatService) http.HandlerFunc {
@@ -107,10 +76,27 @@ func ChatCreateChatHandlerV2(chatService service_logic.IChatService) http.Handle
 			http.Error(w, "Invalid chat type", http.StatusBadRequest)
 			return
 		}
-		chatID, err := ParseChatCreateRequest(chat, chatService, w)
-		if err != nil {
-			http.Error(w, "Error creating chat", http.StatusBadRequest)
-			return
+		var chatID int64
+		if chat.Type == "client_moderator" {
+			chatID, err = chatService.CreateCMChat(chat.ClientID, chat.ModeratorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusBadRequest)
+				return
+			}
+		}
+		if chat.Type == "repetitor_moderator" {
+			chatID, err = chatService.CreateRMChat(chat.RepetitorID, chat.ModeratorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusBadRequest)
+				return
+			}
+		}
+		if chat.Type == "client_repetitor" {
+			chatID, err = chatService.CreateCRChat(chat.ClientID, chat.RepetitorID)
+			if err != nil {
+				http.Error(w, "Error creating chat", http.StatusBadRequest)
+				return
+			}
 		}
 		createdChat, err := chatService.GetChat(int64(chatID))
 		if err != nil {
@@ -118,11 +104,7 @@ func ChatCreateChatHandlerV2(chatService service_logic.IChatService) http.Handle
 			return
 		}
 		w.WriteHeader(http.StatusCreated)
-		err = json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(createdChat))
-		if err != nil {
-			http.Error(w, "Error encoding created chat", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(createdChat))
 	}
 }
 
@@ -159,11 +141,7 @@ func ChatUpdateChatHandlerV2(chatService service_logic.IChatService) http.Handle
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(updatedChat))
-		if err != nil {
-			http.Error(w, "Error encoding updated chat", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(updatedChat))
 	}
 }
 
@@ -182,11 +160,7 @@ func ChatGetChatHandlerV2(chatService service_logic.IChatService) http.HandlerFu
 		}
 		serverChat := types.MapperChatServiceToServerV2(chat)
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverChat)
-		if err != nil {
-			http.Error(w, "Error encoding chat", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChat)
 	}
 }
 
@@ -219,11 +193,7 @@ func ChatGetMessagesHandlerV2(chatService service_logic.IChatService) http.Handl
 		for _, message := range messages {
 			serverMessages = append(serverMessages, *types.MapperMessageServiceToServerV2(&message))
 		}
-		err = json.NewEncoder(w).Encode(serverMessages)
-		if err != nil {
-			http.Error(w, "Error encoding messages", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverMessages)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -253,11 +223,7 @@ func ChatSendMessageHandlerV2(chatService service_logic.IChatService) http.Handl
 			return
 		}
 		w.WriteHeader(http.StatusCreated)
-		err = json.NewEncoder(w).Encode(message)
-		if err != nil {
-			http.Error(w, "Error encoding message", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(message)
 	}
 }
 
@@ -297,11 +263,7 @@ func ChatClearChatHandlerV2(chatService service_logic.IChatService) http.Handler
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(updatedChat))
-		if err != nil {
-			http.Error(w, "Error encoding updated chat", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(types.MapperChatServiceToServerV2(updatedChat))
 	}
 }
 
@@ -367,11 +329,7 @@ func ChatGetClientChatsHandler(chatService service_logic.IChatService, logger *l
 			serverChats = append(serverChats, *types.MapperChatServiceToServer(&chat))
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverChats)
-		if err != nil {
-			http.Error(w, "Error encoding chats", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChats)
 		logger.Printf("Chats retrieved: %v", serverChats)
 	}
 }
@@ -419,11 +377,7 @@ func ChatGetRepetitorChatsHandler(chatService service_logic.IChatService, logger
 			serverChats = append(serverChats, *types.MapperChatServiceToServer(&chat))
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverChats)
-		if err != nil {
-			http.Error(w, "Error encoding chats", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChats)
 		logger.Printf("Chats retrieved: %v", serverChats)
 	}
 }
@@ -471,11 +425,7 @@ func ChatGetModeratorChatsHandler(chatService service_logic.IChatService, logger
 			serverChats = append(serverChats, *types.MapperChatServiceToServer(&chat))
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverChats)
-		if err != nil {
-			http.Error(w, "Error encoding chats", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChats)
 		logger.Printf("Chats retrieved: %v", serverChats)
 	}
 }
@@ -518,11 +468,7 @@ func ChatStartCMHandler(chatService service_logic.IChatService, logger *log.Logg
 			return
 		}
 		logger.Printf("Chat ID: %v", chatID)
-		err = json.NewEncoder(w).Encode(chatID)
-		if err != nil {
-			http.Error(w, "Error encoding chat ID", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(chatID)
 	}
 }
 
@@ -564,11 +510,7 @@ func ChatStartRMHandler(chatService service_logic.IChatService, logger *log.Logg
 			return
 		}
 		logger.Printf("Chat ID: %v", chatID)
-		err = json.NewEncoder(w).Encode(chatID)
-		if err != nil {
-			http.Error(w, "Error encoding chat ID", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(chatID)
 	}
 }
 
@@ -610,11 +552,7 @@ func ChatStartCRHandler(chatService service_logic.IChatService, logger *log.Logg
 			return
 		}
 		logger.Printf("Chat ID: %v", chatID)
-		err = json.NewEncoder(w).Encode(chatID)
-		if err != nil {
-			http.Error(w, "Error encoding chat ID", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(chatID)
 	}
 }
 
@@ -641,11 +579,7 @@ func ChatGetChatHandler(chatService service_logic.IChatService, logger *log.Logg
 			return
 		}
 		serverChat := types.MapperChatServiceToServer(chat)
-		err = json.NewEncoder(w).Encode(serverChat)
-		if err != nil {
-			http.Error(w, "Error encoding chat", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverChat)
 		logger.Printf("Chat retrieved: %v", serverChat)
 	}
 }
@@ -736,11 +670,7 @@ func ChatGetChatMessagesHandler(chatService service_logic.IChatService, logger *
 			serverMessages = append(serverMessages, *types.MapperMessageServiceToServer(&message))
 		}
 		logger.Printf("Messages retrieved: %v", serverMessages)
-		err = json.NewEncoder(w).Encode(serverMessages)
-		if err != nil {
-			http.Error(w, "Error encoding messages", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverMessages)
 	}
 }
 

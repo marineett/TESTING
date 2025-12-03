@@ -63,11 +63,7 @@ func SetupRoles(db *sql.DB,
 	pendingContractPaymentTransactionsTableName string,
 	lessonTableName string,
 	sequenceName string,
-	rolesNeeded bool,
 ) error {
-	if !rolesNeeded {
-		return nil
-	}
 	createRolesQuery := `
 	DO $$ 
 	BEGIN
@@ -226,93 +222,6 @@ func CreateMongoConnection(connectionString string) (*mongo.Client, error) {
 	return client, nil
 }
 
-func createBaseTables(db *sql.DB, personalDataTable, userTableName, authTableName, sequenceName string) error {
-	if err := CreateSqlPersonalDataTable(db, personalDataTable, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlUserTable(db, userTableName, personalDataTable, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlAuthTable(db, authTableName, userTableName, sequenceName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createChatTables(db *sql.DB, chatTableName, messageTableName, userTableName string) error {
-	if err := CreateSqlChatTable(db, chatTableName, userTableName); err != nil {
-		return err
-	}
-	if err := CreateSqlMessageTable(db, messageTableName, chatTableName, userTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createDepartmentTables(db *sql.DB, departmentTableName, hireInfoTableName, userTableName string) error {
-	if err := CreateSqlDepartmentTable(db, departmentTableName, hireInfoTableName, userTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createUserRoleTables(db *sql.DB, clientTableName, resumeTableName, reviewTableName, repetitorTableName, userTableName, sequenceName string) error {
-	if err := CreateSqlClientTable(db, clientTableName, userTableName, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlResumeTable(db, resumeTableName, userTableName, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlReviewTable(db, reviewTableName, userTableName, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlRepetitorTable(db, repetitorTableName, userTableName, resumeTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createContractTable(db *sql.DB, contractTableName, userTableName, reviewTableName, repetitorTableName, clientTableName string) error {
-	if err := CreateSqlContractTable(db, contractTableName, userTableName, reviewTableName, repetitorTableName, clientTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createAdminTables(db *sql.DB, adminTableName, moderatorTableName, userTableName, sequenceName string) error {
-	if err := CreateSqlAdminTable(db, adminTableName, userTableName, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlModeratorTable(db, moderatorTableName, userTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createTransactionTables(db *sql.DB, transactionTableName, pendingContractPaymentTransactionsTableName, userTableName, sequenceName string) error {
-	if err := CreateSqlTransactionTable(db, transactionTableName, userTableName, pendingContractPaymentTransactionsTableName, sequenceName); err != nil {
-		return err
-	}
-	if err := CreateSqlPendingContractPaymentTransactionsTable(db, pendingContractPaymentTransactionsTableName, userTableName, transactionTableName, sequenceName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createLessonTable(db *sql.DB, lessonTableName, contractTableName, transactionTableName string) error {
-	if err := CreateSqlLessonTable(db, lessonTableName, contractTableName, transactionTableName); err != nil {
-		return err
-	}
-	return nil
-}
-
-func createSequence(db *sql.DB, sequenceName string) error {
-	if err := CreateSqlSequence(db, sequenceName); err != nil {
-		return err
-	}
-	return nil
-}
-
 func CreateSqlTables(db *sql.DB,
 	personalDataTable string,
 	userTableName string,
@@ -333,31 +242,101 @@ func CreateSqlTables(db *sql.DB,
 	lessonTableName string,
 	sequenceName string,
 ) error {
-	if err := createBaseTables(db, personalDataTable, userTableName, authTableName, sequenceName); err != nil {
+	err := CreateSqlPersonalDataTable(db, personalDataTable, sequenceName)
+	if err != nil {
 		return err
 	}
-	if err := createChatTables(db, chatTableName, messageTableName, userTableName); err != nil {
+	err = CreateSqlUserTable(db, userTableName, personalDataTable, sequenceName)
+	if err != nil {
 		return err
 	}
-	if err := createDepartmentTables(db, departmentTableName, hireInfoTableName, userTableName); err != nil {
+	err = CreateSqlAuthTable(db, authTableName, userTableName, sequenceName)
+	if err != nil {
 		return err
 	}
-	if err := createUserRoleTables(db, clientTableName, resumeTableName, reviewTableName, repetitorTableName, userTableName, sequenceName); err != nil {
+	err = CreateSqlChatTable(db, chatTableName, userTableName)
+	if err != nil {
 		return err
 	}
-	if err := createContractTable(db, contractTableName, userTableName, reviewTableName, repetitorTableName, clientTableName); err != nil {
+	err = CreateSqlMessageTable(db, messageTableName, chatTableName, userTableName)
+	if err != nil {
 		return err
 	}
-	if err := createAdminTables(db, adminTableName, moderatorTableName, userTableName, sequenceName); err != nil {
+	err = CreateSqlDepartmentTable(
+		db,
+		departmentTableName,
+		hireInfoTableName,
+		userTableName,
+	)
+	if err != nil {
 		return err
 	}
-	if err := createTransactionTables(db, transactionTableName, pendingContractPaymentTransactionsTableName, userTableName, sequenceName); err != nil {
+	err = CreateSqlClientTable(db, clientTableName, userTableName, sequenceName)
+	if err != nil {
 		return err
 	}
-	if err := createLessonTable(db, lessonTableName, contractTableName, transactionTableName); err != nil {
+	err = CreateSqlResumeTable(db, resumeTableName, userTableName, sequenceName)
+	if err != nil {
 		return err
 	}
-	if err := createSequence(db, sequenceName); err != nil {
+	err = CreateSqlReviewTable(db, reviewTableName, userTableName, sequenceName)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlRepetitorTable(
+		db,
+		repetitorTableName,
+		userTableName,
+		resumeTableName,
+	)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlContractTable(
+		db,
+		contractTableName,
+		userTableName,
+		reviewTableName,
+		repetitorTableName,
+		clientTableName,
+	)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlAdminTable(db, adminTableName, userTableName, sequenceName)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlModeratorTable(db, moderatorTableName, userTableName)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlTransactionTable(
+		db,
+		transactionTableName,
+		userTableName,
+		pendingContractPaymentTransactionsTableName,
+		sequenceName,
+	)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlPendingContractPaymentTransactionsTable(
+		db,
+		pendingContractPaymentTransactionsTableName,
+		userTableName,
+		transactionTableName,
+		sequenceName,
+	)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlLessonTable(db, lessonTableName, contractTableName, transactionTableName)
+	if err != nil {
+		return err
+	}
+	err = CreateSqlSequence(db, sequenceName)
+	if err != nil {
 		return err
 	}
 	return nil

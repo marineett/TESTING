@@ -94,6 +94,8 @@ func MapperInitModeratorServerToService(data *ServerInitModeratorData) *ServiceI
 			ServiceAuthData: ServiceAuthData{
 				Login:    data.Login,
 				Password: data.Password,
+				Email:    data.Email,
+				Token:    data.Token,
 			},
 		},
 	}

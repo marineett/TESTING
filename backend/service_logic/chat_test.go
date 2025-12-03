@@ -39,11 +39,7 @@ func TestCreateCRChatCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -104,11 +100,7 @@ func TestCreateRMChatCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -169,11 +161,7 @@ func TestCreateCMChatCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -207,33 +195,24 @@ func TestGetChatListByClientIDCorrectLondon(t *testing.T) {
 	chatRepository := tu.CreateTestChatRepository()
 	messageRepository := tu.CreateTestMessageRepository()
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err := chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 2,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 4,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByClientID(1, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
@@ -253,19 +232,12 @@ func TestGetChatListByClientIDCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckLengthsChatList(t *testing.T, chatList []types.ServiceChat, length int) {
-	if len(chatList) != length {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-}
-
 func TestGetChatListByClientIDCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -273,38 +245,31 @@ func TestGetChatListByClientIDCorrectClassic(t *testing.T) {
 	chatRepository := module.ChatRepository
 	messageRepository := module.MessageRepository
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 2,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 4,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByClientID(1, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatList(t, chatList, 2)
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 	if chatList[0].ClientID != 1 || chatList[1].ClientID != 1 {
 		t.Fatalf("Client id not updated: %v", chatList[0])
 	}
@@ -312,40 +277,33 @@ func TestGetChatListByClientIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatList(t, chatList, 0)
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 }
 
 func TestGetChatListByRepetitorIDCorrectLondon(t *testing.T) {
 	chatRepository := tu.CreateTestChatRepository()
 	messageRepository := tu.CreateTestMessageRepository()
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err := chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 0,
 		RepetitorID: 4,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByRepetitorID(3, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
@@ -365,19 +323,12 @@ func TestGetChatListByRepetitorIDCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckLengthsChatListByRepetitorID(t *testing.T, chatList []types.ServiceChat, length int) {
-	if len(chatList) != length {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-}
-
 func TestGetChatListByRepetitorIDCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -385,38 +336,31 @@ func TestGetChatListByRepetitorIDCorrectClassic(t *testing.T) {
 	chatRepository := module.ChatRepository
 	messageRepository := module.MessageRepository
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 0,
 		RepetitorID: 3,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    2,
 		ModeratorID: 0,
 		RepetitorID: 4,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByRepetitorID(3, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatListByRepetitorID(t, chatList, 2)
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 	if chatList[0].RepetitorID != 3 || chatList[1].RepetitorID != 3 {
 		t.Fatalf("Repetitor id not updated: %v", chatList[0])
 	}
@@ -424,40 +368,33 @@ func TestGetChatListByRepetitorIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatListByRepetitorID(t, chatList, 0)
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 }
 
 func TestGetChatListByModeratorIDCorrectLondon(t *testing.T) {
 	chatRepository := tu.CreateTestChatRepository()
 	messageRepository := tu.CreateTestMessageRepository()
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err := chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 2,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    0,
 		ModeratorID: 2,
 		RepetitorID: 4,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    7,
 		ModeratorID: 3,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByModeratorID(2, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
@@ -477,19 +414,12 @@ func TestGetChatListByModeratorIDCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckLengthsChatListByModeratorID(t *testing.T, chatList []types.ServiceChat, length int) {
-	if len(chatList) != length {
-		t.Fatalf("Chat list not updated: %v", chatList)
-	}
-}
-
 func TestGetChatListByModeratorIDCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -497,38 +427,31 @@ func TestGetChatListByModeratorIDCorrectClassic(t *testing.T) {
 	chatRepository := module.ChatRepository
 	messageRepository := module.MessageRepository
 	chatService := CreateChatService(chatRepository, messageRepository)
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    1,
 		ModeratorID: 2,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    0,
 		ModeratorID: 2,
 		RepetitorID: 4,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
-	_, err = chatRepository.InsertChat(types.DBChat{
+	chatRepository.InsertChat(types.DBChat{
 		ClientID:    7,
 		ModeratorID: 3,
 		RepetitorID: 0,
 		CreatedAt:   time.Now(),
 	})
-	if err != nil {
-		t.Fatalf("Error inserting chat: %v", err)
-	}
 	chatList, err := chatService.GetChatListByModeratorID(2, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatListByModeratorID(t, chatList, 2)
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 	if chatList[0].ModeratorID != 2 || chatList[1].ModeratorID != 2 {
 		t.Fatalf("Moderator id not updated: %v", chatList[0])
 	}
@@ -536,7 +459,9 @@ func TestGetChatListByModeratorIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting chat list: %v", err)
 	}
-	CheckLengthsChatListByModeratorID(t, chatList, 0)
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not updated: %v", chatList)
+	}
 }
 
 func TestGetChatCorrectLondon(t *testing.T) {
@@ -572,11 +497,7 @@ func TestGetChatCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -640,23 +561,12 @@ func TestSendMessageCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckMessage(t *testing.T, message *types.DBMessage, senderID int64, content string) {
-	if message.SenderID != senderID {
-		t.Fatalf("Message sender id not updated: %v", message)
-	}
-	if message.Content != content {
-		t.Fatalf("Message content not updated: %v", message)
-	}
-}
-
 func TestSendMessageCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -674,7 +584,7 @@ func TestSendMessageCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error inserting client: %v", err)
 	}
@@ -705,7 +615,12 @@ func TestSendMessageCorrectClassic(t *testing.T) {
 	if len(message) != 1 {
 		t.Fatalf("Message not updated: %v", message)
 	}
-	CheckMessage(t, &message[0], result.UserID, "Hello")
+	if message[0].SenderID != result.UserID {
+		t.Fatalf("Sender id not updated: %v", message[0])
+	}
+	if message[0].Content != "Hello" {
+		t.Fatalf("Content not updated: %v", message[0])
+	}
 }
 
 func TestGetMessagesCorrectLondon(t *testing.T) {
@@ -748,23 +663,12 @@ func TestGetMessagesCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckServiceMessage(t *testing.T, message *types.ServiceMessage, senderID int64, content string) {
-	if message.SenderID != senderID {
-		t.Fatalf("Message sender id not updated: %v", message)
-	}
-	if message.Content != content {
-		t.Fatalf("Message content not updated: %v", message)
-	}
-}
-
 func TestGetMessagesCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -778,7 +682,7 @@ func TestGetMessagesCorrectClassic(t *testing.T) {
 	reviewRepository := module.ReviewRepository
 	chatService := CreateChatService(chatRepository, messageRepository)
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error inserting client: %v", err)
 	}
@@ -817,7 +721,12 @@ func TestGetMessagesCorrectClassic(t *testing.T) {
 	if message[0].ID != messageID {
 		t.Fatalf("Message id not updated: %v", message[0])
 	}
-	CheckServiceMessage(t, &message[0], result.UserID, "Hello")
+	if message[0].SenderID != result.UserID {
+		t.Fatalf("Sender id not updated: %v", message[0])
+	}
+	if message[0].Content != "Hello" {
+		t.Fatalf("Content not updated: %v", message[0])
+	}
 }
 
 func TestGetMessagesIncorrectLondon(t *testing.T) {
@@ -838,11 +747,7 @@ func TestGetMessagesIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -886,11 +791,7 @@ func TestGetChatIdByCIDAndMIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -943,11 +844,7 @@ func TestGetChatIdByCIDAndRIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -1000,11 +897,7 @@ func TestGetChatIdByMIDAndRIDCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)

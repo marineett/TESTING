@@ -47,12 +47,7 @@ func TestInsertReviewCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
@@ -81,12 +76,7 @@ func TestInsertReviewInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
@@ -108,23 +98,20 @@ func TestInsertReviewInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 	_, err = reviewRepository.InsertReviewInSeq(tx, tu.TestReview)
 	if err != nil {
 		t.Fatalf("Error inserting review: %v", err)
 	}
 }
+
 func TestGetReviewCorrect(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupReviewTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
 	}
@@ -149,7 +136,21 @@ func TestGetReviewCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting review: %v", err)
 	}
-	CheckReview(t, review, reviewID, tu.TestReview.Rating, tu.TestReview.Comment)
+	if review.ID != reviewID {
+		t.Fatalf("Review id not updated: %v", review)
+	}
+	if review.ClientID != tu.TestReview.ClientID {
+		t.Fatalf("Review client id not updated: %v", review)
+	}
+	if review.RepetitorID != tu.TestReview.RepetitorID {
+		t.Fatalf("Review repetitor id not updated: %v", review)
+	}
+	if review.Rating != tu.TestReview.Rating {
+		t.Fatalf("Review rating not updated: %v", review)
+	}
+	if review.Comment != tu.TestReview.Comment {
+		t.Fatalf("Review comment not updated: %v", review)
+	}
 }
 
 func TestGetReviewIncorrect(t *testing.T) {
@@ -157,12 +158,7 @@ func TestGetReviewIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
@@ -174,35 +170,12 @@ func TestGetReviewIncorrect(t *testing.T) {
 	}
 }
 
-func CheckReview(
-	t *testing.T,
-	Review *types.DBReview,
-	ReviewID int64,
-	Rating int,
-	Comment string,
-) {
-	if Review.ID != ReviewID {
-		t.Fatalf("Review not found: %v", Review)
-	}
-	if Review.Rating != Rating {
-		t.Fatalf("Review not found: %v", Review)
-	}
-	if Review.Comment != Comment {
-		t.Fatalf("Review not found: %v", Review)
-	}
-}
-
 func TestUpdateReviewCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
@@ -237,18 +210,21 @@ func TestUpdateReviewCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting review: %v", err)
 	}
-	CheckReview(t, review, reviewID, newReview.Rating, newReview.Comment)
+	if review.Rating != newReview.Rating {
+		t.Fatalf("Review rating not updated: %v", review)
+	}
+	if review.Comment != newReview.Comment {
+		t.Fatalf("Review comment not updated: %v", review)
+	}
 }
 
 func TestGetReviewsByRepetitorIDCorrect(t *testing.T) {
-	db := SetupTestDb(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupReviewTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
 	}
@@ -283,22 +259,23 @@ func TestGetReviewsByRepetitorIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting review: %v", err)
 	}
-	_, err = reviewRepository.GetReviewsByRepetitorID(repetitorID, 0, 10)
+	reviews, err := reviewRepository.GetReviewsByRepetitorID(repetitorID, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting reviews: %v", err)
+	}
+	if len(reviews) != 2 {
+		t.Fatalf("Reviews not updated: %v", reviews)
 	}
 
 }
 
 func TestGetReviewsByClientIDCorrect(t *testing.T) {
-	db := SetupTestDb(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupReviewTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupReviewTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up review tables: %v", err)
 	}
@@ -333,9 +310,12 @@ func TestGetReviewsByClientIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting review: %v", err)
 	}
-	_, err = reviewRepository.GetReviewsByClientID(clientID, 0, 10)
+	reviews, err := reviewRepository.GetReviewsByClientID(clientID, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting reviews: %v", err)
+	}
+	if len(reviews) != 2 {
+		t.Fatalf("Reviews not updated: %v", reviews)
 	}
 
 }

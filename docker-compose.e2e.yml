@@ -1,0 +1,72 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    container_name: e2e-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+      POSTGRES_CLIENT_MIN_MESSAGES: notice
+      POSTGRES_LOG_MIN_MESSAGES: notice
+      POSTGRES_PORT: 5433
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    container_name: e2e-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./e2e/.env 
+    networks:
+      - app-network
+    ports:
+      - "8001:8000"  # Changed to avoid conflict with main compose
+      - "9092:9090"  # Changed to avoid conflict with main compose
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/8000 || exit 1' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  e2e-tests:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.test-runner
+    container_name: e2e-tests
+    depends_on:
+      backend:
+        condition: service_healthy
+    env_file:
+      - ./e2e/.env 
+    environment:
+      - RUN_UNIT=false
+      - RUN_INTEGRATION=false
+      - RUN_E2E=true
+      - WAIT_MAX_ATTEMPTS=120
+      - POST_TEST_SLEEP=0
+    networks:
+      - app-network
+    volumes:
+      - ./e2e/allure-results:/workspace/e2e/allure-results
+
+volumes:
+  prometheus_data:
+
+networks:
+  app-network:
+    driver: bridge
+

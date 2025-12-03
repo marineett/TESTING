@@ -51,19 +51,42 @@ components:
 
     AuthRequest:
       type: object
-      required: [login, password]
+      required: [login]
       properties:
         login: { type: string }
-        password: { type: string, format: password }
+        password:
+          {
+            type: string,
+            format: password,
+            description: "Пароль (обязателен при авторизации по логину/паролю)",
+          }
+        token:
+          {
+            type: string,
+            description: "Токен авторизации (используется для авторизации по токену вместо пароля)",
+          }
 
     AuthResponse:
       type: object
       required: [token, role, user_id]
       properties:
-        token: { type: string, description: JWT }
+        token: { type: string, description: "JWT токен для авторизации" }
         role:
           { type: string, enum: [guest, client, repetitor, moderator, admin] }
         user_id: { type: integer, format: int64 }
+
+    AuthVerdict:
+      type: object
+      required: [user_id, user_type, token]
+      properties:
+        user_id: { type: integer, format: int64 }
+        user_type:
+          {
+            type: string,
+            enum: [client, repetitor, moderator, admin],
+            description: "Тип пользователя",
+          }
+        token: { type: string, description: "Токен авторизации" }
 
     UserRegister:
       type: object
@@ -629,18 +652,32 @@ components:
         }
 
 paths:
-  /auth/login/:
+  /auth/login:
     post:
       tags: [Auth]
       summary: Авторизация пользователя (JWT)
       operationId: loginUser
+      description: |
+        Авторизация по логину и паролю или по токену.
+        - Для авторизации по логину/паролю: передайте `login` и `password`
+        - Для авторизации по токену: передайте `login` и `token`
+        В ответе возвращается JWT токен для дальнейшей авторизации.
       requestBody:
         required: true
         content:
-          {
-            application/json:
-              { schema: { $ref: "#/components/schemas/AuthRequest" } },
-          }
+          application/json:
+            schema: { $ref: "#/components/schemas/AuthRequest" }
+            examples:
+              login_password:
+                summary: Авторизация по логину и паролю
+                value:
+                  login: "user123"
+                  password: "securePassword123"
+              token_auth:
+                summary: Авторизация по токену
+                value:
+                  login: "user123"
+                  token: "auth_token_from_email"
       responses:
         "200":
           {
@@ -653,7 +690,36 @@ paths:
           }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
-  /registration/:
+  /apply_token:
+    get:
+      tags: [Auth]
+      summary: Применить токен авторизации
+      operationId: applyToken
+      description: |
+        Применение токена, полученного при регистрации по email.
+        Токен и логин передаются как query параметры.
+        В ответе возвращается информация о пользователе с токеном.
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema: { type: string }
+          description: "Токен авторизации, полученный по email при регистрации"
+        - in: query
+          name: login
+          required: true
+          schema: { type: string }
+          description: "Логин пользователя"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthVerdict" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /registration:
     post:
       tags: [Auth]
       summary: Регистрация пользователя (client, repetitor, moderator, admin)
@@ -719,12 +785,18 @@ paths:
             application/json:
               schema:
                 type: object
+                required: [user_id, user_type, token]
                 properties:
                   user_id: { type: integer, format: int64 }
-                  role:
+                  user_type:
                     {
                       type: string,
                       enum: [client, repetitor, moderator, admin],
+                    }
+                  token:
+                    {
+                      type: string,
+                      description: "Токен авторизации, отправленный на email",
                     }
         "400": { $ref: "#/components/responses/BadRequest" }
         "409":

@@ -54,20 +54,17 @@ func loginAuthorize(login string, role string, client *APIClient) error {
 		"telephone_number": "+7-900-000-00-00",
 		"role":             role,
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	ctx := context.Background()
 	resp, err := client.makeRequestWithBody(ctx, "POST", "/api/v2/registration", regBody)
 	if err != nil {
-		return fmt.Errorf("registration request failed: %w", err)
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusCreated {
-		return fmt.Errorf("status code is not 201: %d", resp.StatusCode)
+		return fmt.Errorf("status code is not 201")
 	}
 
-	ctx2, cancel2 := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel2()
-	resp, err = client.makeRequestWithBody(ctx2, "POST", "/api/v2/auth/login", map[string]string{
+	resp, err = client.makeRequestWithBody(ctx, "POST", "/api/v2/auth/login", map[string]string{
 		"login":    login,
 		"password": authData[login].Password,
 	})
@@ -144,22 +141,7 @@ func createChatAndSpam(
 
 func beforeAllBenchmarks(t provider.T) {
 	authData = make(map[string]*loginData)
-	base := "http://localhost:8000"
-	fmt.Printf("[Benchmark] Using backend URL: %s\n", base)
-	sharedClient := NewAPIClient(base)
-
-	// Test connection immediately
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	resp, err := sharedClient.makeRequest(ctx, "GET", "/api/health", nil)
-	if err != nil {
-		t.Fatalf("Failed to connect to backend at %s: %v", base, err)
-	}
-	if resp != nil {
-		resp.Body.Close()
-		fmt.Printf("[Benchmark] Successfully connected to backend\n")
-	}
-
+	sharedClient := NewAPIClient("http://backend:8000")
 	for i, login := range logins {
 		role := ""
 		if i%2 == 0 {

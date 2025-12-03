@@ -35,12 +35,7 @@ func TestCreateSqlAuthRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
 	if authRepository == nil {
 		t.Fatalf("Error creating auth repository: %v", err)
@@ -52,18 +47,13 @@ func TestInsertAuthCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
@@ -74,22 +64,17 @@ func TestChangePasswordCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
-	err = authRepository.ChangePassword(1, tu.TestAuthData, "newpassword")
+	authRepository.ChangePassword(1, tu.TestAuthData, "newpassword")
 	if err != nil {
 		t.Fatalf("Error changing password: %v", err)
 	}
@@ -100,18 +85,13 @@ func TestChangePasswordIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
@@ -128,12 +108,7 @@ func TestAuthorizeCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
@@ -163,18 +138,13 @@ func TestAuthorizeIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
@@ -191,18 +161,13 @@ func TestCheckLoginCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
@@ -220,18 +185,13 @@ func TestCheckLoginIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAuthTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up auth tables: %v", err)
 	}
 	authRepository := CreateSqlAuthRepository(db, "auth", "sequence")
-	_, err = authRepository.InsertAuth(tu.TestAuthInfo)
+	authRepository.InsertAuth(tu.TestAuthInfo)
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}

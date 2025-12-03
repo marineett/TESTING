@@ -26,7 +26,7 @@ func TestCreateRepetitorCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -57,9 +57,12 @@ func TestCreateRepetitorCorrectLondon(t *testing.T) {
 	if authData.Password != tu.TestInitRepetitorData.Password {
 		t.Fatalf("Auth data not updated: %v", authData)
 	}
-	_, err = repetitorRepository.GetRepetitor(1)
+	repetitorData, err := repetitorRepository.GetRepetitor(1)
 	if err != nil {
 		t.Fatalf("Error getting repetitor data: %v", err)
+	}
+	if repetitorData.SummaryRating != float64(tu.TestSummaryRating) {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
 	}
 }
 
@@ -68,11 +71,7 @@ func TestCreateRepetitorDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -80,7 +79,7 @@ func TestCreateRepetitorDataCorrectClassic(t *testing.T) {
 	authRepository := module.AuthRepository
 	repetitorRepository := module.RepetitorRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -118,7 +117,7 @@ func TestGetRepetitorDataCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -149,44 +148,12 @@ func TestGetRepetitorDataCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckRepetitorProfile(
-	t *testing.T,
-	repetitorData *types.ServiceRepetitorProfile,
-	meanRating float64,
-	firstName string,
-	lastName string,
-	middleName string,
-	telephoneNumber string,
-	email string,
-) {
-	if repetitorData.MeanRating != meanRating {
-		t.Fatalf("Repetitor mean rating not updated: %v", repetitorData)
-	}
-	if repetitorData.FirstName != firstName {
-		t.Fatalf("Repetitor data not updated: %v", repetitorData)
-	}
-	if repetitorData.LastName != lastName {
-		t.Fatalf("Repetitor data not updated: %v", repetitorData)
-	}
-	if repetitorData.MiddleName != middleName {
-		t.Fatalf("Repetitor data not updated: %v", repetitorData)
-	}
-	if repetitorData.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Repetitor data not updated: %v", repetitorData)
-	}
-	if repetitorData.Email != email {
-		t.Fatalf("Repetitor data not updated: %v", repetitorData)
-	}
-}
-
 func TestGetRepetitorDataCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -194,7 +161,7 @@ func TestGetRepetitorDataCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -209,16 +176,27 @@ func TestGetRepetitorDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting repetitor data: %v", err)
 	}
-	CheckRepetitorProfile(
-		t,
-		repetitorData,
-		tu.TestMeanRating,
-		tu.TestPD.FirstName,
-		tu.TestPD.LastName,
-		tu.TestPD.MiddleName,
-		tu.TestPD.TelephoneNumber,
-		tu.TestPD.Email,
-	)
+	if repetitorData.MeanRating != tu.TestMeanRating {
+		t.Fatalf("Repetitor mean rating not updated: %v", repetitorData)
+	}
+	if repetitorData.MeanRating != tu.TestMeanRating {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
+	if repetitorData.FirstName != tu.TestPD.FirstName {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
+	if repetitorData.LastName != tu.TestPD.LastName {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
+	if repetitorData.MiddleName != tu.TestPD.MiddleName {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
+	if repetitorData.TelephoneNumber != tu.TestPD.TelephoneNumber {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
+	if repetitorData.Email != tu.TestPD.Email {
+		t.Fatalf("Repetitor data not updated: %v", repetitorData)
+	}
 }
 
 func TestGetRepetitorDataIncorrectLondon(t *testing.T) {
@@ -240,7 +218,7 @@ func TestGetRepetitorDataIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -255,11 +233,7 @@ func TestGetRepetitorDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -267,7 +241,7 @@ func TestGetRepetitorDataIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -303,7 +277,7 @@ func TestUpdateRepetitorPersonalDataCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -344,11 +318,7 @@ func TestUpdateRepetitorPersonalDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -356,7 +326,7 @@ func TestUpdateRepetitorPersonalDataCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -398,7 +368,7 @@ func TestUpdateRepetitorPersonalDataIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -419,11 +389,7 @@ func TestUpdateRepetitorPersonalDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -431,7 +397,7 @@ func TestUpdateRepetitorPersonalDataIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -473,7 +439,7 @@ func TestUpdateRepetitorPasswordCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -496,11 +462,7 @@ func TestUpdateRepetitorPasswordCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -508,7 +470,7 @@ func TestUpdateRepetitorPasswordCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -544,7 +506,7 @@ func TestUpdateRepetitorPasswordIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -559,11 +521,7 @@ func TestUpdateRepetitorPasswordIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -571,7 +529,7 @@ func TestUpdateRepetitorPasswordIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}

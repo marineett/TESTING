@@ -8,9 +8,8 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
-	"time"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -20,32 +19,11 @@ func SetupRegistrationRouterV2(
 	clientService service_logic.IClientService,
 	adminService service_logic.IAdminService,
 	repetitorService service_logic.IRepetitorService,
+	emailSender service_logic.IEmailSender,
 ) *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc(REGISTRATION_API_V2, RegistrationHandlerV2(clientService, moderatorService, adminService, repetitorService, authService)).Methods("POST")
+	router.HandleFunc(REGISTRATION_API_V2, RegistrationHandlerV2(clientService, moderatorService, adminService, repetitorService, authService, emailSender)).Methods("POST")
 	return router
-}
-
-func ChooseRole(
-	role string,
-	clientService service_logic.IClientService,
-	moderatorService service_logic.IModeratorService,
-	adminService service_logic.IAdminService,
-	repetitorService service_logic.IRepetitorService,
-	registrationData types.ServerRegistrationDataV2,
-) error {
-	switch role {
-	case "client":
-		return clientService.CreateClient(*types.MapperRegistrationV2ToServiceInitClient(&registrationData))
-	case "moderator":
-		return moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData))
-	case "admin":
-		return adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData))
-	case "repetitor":
-		return repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData))
-	default:
-		return fmt.Errorf("invalid role: %s", role)
-	}
 }
 
 func RegistrationHandlerV2(
@@ -54,6 +32,7 @@ func RegistrationHandlerV2(
 	adminService service_logic.IAdminService,
 	repetitorService service_logic.IRepetitorService,
 	authService service_logic.IAuthService,
+	emailSender service_logic.IEmailSender,
 ) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
@@ -70,29 +49,76 @@ func RegistrationHandlerV2(
 			http.Error(w, "Invalid request format", http.StatusBadRequest)
 			return
 		}
-		err = ChooseRole(registrationData.Role, clientService, moderatorService, adminService, repetitorService, registrationData)
+		token := uuid.New().String()
+		switch registrationData.Role {
+		case "client":
+			err = clientService.CreateClient(*types.MapperRegistrationV2ToServiceInitClient(&registrationData), token)
+		case "moderator":
+			err = moderatorService.CreateModerator(*types.MapperRegistrationV2ToServiceInitModerator(&registrationData), token)
+		case "admin":
+			err = adminService.CreateAdmin(*types.MapperRegistrationV2ToServiceInitAdmin(&registrationData), token)
+		case "repetitor":
+			err = repetitorService.CreateRepetitor(*types.MapperRegistrationV2ToServiceInitRepetitor(&registrationData), token)
+		default:
+			http.Error(w, "Invalid user type", http.StatusBadRequest)
+			return
+		}
 		if err != nil {
+			fmt.Println(err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		verdict, err := authService.Authorize(types.ServiceAuthData{Login: registrationData.Login, Password: registrationData.Password})
+		_, err = authService.Authorize(types.ServiceAuthData{
+			Login:             registrationData.Login,
+			Password:          registrationData.Password,
+			Token:             token,
+			DeniedAccessCount: 0,
+			Email:             registrationData.Email,
+		})
 		if err != nil {
+
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		secret := os.Getenv("JWT_SECRET")
-		if secret == "" {
-			http.Error(w, "JWT secret is not configured", http.StatusBadRequest)
-			return
-		}
-		token, err := createJWT(verdict.UserID, verdict.UserType.String(), 24*time.Hour, secret)
+		err = emailSender.SendEmail(registrationData.Email, "Registration", "Token:"+token)
 		if err != nil {
-			http.Error(w, "Failed to issue token", http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusNotImplemented)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		_ = json.NewEncoder(w).Encode(types.ServerAuthResponseV2{Token: token, Role: verdict.UserType.String(), UserID: verdict.UserID})
+	}
+}
+
+func ApplyTokenHandler(authService service_logic.IAuthService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		token := r.URL.Query().Get("token")
+		if token == "" {
+			http.Error(w, "Token is required", http.StatusBadRequest)
+			return
+		}
+		login := r.URL.Query().Get("login")
+		if login == "" {
+			http.Error(w, "Login is required", http.StatusBadRequest)
+			return
+		}
+		verdict, err := authService.AuthorizeByToken(token, login)
+		if err != nil && err.Error() == "too many failed attempts" {
+			http.Error(w, "Too many failed attempts", http.StatusTooManyRequests)
+			return
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_ = json.NewEncoder(w).Encode(verdict)
 	}
 }
 
@@ -154,7 +180,7 @@ func RegistrationModeratorHandler(
 		}
 
 		serviceInitData := types.MapperInitModeratorServerToService(&initData)
-		err = moderatorService.CreateModerator(*serviceInitData)
+		err = moderatorService.CreateModerator(*serviceInitData, "")
 		if err != nil {
 			logger.Printf("Error creating moderator: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -209,7 +235,7 @@ func RegistrationClientHandler(
 		}
 
 		serviceInitData := types.MapperInitClientServerToService(&initData)
-		err = clientService.CreateClient(*serviceInitData)
+		err = clientService.CreateClient(*serviceInitData, "")
 		if err != nil {
 			log.Printf("Error creating client: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -264,7 +290,7 @@ func RegistrationAdminHandler(
 		}
 
 		serviceInitData := types.MapperInitAdminServerToService(&initData)
-		err = adminService.CreateAdmin(*serviceInitData)
+		err = adminService.CreateAdmin(*serviceInitData, "")
 		if err != nil {
 			logger.Printf("Error creating admin: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -319,7 +345,7 @@ func RegistrationRepetitorHandler(
 		}
 
 		serviceInitData := types.MapperInitRepetitorServerToService(&initData)
-		err = repetitorService.CreateRepetitor(*serviceInitData)
+		err = repetitorService.CreateRepetitor(*serviceInitData, "")
 		if err != nil {
 			logger.Printf("Error creating repetitor: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -328,5 +354,36 @@ func RegistrationRepetitorHandler(
 
 		logger.Printf("Repetitor created successfully: %s", initData.Login)
 		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func UpdateTokenHandler(authService service_logic.IAuthService, emailSender service_logic.IEmailSender) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "POST" {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body", http.StatusBadRequest)
+			return
+		}
+		var updateTokenData types.ServerUpdateTokenData
+		if err := json.Unmarshal(body, &updateTokenData); err != nil {
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			return
+		}
+		token := uuid.New().String()
+		email, err := authService.UpdateToken(updateTokenData.Login, updateTokenData.Password, token)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = emailSender.SendEmail(email, "Token", "Token:"+token)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotImplemented)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
 	}
 }

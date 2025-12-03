@@ -1,5 +1,7 @@
 package integration
 
+import "os"
+
 var (
 	testClientAuthData    map[string]interface{}
 	testRepetitorAuthData map[string]interface{}
@@ -11,9 +13,25 @@ var (
 )
 
 func init() {
-	clLogin, clPass := makeCreds("client")
-	rpLogin, rpPass := makeCreds("repetitor")
-	mdLogin, mdPass := makeCreds("moderator")
+	// Используем IMAP_USER из env, если установлен, иначе генерируем случайный email
+	imapUser := os.Getenv("IMAP_USER")
+	
+	var clLogin, rpLogin, mdLogin string
+	if imapUser != "" {
+		// Используем один и тот же email для всех регистраций (для чтения токенов из одного почтового ящика)
+		clLogin = imapUser
+		rpLogin = imapUser
+		mdLogin = imapUser
+	} else {
+		// Генерируем случайные email адреса
+		clLogin, _ = makeCreds("client")
+		rpLogin, _ = makeCreds("repetitor")
+		mdLogin, _ = makeCreds("moderator")
+	}
+	
+	clPass := createPassword(12)
+	rpPass := createPassword(12)
+	mdPass := createPassword(12)
 
 	testClientAuthData = map[string]interface{}{
 		"login":    clLogin,

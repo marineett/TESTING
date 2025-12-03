@@ -46,16 +46,12 @@ func AdminCreateDepartmentHandlerV2(departmentService service_logic.IDepartmentS
 			http.Error(w, "Error creating department", http.StatusBadRequest)
 			return
 		}
-		err = json.NewEncoder(w).Encode(types.ServerDepartmentV2{
+		json.NewEncoder(w).Encode(types.ServerDepartmentV2{
 			ID:         departmentId,
 			Name:       req.Name,
 			HeadID:     req.HeadID,
 			Moderators: []types.ServerModeratorProfileWithIDV2{},
 		})
-		if err != nil {
-			http.Error(w, "Error encoding department", http.StatusInternalServerError)
-			return
-		}
 	}
 }
 
@@ -73,11 +69,7 @@ func AdminListDepartmentsHandlerV2(departmentService service_logic.IDepartmentSe
 			http.Error(w, "Error getting departments", http.StatusBadRequest)
 			return
 		}
-		err = json.NewEncoder(w).Encode(departments)
-		if err != nil {
-			http.Error(w, "Error encoding departments", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(departments)
 	}
 }
 
@@ -115,11 +107,7 @@ func DepartmentReplaceHandlerV2(departmentService service_logic.IDepartmentServi
 			http.Error(w, "Error getting department", http.StatusBadRequest)
 			return
 		}
-		err = json.NewEncoder(w).Encode(updatedDepartment)
-		if err != nil {
-			http.Error(w, "Error encoding updated department", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(updatedDepartment)
 	}
 }
 
@@ -175,11 +163,7 @@ func DepartmentAssignModeratorHandlerV2(departmentService service_logic.IDepartm
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(updatedDepartment)
-		if err != nil {
-			http.Error(w, "Error encoding updated department", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(updatedDepartment)
 	}
 }
 
@@ -315,11 +299,7 @@ func AdminGetDepartmentsHandler(departmentService service_logic.IDepartmentServi
 			}
 		}
 		logger.Printf("Got complete departments: %v", completeDepartments)
-		err = json.NewEncoder(w).Encode(completeDepartments)
-		if err != nil {
-			http.Error(w, "Error encoding complete departments", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(completeDepartments)
 	}
 }
 
@@ -329,6 +309,11 @@ func AdminHireModeratorHandler(
 ) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Printf("Received request: %s %s", r.Method, r.URL.Path)
+		if r.Method != "GET" {
+			logger.Printf("Method not allowed: %s", r.Method)
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
 		adminIDStr := r.URL.Query().Get("id")
 		adminID, err := strconv.ParseInt(adminIDStr, 10, 64)
 		if err != nil {

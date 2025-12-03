@@ -1,9 +1,10 @@
 openapi: 3.0.1
 info:
-  title: Tutoring Platform (Fixed)
+  title: Tutoring Platform
   version: 1.0.0
 servers:
-  - url: http://127.0.0.1:8000/api/v2
+  - url: http://127.0.0.1:80/api/v2
+    description: API v2
 
 tags:
   - name: Auth
@@ -30,8 +31,6 @@ tags:
     description: Управление отделами
   - name: Moderator
     description: Управление модераторами
-  - name: Legacy
-    description: Доступ к архивам
 
 security:
   - bearerAuth: []
@@ -633,158 +632,6 @@ components:
         }
 
 paths:
-  /legacy:
-    get:
-      tags: [Legacy]
-      summary: Скачать заархивированную папку console2
-      operationId: downloadLegacyConsole2
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            application/zip:
-              schema:
-                type: string
-                format: binary
-        "401": { $ref: "#/components/responses/Unauthorized" }
-        "404":
-          description: Not Found
-
-  /:
-    get:
-      tags: [Docs]
-      summary: Отдать статический файл по умолчанию
-      description: При отсутствии имени файла возвращает class_diagram.png
-      operationId: getRootStaticDefault
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Not Found
-
-  /api/v2:
-    servers:
-      - url: http://127.0.0.1:8000/
-    get:
-      tags: [Docs]
-      summary: OpenAPI спецификация (api/v2)
-      operationId: getOpenAPISpecApiV2
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            application/yaml:
-              schema:
-                type: string
-        "404":
-          description: Not Found
-  /static/documentation:
-    get:
-      tags: [Docs]
-      summary: README документация
-      operationId: getDocumentation
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            text/markdown:
-              schema:
-                type: string
-        "404":
-          description: Not Found
-
-  /static:
-    get:
-      tags: [Docs]
-      summary: Отдать статический файл по умолчанию
-      description: При отсутствии имени файла возвращает class_diagram.png
-      operationId: getStaticDefault
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Not Found
-
-  /static/{filename}:
-    get:
-      tags: [Docs]
-      summary: Отдать статический файл
-      operationId: getStaticFile
-      security: [{ bearerAuth: [] }]
-      parameters:
-        - in: path
-          name: filename
-          required: true
-          schema:
-            type: string
-          description: Имя файла; префикс @ допускается
-      responses:
-        "200":
-          description: OK
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Not Found
-
-  /reserved:
-    get:
-      tags: [Docs]
-      summary: Отдать зарезервированный статический файл по умолчанию
-      description: При отсутствии имени файла возвращает class_diagram.png
-      operationId: getReservedDefault
-      security: [{ bearerAuth: [] }]
-      responses:
-        "200":
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Not Found
-
-  /reserved/{filename}:
-    get:
-      tags: [Docs]
-      summary: Отдать файл из reserved
-      operationId: getReservedFile
-      security: [{ bearerAuth: [] }]
-      parameters:
-        - in: path
-          name: filename
-          required: true
-          schema:
-            type: string
-          description: Имя файла; префикс @ допускается
-      responses:
-        "200":
-          description: OK
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        "404":
-          description: Not Found
   /auth/login:
     post:
       tags: [Auth]
@@ -793,20 +640,32 @@ paths:
       requestBody:
         required: true
         content:
-          {
-            application/json:
-              { schema: { $ref: "#/components/schemas/AuthRequest" } },
-          }
+          application/json:
+            schema: { $ref: "#/components/schemas/AuthRequest" }
+            examples:
+              admin:
+                summary: Авторизация администратора
+                value:
+                  login: "admin_user"
+                  password: "password123"
+              client:
+                summary: Авторизация клиента
+                value:
+                  login: "client_user"
+                  password: "password123"
       responses:
         "200":
-          {
-            description: OK,
-            content:
-              {
-                application/json:
-                  { schema: { $ref: "#/components/schemas/AuthResponse" } },
-              },
-          }
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+              examples:
+                success:
+                  summary: Успешная авторизация
+                  value:
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    role: "admin"
+                    user_id: 123
         "401": { $ref: "#/components/responses/Unauthorized" }
 
   /registration:
@@ -873,15 +732,14 @@ paths:
           description: Успешная регистрация
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  user_id: { type: integer, format: int64 }
-                  role:
-                    {
-                      type: string,
-                      enum: [client, repetitor, moderator, admin],
-                    }
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+              examples:
+                success:
+                  summary: Успешная регистрация
+                  value:
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    role: "admin"
+                    user_id: 123
         "400": { $ref: "#/components/responses/BadRequest" }
         "409":
           description: Conflict — login or email already exists

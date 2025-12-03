@@ -23,7 +23,7 @@ func TestCreateAdminCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -61,11 +61,7 @@ func TestCreateAdminCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -78,7 +74,7 @@ func TestCreateAdminCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -104,7 +100,9 @@ func TestCreateAdminIncorrectLondon(t *testing.T) {
 			ServiceAuthData:     tu.TestAuth,
 		},
 		Salary: -500,
-	})
+	},
+		"",
+	)
 	if err == nil {
 		t.Fatalf("No error creating admin with salary -500: %v", err)
 	}
@@ -115,11 +113,7 @@ func TestCreateAdminIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -138,7 +132,9 @@ func TestCreateAdminIncorrectClassic(t *testing.T) {
 			ServiceAuthData:     tu.TestAuth,
 		},
 		Salary: -500,
-	})
+	},
+		"",
+	)
 	if err == nil {
 		t.Fatalf("No error creating admin with salary -500: %v", err)
 	}
@@ -158,7 +154,7 @@ func TestGetAdminDataCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -182,11 +178,7 @@ func TestGetAdminDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -200,7 +192,7 @@ func TestGetAdminDataCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -240,7 +232,7 @@ func TestGetAdminDataInCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -255,11 +247,7 @@ func TestGetAdminDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -277,7 +265,7 @@ func TestGetAdminDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -308,10 +296,7 @@ func TestGetAdminProfileCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
-	if err != nil {
-		t.Fatalf("Error creating admin: %v", err)
-	}
+	adminService.CreateAdmin(tu.TestInitAdminData, "")
 	adminProfile, err := adminService.GetAdminProfile(1)
 	if err != nil {
 		t.Fatalf("Error getting admin profile: %v", err)
@@ -336,46 +321,12 @@ func TestGetAdminProfileCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckAdminProfile(
-	t *testing.T,
-	adminProfile *types.ServiceAdminProfile,
-	salary int64,
-	firstName string,
-	lastName string,
-	middleName string,
-	telephoneNumber string,
-	email string,
-) {
-	if adminProfile.Salary != salary {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-	if adminProfile.FirstName != firstName {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-	if adminProfile.LastName != lastName {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-	if adminProfile.MiddleName != middleName {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-	if adminProfile.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-	if adminProfile.Email != email {
-		t.Fatalf("Admin profile not updated: %v", adminProfile)
-	}
-}
-
 func TestGetAdminProfileCorrectClassic(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -389,7 +340,7 @@ func TestGetAdminProfileCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -404,16 +355,24 @@ func TestGetAdminProfileCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting admin profile: %v", err)
 	}
-	CheckAdminProfile(
-		t,
-		adminProfile,
-		tu.TestSalary,
-		tu.TestPD.FirstName,
-		tu.TestPD.LastName,
-		tu.TestPD.MiddleName,
-		tu.TestPD.TelephoneNumber,
-		tu.TestPD.Email,
-	)
+	if adminProfile.Salary != tu.TestSalary {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
+	if adminProfile.FirstName != tu.TestPD.FirstName {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
+	if adminProfile.LastName != tu.TestPD.LastName {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
+	if adminProfile.MiddleName != tu.TestPD.MiddleName {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
+	if adminProfile.TelephoneNumber != tu.TestPD.TelephoneNumber {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
+	if adminProfile.Email != tu.TestPD.Email {
+		t.Fatalf("Admin profile not updated: %v", adminProfile)
+	}
 }
 
 func TestGetAdminProfileIncorrectLondon(t *testing.T) {
@@ -430,7 +389,7 @@ func TestGetAdminProfileIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -445,11 +404,7 @@ func TestGetAdminProfileIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -463,7 +418,7 @@ func TestGetAdminProfileIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -494,7 +449,7 @@ func TestUpdateAdminPersonalDataCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -530,40 +485,12 @@ func TestUpdateAdminPersonalDataCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckAdminPersonalData(
-	t *testing.T,
-	personalData *types.DBPersonalData,
-	firstName string,
-	lastName string,
-	middleName string,
-	telephoneNumber string,
-	email string,
-) {
-	if personalData.FirstName != firstName {
-		t.Fatalf("Admin personal data not updated: %v", personalData)
-	}
-	if personalData.LastName != lastName {
-		t.Fatalf("Admin personal data not updated: %v", personalData)
-	}
-	if personalData.MiddleName != middleName {
-		t.Fatalf("Admin personal data not updated: %v", personalData)
-	}
-	if personalData.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Admin personal data not updated: %v", personalData)
-	}
-	if personalData.Email != email {
-		t.Fatalf("Admin personal data not updated: %v", personalData)
-	}
-}
-
 func TestUpdateAdminPersonalDataCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -578,7 +505,7 @@ func TestUpdateAdminPersonalDataCorrectClassic(t *testing.T) {
 		personalDataRepository,
 	)
 
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -597,15 +524,21 @@ func TestUpdateAdminPersonalDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting personal data: %v", err)
 	}
-	CheckAdminPersonalData(
-		t,
-		personalData,
-		tu.TestPD.FirstName,
-		tu.TestPD.LastName,
-		tu.TestPD.MiddleName,
-		tu.TestPD.TelephoneNumber,
-		tu.TestPD.Email,
-	)
+	if personalData.FirstName != tu.TestPD.FirstName {
+		t.Fatalf("Admin personal data not updated: %v", personalData)
+	}
+	if personalData.LastName != tu.TestPD.LastName {
+		t.Fatalf("Admin personal data not updated: %v", personalData)
+	}
+	if personalData.MiddleName != tu.TestPD.MiddleName {
+		t.Fatalf("Admin personal data not updated: %v", personalData)
+	}
+	if personalData.TelephoneNumber != tu.TestPD.TelephoneNumber {
+		t.Fatalf("Admin personal data not updated: %v", personalData)
+	}
+	if personalData.Email != tu.TestPD.Email {
+		t.Fatalf("Admin personal data not updated: %v", personalData)
+	}
 }
 
 func TestUpdateAdminPersonalDataIncorrectLondon(t *testing.T) {
@@ -622,7 +555,7 @@ func TestUpdateAdminPersonalDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -643,11 +576,7 @@ func TestUpdateAdminPersonalDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -661,7 +590,7 @@ func TestUpdateAdminPersonalDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -692,7 +621,7 @@ func TestUpdateAdminPasswordCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -716,11 +645,7 @@ func TestUpdateAdminPasswordCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -734,7 +659,7 @@ func TestUpdateAdminPasswordCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -772,7 +697,7 @@ func TestUpdateAdminPasswordIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -787,11 +712,7 @@ func TestUpdateAdminPasswordIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -805,7 +726,7 @@ func TestUpdateAdminPasswordIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -836,7 +757,7 @@ func TestUpdateAdminDepartmentCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -859,11 +780,7 @@ func TestUpdateAdminDepartmentCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -877,7 +794,7 @@ func TestUpdateAdminDepartmentCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -915,7 +832,7 @@ func TestUpdateAdminDepartmentIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -930,11 +847,7 @@ func TestUpdateAdminDepartmentIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -948,7 +861,7 @@ func TestUpdateAdminDepartmentIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -979,7 +892,7 @@ func TestUpdateAdminSalaryCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1002,11 +915,7 @@ func TestUpdateAdminSalaryCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -1020,7 +929,7 @@ func TestUpdateAdminSalaryCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1058,7 +967,7 @@ func TestUpdateAdminSalaryIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1073,11 +982,7 @@ func TestUpdateAdminSalaryIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -1091,7 +996,7 @@ func TestUpdateAdminSalaryIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1122,7 +1027,7 @@ func TestUpdateAdminSalaryIncorrectSalaryLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1144,11 +1049,7 @@ func TestUpdateAdminSalaryIncorrectSalaryClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	repositoryModule, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up tables: %v", err)
@@ -1162,7 +1063,7 @@ func TestUpdateAdminSalaryIncorrectSalaryClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}

@@ -101,12 +101,7 @@ func (r *SqlDepartmentRepository) GetDepartmentsByHeadID(headID int64) ([]types.
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	for rows.Next() {
 		var department types.DBDepartment
 		err := rows.Scan(&department.ID, &department.Name, &department.HeadID)
@@ -180,12 +175,7 @@ func (r *SqlDepartmentRepository) GetUserDepartmentsIDs(userId int64) ([]int64, 
 		log.Printf("Error getting user departments IDs: %v", err)
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	for rows.Next() {
 		var departmentID int64
 		err := rows.Scan(&departmentID)
@@ -208,12 +198,7 @@ func (r *SqlDepartmentRepository) GetDepartmentUsersIDs(departmentId int64) ([]i
 		log.Printf("Error getting department users IDs: %v", err)
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	for rows.Next() {
 		var userID int64
 		err := rows.Scan(&userID)

@@ -26,18 +26,13 @@ func TestInsertPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)
 	}
 	personalDataRepository := CreateSqlPersonalDataRepository(db, "personal_data", "sequence")
-	_, err = personalDataRepository.InsertPersonalData(tu.TestPD)
+	personalDataRepository.InsertPersonalData(tu.TestPD)
 	if err != nil {
 		t.Fatalf("Error inserting personal data: %v", err)
 	}
@@ -48,12 +43,7 @@ func TestInsertPersonalDataInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)
@@ -62,67 +52,21 @@ func TestInsertPersonalDataInSeqCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 	personalDataRepository := CreateSqlPersonalDataRepository(db, "personal_data", "sequence")
-	_, err = personalDataRepository.InsertPersonalDataInSeq(tx, tu.TestPD)
+	personalDataRepository.InsertPersonalDataInSeq(tx, tu.TestPD)
 	if err != nil {
 		t.Fatalf("Error inserting personal data: %v", err)
 	}
 }
 
-func CheckPersonalData(
-	t *testing.T,
-	personalData *types.DBPersonalData,
-	personalDataID int64,
-	telephoneNumber string,
-	email string,
-	firstName string,
-	lastName string,
-	middleName string,
-	passportNumber string,
-	passportSeries string,
-	passportIssuedBy string,
-) {
-	if personalData.ID != personalDataID {
-		t.Fatalf("Personal data id not updated: %v", personalData)
-	}
-	if personalData.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Personal data telephone number not updated: %v", personalData)
-	}
-	if personalData.Email != email {
-		t.Fatalf("Personal data email not updated: %v", personalData)
-	}
-	if personalData.FirstName != firstName {
-		t.Fatalf("Personal data first name not updated: %v", personalData)
-	}
-	if personalData.LastName != lastName {
-		t.Fatalf("Personal data last name not updated: %v", personalData)
-	}
-	if personalData.MiddleName != middleName {
-		t.Fatalf("Personal data middle name not updated: %v", personalData)
-	}
-	if personalData.PassportNumber != passportNumber {
-		t.Fatalf("Personal data passport number not updated: %v", personalData)
-	}
-	if personalData.PassportSeries != passportSeries {
-		t.Fatalf("Personal data passport series not updated: %v", personalData)
-	}
-	if personalData.PassportIssuedBy != passportIssuedBy {
-		t.Fatalf("Personal data passport issued by not updated: %v", personalData)
-	}
-}
-
 func TestGetPersonalDataCorrect(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupPersonalDataTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)
 	}
@@ -135,7 +79,33 @@ func TestGetPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting personal data: %v", err)
 	}
-	CheckPersonalData(t, personalData, personalDataID, tu.TestPD.TelephoneNumber, tu.TestPD.Email, tu.TestPD.FirstName, tu.TestPD.LastName, tu.TestPD.MiddleName, tu.TestPD.PassportNumber, tu.TestPD.PassportSeries, tu.TestPD.PassportIssuedBy)
+	if personalData.ID != personalDataID {
+		t.Fatalf("Personal data id not updated: %v", personalData)
+	}
+	if personalData.TelephoneNumber != tu.TestPD.TelephoneNumber {
+		t.Fatalf("Personal data telephone number not updated: %v", personalData)
+	}
+	if personalData.Email != tu.TestPD.Email {
+		t.Fatalf("Personal data email not updated: %v", personalData)
+	}
+	if personalData.FirstName != tu.TestPD.FirstName {
+		t.Fatalf("Personal data first name not updated: %v", personalData)
+	}
+	if personalData.LastName != tu.TestPD.LastName {
+		t.Fatalf("Personal data last name not updated: %v", personalData)
+	}
+	if personalData.MiddleName != tu.TestPD.MiddleName {
+		t.Fatalf("Personal data middle name not updated: %v", personalData)
+	}
+	if personalData.PassportNumber != tu.TestPD.PassportNumber {
+		t.Fatalf("Personal data passport number not updated: %v", personalData)
+	}
+	if personalData.PassportSeries != tu.TestPD.PassportSeries {
+		t.Fatalf("Personal data passport series not updated: %v", personalData)
+	}
+	if personalData.PassportIssuedBy != tu.TestPD.PassportIssuedBy {
+		t.Fatalf("Personal data passport issued by not updated: %v", personalData)
+	}
 }
 
 func TestGetPersonalDataIncorrect(t *testing.T) {
@@ -143,12 +113,7 @@ func TestGetPersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)
@@ -158,18 +123,15 @@ func TestGetPersonalDataIncorrect(t *testing.T) {
 	if err == nil {
 		t.Fatalf("No error getting personal data: %v", err)
 	}
-
 }
 
 func TestUpdatePersonalDataCorrect(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupPersonalDataTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)
 	}
@@ -200,19 +162,33 @@ func TestUpdatePersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting personal data: %v", err)
 	}
-	CheckPersonalData(
-		t,
-		personalData,
-		personalDataID,
-		newPersonalData.TelephoneNumber,
-		newPersonalData.Email,
-		newPersonalData.FirstName,
-		newPersonalData.LastName,
-		newPersonalData.MiddleName,
-		newPersonalData.PassportNumber,
-		newPersonalData.PassportSeries,
-		newPersonalData.PassportIssuedBy,
-	)
+	if personalData.ID != personalDataID {
+		t.Fatalf("Personal data id not updated: %v", personalData)
+	}
+	if personalData.TelephoneNumber != newPersonalData.TelephoneNumber {
+		t.Fatalf("Personal data telephone number not updated: %v", personalData)
+	}
+	if personalData.Email != newPersonalData.Email {
+		t.Fatalf("Personal data email not updated: %v", personalData)
+	}
+	if personalData.FirstName != newPersonalData.FirstName {
+		t.Fatalf("Personal data first name not updated: %v", personalData)
+	}
+	if personalData.LastName != newPersonalData.LastName {
+		t.Fatalf("Personal data last name not updated: %v", personalData)
+	}
+	if personalData.MiddleName != newPersonalData.MiddleName {
+		t.Fatalf("Personal data middle name not updated: %v", personalData)
+	}
+	if personalData.PassportNumber != newPersonalData.PassportNumber {
+		t.Fatalf("Personal data passport number not updated: %v", personalData)
+	}
+	if personalData.PassportSeries != newPersonalData.PassportSeries {
+		t.Fatalf("Personal data passport series not updated: %v", personalData)
+	}
+	if personalData.PassportIssuedBy != newPersonalData.PassportIssuedBy {
+		t.Fatalf("Personal data passport issued by not updated: %v", personalData)
+	}
 }
 
 func TestUpdatePersonalDataIncorrect(t *testing.T) {
@@ -220,12 +196,7 @@ func TestUpdatePersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupPersonalDataTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up personal data tables: %v", err)

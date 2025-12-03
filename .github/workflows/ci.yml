@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master, lab1, lab2]
+    branches: [main, master, lab1, lab2, lab_4]
   pull_request:
-    branches: [main, master, lab1, lab2]
+    branches: [main, master, lab1, lab2, lab_4]
 
 jobs:
   lint:

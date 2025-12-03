@@ -41,12 +41,7 @@ func TestCreateSqlResumeRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -57,39 +52,29 @@ func TestCreateSqlResumeRepositoryCorrect(t *testing.T) {
 	}
 }
 
-func TestInsertResumeIncorrect(t *testing.T) {
+func TestInsertResumeCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
 	}
 	ResumeRepository := CreateSqlResumeRepository(db, "resume", "sequence")
-	_, err = ResumeRepository.InsertResume(tu.TestResume)
-	if err == nil {
-		t.Fatalf("No error inserting resume: %v", err)
+	ResumeRepository.InsertResume(tu.TestResume)
+	if err != nil {
+		t.Fatalf("Error inserting resume: %v", err)
 	}
 }
 
-func TestInsertResumeInSeqIncorrect(t *testing.T) {
+func TestInsertResumeInSeqCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -99,12 +84,63 @@ func TestInsertResumeInSeqIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error beginning transaction: %v", err)
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
-	_, err = ResumeRepository.InsertResumeInSeq(tx, tu.TestResume)
-	if err == nil {
-		t.Fatalf("No error inserting resume: %v", err)
+	defer tx.Rollback()
+	ResumeRepository.InsertResumeInSeq(tx, tu.TestResume)
+	if err != nil {
+		t.Fatalf("Error inserting resume: %v", err)
+	}
+}
+
+func TestGetResumeCorrect(t *testing.T) {
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupResumeTables(db)
+	if err != nil {
+		t.Fatalf("Error setting up resume tables: %v", err)
+	}
+	ResumeRepository := CreateSqlResumeRepository(db, "resume", "sequence")
+	repetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
+	repetitorID, err := repetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	tu.TestResume.RepetitorID = repetitorID
+	resumeID, err := ResumeRepository.InsertResume(tu.TestResume)
+	if err != nil {
+		t.Fatalf("Error inserting resume: %v", err)
+	}
+	resume, err := ResumeRepository.GetResume(resumeID)
+	if err != nil {
+		t.Fatalf("Error getting resume: %v", err)
+	}
+	if resume == nil {
+		t.Fatalf("Error getting resume: %v", err)
+	}
+	if resume.ID != resumeID {
+		t.Fatalf("Resume id not updated: %v", resume)
+	}
+	if resume.RepetitorID != tu.TestResume.RepetitorID {
+		t.Fatalf("Resume repetitor id not updated: %v", resume)
+	}
+	if resume.Title != tu.TestResume.Title {
+		t.Fatalf("Resume title not updated: %v", resume)
+	}
+	if resume.Description != tu.TestResume.Description {
+		t.Fatalf("Resume description not updated: %v", resume)
+	}
+	if len(resume.Prices) != len(tu.TestResume.Prices) {
+		t.Fatalf("Resume prices not updated: %v", resume)
+	}
+	for key, value := range resume.Prices {
+		if _, ok := tu.TestResume.Prices[key]; !ok {
+			t.Fatalf("Resume prices not updated: %v", resume)
+		}
+		if value != tu.TestResume.Prices[key] {
+			t.Fatalf("Resume prices not updated: %v", resume)
+		}
 	}
 }
 
@@ -113,12 +149,7 @@ func TestGetResumeIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -135,12 +166,7 @@ func TestUpdateResumeTitleCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -175,12 +201,7 @@ func TestUpdateResumeDescriptionCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -214,12 +235,7 @@ func TestUpdateResumeDescriptionIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -231,23 +247,13 @@ func TestUpdateResumeDescriptionIncorrect(t *testing.T) {
 	}
 }
 
-func SetupTestDb(t *testing.T) *sql.DB {
+func TestUpdateResumePricesCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	return db
-}
-
-func TestUpdateResumePricesCorrect(t *testing.T) {
-	db := SetupTestDb(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupResumeTables(db)
+	defer db.Close()
+	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
 	}
@@ -271,8 +277,14 @@ func TestUpdateResumePricesCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting resume: %v", err)
 	}
+	if len(resume.Prices) != len(newPrices) {
+		t.Fatalf("Resume prices not updated: %v", resume)
+	}
 	for key, value := range resume.Prices {
-		if _, ok := newPrices[key]; !ok || value != newPrices[key] {
+		if _, ok := newPrices[key]; !ok {
+			t.Fatalf("Resume prices not updated: %v", resume)
+		}
+		if value != newPrices[key] {
 			t.Fatalf("Resume prices not updated: %v", resume)
 		}
 	}
@@ -283,12 +295,7 @@ func TestUpdateResumePricesIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -305,12 +312,7 @@ func TestDeleteResumeCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)
@@ -341,12 +343,7 @@ func TestDeleteResumeIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupResumeTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up resume tables: %v", err)

@@ -153,6 +153,30 @@ func CreateTestAuthRepository() *TestAuthRepository {
 	}
 }
 
+func (r *TestAuthRepository) UpdateToken(login string, password string, token string) (string, error) {
+	for _, auth := range r.data {
+		if auth.Login == login && auth.Password == password {
+			auth.Token = token
+			return token, nil
+		}
+	}
+	return "", errors.New("invalid login or password")
+}
+
+func (r *TestAuthRepository) AuthorizeByToken(token string, login string) (types.DBAuthVerdict, error) {
+	for _, auth := range r.data {
+		if auth.Token == token && auth.Login == login {
+			return types.DBAuthVerdict{
+				UserID:            auth.UserID,
+				UserType:          auth.UserType,
+				Token:             auth.Token,
+				DeniedAccessCount: auth.DeniedAccessCount,
+			}, nil
+		}
+	}
+	return types.DBAuthVerdict{}, errors.New("invalid auth data")
+}
+
 func (r *TestAuthRepository) TestGetAuth(id int64) (*types.DBAuthInfo, error) {
 	value, ok := r.data[id]
 	if !ok {
@@ -176,8 +200,10 @@ func (r *TestAuthRepository) Authorize(authData types.DBAuthData) (types.DBAuthV
 	for _, auth := range r.data {
 		if auth.Login == authData.Login && auth.Password == authData.Password {
 			return types.DBAuthVerdict{
-				UserID:   auth.UserID,
-				UserType: auth.UserType,
+				UserID:            auth.UserID,
+				UserType:          auth.UserType,
+				Token:             auth.Token,
+				DeniedAccessCount: auth.DeniedAccessCount,
 			}, nil
 		}
 	}
@@ -232,6 +258,8 @@ func (r *TestAdminRepository) InsertAdmin(admin types.DBAdminData, personalData 
 		UserType: types.Admin,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err
@@ -329,6 +357,8 @@ func (r *TestModeratorRepository) InsertModerator(moderator types.DBModeratorDat
 		UserType: types.Moderator,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err
@@ -350,10 +380,7 @@ func (r *TestModeratorRepository) UpdateModeratorPersonalData(moderatorId int64,
 	if _, ok := r.data[moderatorId]; !ok {
 		return errors.New("moderator not found")
 	}
-	err := r.personalDataRepository.UpdatePersonalData(moderatorId, personalData)
-	if err != nil {
-		return err
-	}
+	r.personalDataRepository.UpdatePersonalData(moderatorId, personalData)
 	return nil
 }
 
@@ -361,10 +388,7 @@ func (r *TestModeratorRepository) UpdateModeratorPassword(moderatorId int64, aut
 	if _, ok := r.data[moderatorId]; !ok {
 		return errors.New("moderator not found")
 	}
-	err := r.authRepository.ChangePassword(moderatorId, authData, newPassword)
-	if err != nil {
-		return err
-	}
+	r.authRepository.ChangePassword(moderatorId, authData, newPassword)
 	return nil
 }
 
@@ -421,6 +445,8 @@ func (r *TestRepetiorRepository) InsertRepetitor(repetitor types.DBRepetitorData
 		UserType: types.Repetitor,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err
@@ -448,10 +474,7 @@ func (r *TestRepetiorRepository) UpdateRepetitorPersonalData(repetitorId int64, 
 	if _, ok := r.data[repetitorId]; !ok {
 		return errors.New("repetitor not found")
 	}
-	err := r.personalDataRepository.UpdatePersonalData(repetitorId, personalData)
-	if err != nil {
-		return err
-	}
+	r.personalDataRepository.UpdatePersonalData(repetitorId, personalData)
 	return nil
 }
 
@@ -459,10 +482,7 @@ func (r *TestRepetiorRepository) UpdateRepetitorPassword(repetitorId int64, auth
 	if _, ok := r.data[repetitorId]; !ok {
 		return errors.New("repetitor not found")
 	}
-	err := r.authRepository.ChangePassword(repetitorId, authData, newPassword)
-	if err != nil {
-		return err
-	}
+	r.authRepository.ChangePassword(repetitorId, authData, newPassword)
 	return nil
 }
 
@@ -508,6 +528,8 @@ func (r *TestClientRepository) InsertClient(client types.DBClientData, personalD
 		UserType: types.Client,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err
@@ -529,10 +551,7 @@ func (r *TestClientRepository) UpdateClientPersonalData(clientId int64, personal
 	if _, ok := r.data[clientId]; !ok {
 		return errors.New("client not found")
 	}
-	err := r.personalDataRepository.UpdatePersonalData(clientId, personalData)
-	if err != nil {
-		return err
-	}
+	r.personalDataRepository.UpdatePersonalData(clientId, personalData)
 	return nil
 }
 
@@ -540,10 +559,7 @@ func (r *TestClientRepository) UpdateClientPassword(clientId int64, authData typ
 	if _, ok := r.data[clientId]; !ok {
 		return errors.New("client not found")
 	}
-	err := r.authRepository.ChangePassword(clientId, authData, newPassword)
-	if err != nil {
-		return err
-	}
+	r.authRepository.ChangePassword(clientId, authData, newPassword)
 	return nil
 }
 

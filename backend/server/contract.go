@@ -68,11 +68,7 @@ func ContractsListHandlerV2(contractService service_logic.IContractService) http
 			http.Error(w, "Error getting contracts", http.StatusBadRequest)
 			return
 		}
-		err = json.NewEncoder(w).Encode(contracts)
-		if err != nil {
-			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(contracts)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -103,11 +99,7 @@ func ContractCreateHandlerV2(contractService service_logic.IContractService) htt
 		}
 		serverContract := types.MapperContractServiceToServerV2(contract)
 		w.WriteHeader(http.StatusCreated)
-		err = json.NewEncoder(w).Encode(serverContract)
-		if err != nil {
-			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContract)
 	}
 }
 
@@ -125,11 +117,7 @@ func ContractGetHandlerV2(contractService service_logic.IContractService) http.H
 			return
 		}
 		serverContract := types.MapperContractServiceToServerV2(contract)
-		err = json.NewEncoder(w).Encode(serverContract)
-		if err != nil {
-			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContract)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -174,11 +162,7 @@ func ContractStatusPatchHandlerV2(contractService service_logic.IContractService
 			return
 		}
 		serverContract := types.MapperContractServiceToServerV2(contract)
-		err = json.NewEncoder(w).Encode(serverContract)
-		if err != nil {
-			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContract)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -212,11 +196,7 @@ func ContractLessonsListHandlerV2(lessonService service_logic.ILessonService) ht
 		for i, lesson := range lessons {
 			serverLessons[i] = *types.MapperLessonServiceToServerV2(&lesson)
 		}
-		err = json.NewEncoder(w).Encode(serverLessons)
-		if err != nil {
-			http.Error(w, "Error encoding lessons", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverLessons)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -253,11 +233,7 @@ func ContractLessonCreateHandlerV2(lessonService service_logic.ILessonService) h
 			return
 		}
 		serverLesson := types.MapperLessonServiceToServerV2(lesson)
-		err = json.NewEncoder(w).Encode(*serverLesson)
-		if err != nil {
-			http.Error(w, "Error encoding lesson", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(*serverLesson)
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -276,11 +252,7 @@ func LessonGetHandlerV2(lessonService service_logic.ILessonService) http.Handler
 			return
 		}
 		serverLesson := types.MapperLessonServiceToServerV2(lesson)
-		err = json.NewEncoder(w).Encode(serverLesson)
-		if err != nil {
-			http.Error(w, "Error encoding lesson", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverLesson)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -317,11 +289,7 @@ func LessonPatchHandlerV2(lessonService service_logic.ILessonService) http.Handl
 			http.Error(w, "Lesson not found", http.StatusNotFound)
 			return
 		}
-		err = json.NewEncoder(w).Encode(types.MapperLessonServiceToServerV2(lesson))
-		if err != nil {
-			http.Error(w, "Error encoding lesson", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(types.MapperLessonServiceToServerV2(lesson))
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -381,11 +349,7 @@ func ContractReviewsListHandlerV2(reviewService service_logic.IReviewService, co
 		for i, review := range reviews {
 			serverReviews[i] = *types.MapperReviewServiceToServerV2(&review)
 		}
-		err = json.NewEncoder(w).Encode(serverReviews)
-		if err != nil {
-			http.Error(w, "Error encoding reviews", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverReviews)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -416,20 +380,19 @@ func ContractReviewCreateHandlerV2(reviewService service_logic.IReviewService, c
 		}
 		review := types.MapperReviewCreateV2ServerToService(&req, contractID, contract.ClientID, contract.RepetitorID)
 		reviewID := int64(0)
-		switch req.SenderID {
-		case contract.ClientID:
+		if req.SenderID == contract.ClientID {
 			reviewID, err = contractService.CreateContractReviewClient(contractID, *review)
 			if err != nil {
 				http.Error(w, "Error creating review", http.StatusBadRequest)
 				return
 			}
-		case contract.RepetitorID:
+		} else if req.SenderID == contract.RepetitorID {
 			reviewID, err = contractService.CreateContractReviewRepetitor(contractID, *review)
 			if err != nil {
 				http.Error(w, "Error creating review", http.StatusBadRequest)
 				return
 			}
-		default:
+		} else {
 			http.Error(w, "Invalid sender ID", http.StatusBadRequest)
 			return
 		}
@@ -442,11 +405,7 @@ func ContractReviewCreateHandlerV2(reviewService service_logic.IReviewService, c
 			Text:       review.Comment,
 			CreatedAt:  review.CreatedAt,
 		}
-		err = json.NewEncoder(w).Encode(reviewV2)
-		if err != nil {
-			http.Error(w, "Error encoding review", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(reviewV2)
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -485,11 +444,7 @@ func ContractTransactionsListHandlerV2(transactionService service_logic.ITransac
 		for i, transaction := range transactions {
 			serverTransactions[i] = *types.MapperTransactionServiceToServerV2(&transaction)
 		}
-		err = json.NewEncoder(w).Encode(serverTransactions)
-		if err != nil {
-			http.Error(w, "Error encoding transactions", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverTransactions)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -526,11 +481,7 @@ func ContractTransactionCreateHandlerV2(transactionService service_logic.ITransa
 		}
 		serverTx := types.MapperTransactionServiceToServerV2(transaction)
 		w.WriteHeader(http.StatusCreated)
-		err = json.NewEncoder(w).Encode(*serverTx)
-		if err != nil {
-			http.Error(w, "Error encoding transaction", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(*serverTx)
 	}
 }
 
@@ -542,6 +493,7 @@ func TransactionApproveHandlerV2(transactionService service_logic.ITransactionSe
 			http.Error(w, "Invalid transaction ID", http.StatusBadRequest)
 			return
 		}
+		// Existence check
 		if _, err := transactionService.GetTransaction(transactionID); err != nil {
 			http.Error(w, "Transaction not found", http.StatusNotFound)
 			return
@@ -555,11 +507,7 @@ func TransactionApproveHandlerV2(transactionService service_logic.ITransactionSe
 			http.Error(w, "Transaction not found", http.StatusNotFound)
 			return
 		}
-		err = json.NewEncoder(w).Encode(types.MapperTransactionServiceToServerV2(tx))
-		if err != nil {
-			http.Error(w, "Error encoding transaction", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(types.MapperTransactionServiceToServerV2(tx))
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -602,11 +550,7 @@ func ContractGetContractHandler(contractService service_logic.IContractService, 
 		}
 		serverContract := types.MapperContractServiceToServer(contract)
 		logger.Printf("Contract retrieved: %v", serverContract)
-		err = json.NewEncoder(w).Encode(serverContract)
-		if err != nil {
-			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContract)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -635,11 +579,7 @@ func ContractGetReviewHandler(reviewService service_logic.IReviewService, logger
 		}
 		serverReview := types.MapperReviewServiceToServer(review)
 		logger.Printf("Review retrieved: %v", serverReview)
-		err = json.NewEncoder(w).Encode(serverReview)
-		if err != nil {
-			http.Error(w, "Error encoding review", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverReview)
 	}
 }
 
@@ -668,11 +608,7 @@ func ContractAddLessonHandler(lessonService service_logic.ILessonService, logger
 			return
 		}
 		logger.Printf("Lesson created with ID: %v", lessonID)
-		err = json.NewEncoder(w).Encode(lessonID)
-		if err != nil {
-			http.Error(w, "Error encoding lesson ID", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(lessonID)
 	}
 }
 
@@ -719,11 +655,7 @@ func ContractGetLessonsHandler(lessonService service_logic.ILessonService, logge
 			serverLessons[i] = *types.MapperLessonServiceToServer(&lesson)
 		}
 		logger.Printf("Lessons retrieved: %v", serverLessons)
-		err = json.NewEncoder(w).Encode(serverLessons)
-		if err != nil {
-			http.Error(w, "Error encoding lessons", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverLessons)
 		w.WriteHeader(http.StatusOK)
 	}
 }

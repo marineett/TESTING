@@ -97,7 +97,7 @@ const (
 	ADMIN_API_V2        = API_V2 + "admin/"
 	MODERATOR_API_V2    = API_V2 + "moderator/"
 	CLIENT_API_V2       = API_V2 + "client/"
-	REGISTRATION_API_V2 = API_V2 + "registration/"
+	REGISTRATION_API_V2 = API_V2 + "registration"
 	AUTH_API_V2         = API_V2 + "auth/"
 	CONTRACT_API_V2     = API_V2 + "contract/"
 	CHAT_API_V2         = API_V2 + "chat/"
@@ -105,8 +105,10 @@ const (
 )
 
 const (
-	AUTH_REGISTRATION = AUTH_API_V2 + "registration"
-	AUTH_LOGIN_V2     = AUTH_API_V2 + "login"
+	AUTH_REGISTRATION   = AUTH_API_V2 + "registration"
+	AUTH_LOGIN_V2       = AUTH_API_V2 + "login"
+	APPLY_TOKEN_API_V2  = API_V2 + "apply_token"
+	UPDATE_TOKEN_API_V2 = API_V2 + "update_token"
 )
 
 const (

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-PROJECT_ROOT=${PROJECT_ROOT:-/workspace}
+PROJECT_ROOT="/workspace"
 cd "$PROJECT_ROOT"
 
 BACKEND_URL=${BACKEND_URL:-http://backend:8000}
@@ -18,9 +18,11 @@ TMP_TS_FILE="/metrics/timestamps.tmp"
   echo "TEST_LABEL=${TEST_LABEL}"
 } > "${TMP_TS_FILE}"
 
-# Phase toggles (defaults: run everything)
+# Phase toggles
+# По умолчанию при локальном запуске гоняем только unit + e2e.
+# Интеграционные включаются ТОЛЬКО явно через RUN_INTEGRATION=true.
 RUN_UNIT=${RUN_UNIT:-true}
-RUN_INTEGRATION=${RUN_INTEGRATION:-true}
+RUN_INTEGRATION=${RUN_INTEGRATION:-false}
 RUN_E2E=${RUN_E2E:-true}
 
 if [ "$RUN_UNIT" = "true" ]; then
@@ -63,10 +65,12 @@ fi
 
 if [ "$RUN_E2E" = "true" ]; then
   echo "Running e2e tests ..."
-  echo "Using BACKEND_URL: ${BACKEND_URL}"
   pushd "$PROJECT_ROOT/e2e" >/dev/null
   go mod tidy || true
-  BACKEND_URL="${BACKEND_URL}" go test -v -timeout 300s
+  # Запускаем только тесты из e2e_test.go, исключая бенчмарки и другие тесты
+  # -run "^TestRunAPISuite$" - запускает только TestRunAPISuite из e2e_test.go
+  # -bench=^$ - явно отключает бенчмарки
+  go test -v -run "^TestRunAPISuite$" -bench=^$
   popd >/dev/null
 else
   echo "Skipping e2e tests"

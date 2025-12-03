@@ -54,9 +54,7 @@ func (r *SqlAdminRepository) InsertAdmin(admin types.DBAdminData, personalData t
 	if err != nil {
 		return 0, err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 	personalData.ID, err = r.personalDataRepository.InsertPersonalDataInSeq(tx, personalData)
 	if err != nil {
 		return 0, err
@@ -74,6 +72,8 @@ func (r *SqlAdminRepository) InsertAdmin(admin types.DBAdminData, personalData t
 		UserType: types.Admin,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err

@@ -72,12 +72,7 @@ func (r *SqlMessageRepository) GetMessages(chatID int64, from int64, size int64)
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 
 	messages := []types.DBMessage{}
 	for rows.Next() {

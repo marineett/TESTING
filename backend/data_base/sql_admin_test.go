@@ -2,7 +2,6 @@ package data_base
 
 import (
 	tu "data_base_project/test_database_utility"
-	"data_base_project/types"
 	"database/sql"
 	"fmt"
 	"testing"
@@ -39,12 +38,7 @@ func TestCreateSqlAdminRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	adminRepository := CreateSqlAdminRepository(db, "personal_data", "users", "admins", "auth", "sequence")
 	if adminRepository == nil {
 		t.Fatalf("Error creating admin repository: %v", err)
@@ -56,18 +50,13 @@ func TestInsertAdminCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up admin tables: %v", err)
 	}
 	adminRepository := CreateSqlAdminRepository(db, "personal_data", "users", "admins", "auth", "sequence")
-	_, err = adminRepository.InsertAdmin(tu.TestAdmin, tu.TestPD, tu.TestAuthData)
+	adminRepository.InsertAdmin(tu.TestAdmin, tu.TestPD, tu.TestAuthData)
 	if err != nil {
 		t.Fatalf("Error inserting admin: %v", err)
 	}
@@ -77,12 +66,7 @@ func TestGetAdminCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up admin tables: %v", err)
@@ -112,12 +96,7 @@ func TestGetAdminIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up admin tables: %v", err)
@@ -129,35 +108,12 @@ func TestGetAdminIncorrect(t *testing.T) {
 	}
 }
 
-func CheckAdmin(
-	t *testing.T,
-	admin *types.DBAdminData,
-	adminID int64,
-	salary int64,
-	departmentID int64,
-) {
-	if admin.ID != adminID {
-		t.Fatalf("Admin not found: %v", admin)
-	}
-	if admin.Salary != salary {
-		t.Fatalf("Admin not found: %v", admin)
-	}
-	if admin.DepartmentID != departmentID {
-		t.Fatalf("Admin not found: %v", admin)
-	}
-}
-
 func TestUpdateAdminPersonalDataCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up admin tables: %v", err)
@@ -178,7 +134,15 @@ func TestUpdateAdminPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting admin: %v", err)
 	}
-	CheckAdmin(t, admin, adminID, tu.TestSalary, 0)
+	if admin.ID != adminID {
+		t.Fatalf("Admin not found: %v", admin)
+	}
+	if admin.Salary != tu.TestSalary {
+		t.Fatalf("Admin not found: %v", admin)
+	}
+	if admin.DepartmentID != 0 {
+		t.Fatalf("Admin not found: %v", admin)
+	}
 }
 
 func TestUpdateAdminPersonalDataIncorrect(t *testing.T) {
@@ -186,12 +150,7 @@ func TestUpdateAdminPersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -208,12 +167,7 @@ func TestUpdateAdminPasswordCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -234,12 +188,7 @@ func TestUpdateAdminPasswordIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -256,12 +205,7 @@ func TestUpdateAdminDepartmentCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -295,12 +239,7 @@ func TestUpdateAdminDepartmentIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -317,12 +256,7 @@ func TestUpdateAdminSalaryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -344,7 +278,15 @@ func TestUpdateAdminSalaryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting admin: %v", err)
 	}
-	CheckAdmin(t, admin, adminID, 100000, 0)
+	if admin.ID != adminID {
+		t.Fatalf("Admin not found: %v", admin)
+	}
+	if admin.Salary != 100000 {
+		t.Fatalf("Admin not found: %v", admin)
+	}
+	if admin.DepartmentID != 0 {
+		t.Fatalf("Admin not found: %v", admin)
+	}
 }
 
 func TestUpdateAdminSalaryIncorrect(t *testing.T) {
@@ -352,12 +294,7 @@ func TestUpdateAdminSalaryIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupAdminTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)

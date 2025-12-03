@@ -40,12 +40,7 @@ func TestCreateSqlModeratorRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	ModeratorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
 	if ModeratorRepository == nil {
 		t.Fatalf("Error creating Moderator repository: %v", err)
@@ -57,18 +52,13 @@ func TestInsertModeratorCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Moderator tables: %v", err)
 	}
 	ModeratorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
-	_, err = ModeratorRepository.InsertModerator(tu.TestModeratorData, tu.TestPD, tu.TestAuthData)
+	ModeratorRepository.InsertModerator(tu.TestModeratorData, tu.TestPD, tu.TestAuthData)
 	if err != nil {
 		t.Fatalf("Error inserting Moderator: %v", err)
 	}
@@ -78,12 +68,7 @@ func TestGetModeratorCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Moderator tables: %v", err)
@@ -110,12 +95,7 @@ func TestGetModeratorIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Moderator tables: %v", err)
@@ -132,12 +112,7 @@ func TestUpdateModeratorPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Moderator tables: %v", err)
@@ -184,12 +159,7 @@ func TestUpdateModeratorPersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -206,12 +176,7 @@ func TestUpdateModeratorPasswordCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -232,12 +197,7 @@ func TestUpdateModeratorPasswordIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -253,12 +213,7 @@ func TestUpdateModeratorSalaryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -293,12 +248,7 @@ func TestUpdateModeratorSalaryIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -315,12 +265,7 @@ func TestGetModeratorsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupModeratorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up Moderator tables: %v", err)
@@ -348,12 +293,7 @@ func TestGetModeratorsIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	ModeratorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
 	_, err = ModeratorRepository.GetModerators()
 	if err == nil {

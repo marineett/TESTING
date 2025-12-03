@@ -142,12 +142,7 @@ func (r *SqlTransactionRepository) GetTransactionsList(userId int64, from int64,
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 
 	var transactions []types.DBTransaction
 	for rows.Next() {
@@ -162,8 +157,8 @@ func (r *SqlTransactionRepository) GetTransactionsList(userId int64, from int64,
 }
 
 func (r *SqlTransactionRepository) InsertPendingContractPaymentTransaction(
-	transactionPendingContractPayment types.DBPendingContractPaymentTransaction,
-	transaction types.DBTransaction,
+  transactionPendingContractPayment types.DBPendingContractPaymentTransaction,
+  transaction types.DBTransaction,
 ) (int64, error) {
 	var id int64
 	err := r.db.QueryRow("SELECT nextval('" + r.sequenceName + "')").Scan(&id)
@@ -212,12 +207,7 @@ func (r *SqlTransactionRepository) GetContractTransactionsList(contract_id int64
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 
 	var transactions []types.DBTransaction
 	for rows.Next() {

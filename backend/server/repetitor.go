@@ -33,11 +33,7 @@ func RepetitorGetHandlerV2(repetitorService service_logic.IRepetitorService) htt
 			return
 		}
 		serverRepetitor := types.MapperRepetitorProfileServiceToServerV2(repetitor)
-		err = json.NewEncoder(w).Encode(serverRepetitor)
-		if err != nil {
-			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverRepetitor)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -71,11 +67,7 @@ func RepetitorAssignContractHandlerV2(contractService service_logic.IContractSer
 			return
 		}
 		resp := types.MapperContractServiceToServerV2(contract)
-		err = json.NewEncoder(w).Encode(resp)
-		if err != nil {
-			http.Error(w, "Error encoding contract", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(resp)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -141,11 +133,7 @@ func RepetitorGetProfileHandler(repetitorService service_logic.IRepetitorService
 		logger.Printf("Repetitor retrieved: %v", repetitor)
 		serverRepetitor := types.MapperRepetitorProfileServiceToServer(repetitor)
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverRepetitor)
-		if err != nil {
-			http.Error(w, "Error encoding repetitor", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverRepetitor)
 	}
 }
 
@@ -200,11 +188,7 @@ func RepetitorGetContractsHandler(contractService service_logic.IContractService
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverContracts)
-		if err != nil {
-			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContracts)
 	}
 }
 
@@ -255,11 +239,7 @@ func RepetitorGetAvailableContractsHandler(
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverContracts)
-		if err != nil {
-			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContracts)
 	}
 }
 

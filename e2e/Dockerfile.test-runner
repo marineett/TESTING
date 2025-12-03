@@ -25,7 +25,8 @@ WORKDIR /workspace
 
 COPY . /workspace
 
-RUN cd /workspace/backend && go mod download && \
+RUN cd /workspace && go work sync && \
+    cd /workspace/backend && go mod download && \
     cd /workspace/e2e && go mod tidy || true
 
 COPY e2e/run-tests.sh /usr/local/bin/run-tests.sh

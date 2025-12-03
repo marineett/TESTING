@@ -2,7 +2,6 @@ package data_base
 
 import (
 	tu "data_base_project/test_database_utility"
-	"data_base_project/types"
 	"database/sql"
 	"fmt"
 	"testing"
@@ -47,12 +46,7 @@ func TestCreateSqlRepetitorRepositoryCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	RepetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
 	if RepetitorRepository == nil {
 		t.Fatalf("Error creating repetitor repository: %v", err)
@@ -64,18 +58,13 @@ func TestInsertRepetitorCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
 	}
 	RepetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
-	_, err = RepetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
+	RepetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
 	if err != nil {
 		t.Fatalf("Error inserting Repetitor: %v", err)
 	}
@@ -85,12 +74,7 @@ func TestGetRepetitorCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -120,12 +104,7 @@ func TestGetRepetitorIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -137,35 +116,12 @@ func TestGetRepetitorIncorrect(t *testing.T) {
 	}
 }
 
-func CheckRepetitor(
-	t *testing.T,
-	Repetitor *types.DBRepetitorData,
-	RepetitorID int64,
-	SummaryRating float64,
-	ReviewsCount int64,
-) {
-	if Repetitor.ID != RepetitorID {
-		t.Fatalf("Repetitor not found: %v", Repetitor)
-	}
-	if Repetitor.SummaryRating != SummaryRating {
-		t.Fatalf("Repetitor not found: %v", Repetitor)
-	}
-	if Repetitor.ReviewsCount != ReviewsCount {
-		t.Fatalf("Repetitor not found: %v", Repetitor)
-	}
-}
-
 func TestUpdateRepetitorPersonalDataCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)
@@ -186,7 +142,15 @@ func TestUpdateRepetitorPersonalDataCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting repetitor: %v", err)
 	}
-	CheckRepetitor(t, repetitor, repetitorID, tu.TestRepetitor.SummaryRating, tu.TestRepetitor.ReviewsCount)
+	if repetitor.ID != repetitorID {
+		t.Fatalf("repetitor not found: %v", repetitor)
+	}
+	if repetitor.SummaryRating != tu.TestRepetitor.SummaryRating {
+		t.Fatalf("repetitor not found: %v", repetitor)
+	}
+	if repetitor.ReviewsCount != tu.TestRepetitor.ReviewsCount {
+		t.Fatalf("repetitor not found: %v", repetitor)
+	}
 }
 
 func TestUpdateRepetitorPersonalDataIncorrect(t *testing.T) {
@@ -194,12 +158,7 @@ func TestUpdateRepetitorPersonalDataIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -216,12 +175,7 @@ func TestUpdateRepetitorPasswordCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -242,12 +196,7 @@ func TestUpdateRepetitorPasswordIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error creating sequence: %v", err)
@@ -264,12 +213,7 @@ func TestGetRepetitorsIdsCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupRepetitorTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up repetitor tables: %v", err)

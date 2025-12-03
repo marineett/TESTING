@@ -118,12 +118,7 @@ func (r *SqlReviewRepository) GetReviewsByRepetitorID(repetitorID int64, from in
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	reviews := []types.DBReview{}
 	for rows.Next() {
 		var review types.DBReview
@@ -147,12 +142,7 @@ func (r *SqlReviewRepository) GetReviewsByClientID(clientID int64, from int64, s
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	reviews := []types.DBReview{}
 	for rows.Next() {
 		var review types.DBReview

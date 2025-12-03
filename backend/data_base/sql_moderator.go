@@ -55,9 +55,7 @@ func (r *SqlModeratorRepository) InsertModerator(moderator types.DBModeratorData
 	if err != nil {
 		return 0, err
 	}
-	defer func() {
-		_ = tx.Rollback()
-	}()
+	defer tx.Rollback()
 	personalData.ID, err = r.personalDataRepository.InsertPersonalDataInSeq(tx, personalData)
 	if err != nil {
 		return 0, err
@@ -75,6 +73,8 @@ func (r *SqlModeratorRepository) InsertModerator(moderator types.DBModeratorData
 		UserType: types.Moderator,
 		Login:    auth.Login,
 		Password: auth.Password,
+		Email:    personalData.Email,
+		Token:    auth.Token,
 	})
 	if err != nil {
 		return 0, err
@@ -147,12 +147,7 @@ func (r *SqlModeratorRepository) GetModerators() ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	var ids []int64
 	for rows.Next() {
 		var id int64

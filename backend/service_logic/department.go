@@ -191,6 +191,18 @@ func (s *DepartmentService) GetDepartmentsByHeadIdWithModerators(headID int64) (
 			if err != nil {
 				return nil, err
 			}
+			departmentsIds, err := s.departmentRepository.GetUserDepartmentsIDs(moderator)
+			if err != nil {
+				return nil, err
+			}
+			departments := make([]string, len(departmentsIds))
+			for _, departmentId := range departmentsIds {
+				department, err := s.departmentRepository.GetDepartment(departmentId)
+				departments = append(departments, department.Name)
+				if err != nil {
+					return nil, err
+				}
+			}
 			serverDepartments[i].Moderators = append(serverDepartments[i].Moderators, types.ServerModeratorProfileWithIDV2{
 				ID: moderator,
 				Moderator: types.ServerModeratorProfile{

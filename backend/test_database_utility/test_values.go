@@ -39,10 +39,12 @@ var (
 		Password: "test2",
 	}
 	TestAuthInfo = types.DBAuthInfo{
-		UserID:   1,
-		UserType: types.Admin,
-		Login:    "test1",
-		Password: "test2",
+		UserID:            1,
+		UserType:          types.Admin,
+		Login:             "test1",
+		Password:          "test2",
+		Email:             "test1@example.com",
+		DeniedAccessCount: 0,
 	}
 	TestSalary        = int64(100000)
 	TestInitAdminData = types.DBAdminData{
@@ -106,8 +108,6 @@ var (
 		Title:       "Test Resume",
 		Description: "Test Description",
 		Prices:      map[string]int{"Test": 100},
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
 	}
 	TestResumePrices = map[string]int{"Test": 100}
 )

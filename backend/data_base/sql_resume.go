@@ -74,7 +74,7 @@ func (r *SqlResumeRepository) InsertResumeInSeq(tx *sql.Tx, resume types.DBResum
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.resumeTable + ` (id, repetitor_id, title, description, prices, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)
+	INSERT INTO ` + r.resumeTable + ` (repetitor_id, title, description, prices, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)
 	`
 	pricesJSON, err := json.Marshal(resume.Prices)
 	if err != nil {

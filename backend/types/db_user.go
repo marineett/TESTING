@@ -35,21 +35,29 @@ type DBUserData struct {
 }
 
 type DBAuthData struct {
-	Login    string `json:"login"`
-	Password string `json:"password"`
+	Login             string `json:"login"`
+	Password          string `json:"password"`
+	Email             string `json:"email"`
+	Token             string `json:"token"`
+	DeniedAccessCount int    `json:"denied_access_count"`
 }
 
 type DBAuthVerdict struct {
-	UserID   int64    `json:"user_id"`
-	UserType UserType `json:"user_type"`
+	UserID            int64    `json:"user_id"`
+	UserType          UserType `json:"user_type"`
+	Token             string   `json:"token"`
+	DeniedAccessCount int      `json:"denied_access_count"`
 }
 
 type DBAuthInfo struct {
-	ID       int64    `json:"id"`
-	UserID   int64    `json:"user_id"`
-	UserType UserType `json:"user_type"`
-	Login    string   `json:"login"`
-	Password string   `json:"password"`
+	ID                int64    `json:"id"`
+	UserID            int64    `json:"user_id"`
+	UserType          UserType `json:"user_type"`
+	Login             string   `json:"login"`
+	Password          string   `json:"password"`
+	Email             string   `json:"email"`
+	Token             string   `json:"token"`
+	DeniedAccessCount int      `json:"denied_access_count"`
 }
 
 type DBPassportData struct {

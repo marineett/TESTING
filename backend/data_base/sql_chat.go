@@ -89,12 +89,7 @@ func (r *SqlChatRepository) GetChatListByClientID(clientID int64, from int64, si
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat
@@ -115,12 +110,7 @@ func (r *SqlChatRepository) GetChatListByRepetitorID(repetitorID int64, from int
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat
@@ -141,12 +131,7 @@ func (r *SqlChatRepository) GetChatListByModeratorID(moderatorID int64, from int
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = rows.Close()
-		if err != nil {
-			fmt.Printf("Error closing rows: %v\n", err)
-		}
-	}()
+	defer rows.Close()
 	chats := make([]types.DBChat, 0)
 	for rows.Next() {
 		var chat types.DBChat

@@ -1,5 +1,13 @@
 version: 2
 
+linters-settings:
+  gocyclo:
+    min-complexity: 15
+
+linters:
+  enable:
+    - gocyclo
+
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0

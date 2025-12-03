@@ -50,12 +50,7 @@ func TestCreateSqlMessageTable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupMessagesTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up messages tables: %v", err)
@@ -71,12 +66,7 @@ func TestInsertMessageCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupMessagesTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up messages tables: %v", err)
@@ -114,12 +104,7 @@ func TestInsertMessageIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupMessagesTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up messages tables: %v", err)
@@ -131,21 +116,13 @@ func TestInsertMessageIncorrect(t *testing.T) {
 	}
 }
 
-func CheckMessagesLength(t *testing.T, messages []types.DBMessage, length int) {
-	if len(messages) != length {
-		t.Fatalf("Messages length is not correct: %v", messages)
-	}
-}
-
 func TestGetMessagesCorrect(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
-	err := setupMessagesTables(db)
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupMessagesTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up messages tables: %v", err)
 	}
@@ -154,7 +131,9 @@ func TestGetMessagesCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting messages: %v", err)
 	}
-	CheckMessagesLength(t, messages, 0)
+	if len(messages) != 0 {
+		t.Fatalf("Messages not found: %v", messages)
+	}
 	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
 	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
 	if err != nil {
@@ -192,9 +171,20 @@ func TestGetMessagesCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting message: %v", err)
 	}
+	_, err = messageRepository.InsertMessage(types.DBMessage{
+		ChatID:    chatID,
+		SenderID:  clientID,
+		Content:   "Hello4",
+		CreatedAt: time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting message: %v", err)
+	}
 	messages, err = messageRepository.GetMessages(chatID, 0, 10)
 	if err != nil {
 		t.Fatalf("Error getting messages: %v", err)
 	}
-	CheckMessagesLength(t, messages, 2)
+	if len(messages) != 3 {
+		t.Fatalf("Messages are not in correct amount: %v", messages)
+	}
 }

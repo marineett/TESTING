@@ -50,12 +50,7 @@ func TestCreateSqlChatTable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -71,12 +66,7 @@ func TestInsertChatCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -103,39 +93,12 @@ func TestInsertChatCorrect(t *testing.T) {
 	}
 }
 
-func CheckChat(
-	t *testing.T,
-	Chat *types.DBChat,
-	ChatID int64,
-	ClientID int64,
-	ModeratorID int64,
-	RepetitorID int64,
-) {
-	if Chat.ID != ChatID {
-		t.Fatalf("Chat id not correct: %v", Chat)
-	}
-	if Chat.ClientID != ClientID {
-		t.Fatalf("Chat client id not correct: %v", Chat)
-	}
-	if Chat.ModeratorID != ModeratorID {
-		t.Fatalf("Chat moderator id not correct: %v", Chat)
-	}
-	if Chat.RepetitorID != RepetitorID {
-		t.Fatalf("Chat repetitor id not correct: %v", Chat)
-	}
-}
-
 func TestGetChatCorrect(t *testing.T) {
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -163,7 +126,18 @@ func TestGetChatCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting chat: %v", err)
 	}
-	CheckChat(t, chat, chatID, clientID, moderatorID, 0)
+	if chat.ID != chatID {
+		t.Fatalf("Chat id not correct: %v", chat)
+	}
+	if chat.ClientID != clientID {
+		t.Fatalf("Chat client id not correct: %v", chat)
+	}
+	if chat.ModeratorID != moderatorID {
+		t.Fatalf("Chat moderator id not correct: %v", chat)
+	}
+	if chat.RepetitorID != 0 {
+		t.Fatalf("Chat repetitor id not correct: %v", chat)
+	}
 }
 
 func TestGetChatIncorrect(t *testing.T) {
@@ -171,12 +145,7 @@ func TestGetChatIncorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -188,9 +157,210 @@ func TestGetChatIncorrect(t *testing.T) {
 	}
 }
 
-func CheckChatsLength(t *testing.T, chats []types.DBChat, length int) {
-	if len(chats) != length {
-		t.Fatalf("Chats not updated: %v", chats)
+func TestGetChatListByClientIDCorrect(t *testing.T) {
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupChatTables(db)
+	if err != nil {
+		t.Fatalf("Error setting up chat tables: %v", err)
+	}
+	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
+	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting client: %v", err)
+	}
+	repetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
+	repetitorID, err := repetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	moderatorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
+	moderatorID, err := moderatorRepository.InsertModerator(tu.TestModeratorData, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	chatRepository := CreateSqlChatRepository(db, "chat", "sequence")
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		ModeratorID: moderatorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ModeratorID: moderatorID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	chatList, err := chatRepository.GetChatListByClientID(clientID, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not correct: %v", chatList)
+	}
+	if chatList[0].ClientID != clientID || chatList[1].ClientID != clientID {
+		t.Fatalf("Client id not updated: %v", chatList)
+	}
+	chatList, err = chatRepository.GetChatListByClientID(clientID+1, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not correct: %v", chatList)
+	}
+}
+
+func TestGetChatListByModeratorIDCorrect(t *testing.T) {
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupChatTables(db)
+	if err != nil {
+		t.Fatalf("Error setting up chat tables: %v", err)
+	}
+	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
+	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting client: %v", err)
+	}
+	repetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
+	repetitorID, err := repetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	moderatorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
+	moderatorID, err := moderatorRepository.InsertModerator(tu.TestModeratorData, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	chatRepository := CreateSqlChatRepository(db, "chat", "sequence")
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		ModeratorID: moderatorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ModeratorID: moderatorID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	chatList, err := chatRepository.GetChatListByModeratorID(moderatorID, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not correct: %v", chatList)
+	}
+	if chatList[0].ModeratorID != moderatorID || chatList[1].ModeratorID != moderatorID {
+		t.Fatalf("Moderator id not updated: %v", chatList)
+	}
+	chatList, err = chatRepository.GetChatListByModeratorID(moderatorID+1, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not correct: %v", chatList)
+	}
+}
+
+func TestGetChatListByRepetitorIDCorrect(t *testing.T) {
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+	err = setupChatTables(db)
+	if err != nil {
+		t.Fatalf("Error setting up chat tables: %v", err)
+	}
+	clientRepository := CreateSqlClientRepository(db, "personal_data", "users", "clients", "auth", "sequence")
+	clientID, err := clientRepository.InsertClient(tu.TestClient, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting client: %v", err)
+	}
+	repetitorRepository := CreateSqlRepetitorRepository(db, "personal_data", "users", "repetitors", "auth", "resume", "review", "sequence")
+	repetitorID, err := repetitorRepository.InsertRepetitor(tu.TestRepetitor, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	moderatorRepository := CreateSqlModeratorRepository(db, "personal_data", "users", "moderators", "auth", "sequence")
+	moderatorID, err := moderatorRepository.InsertModerator(tu.TestModeratorData, tu.TestPD, tu.TestAuthData)
+	if err != nil {
+		t.Fatalf("Error inserting repetitor: %v", err)
+	}
+	chatRepository := CreateSqlChatRepository(db, "chat", "sequence")
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		ModeratorID: moderatorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ClientID:    clientID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	_, err = chatRepository.InsertChat(types.DBChat{
+		ModeratorID: moderatorID,
+		RepetitorID: repetitorID,
+		CreatedAt:   time.Now(),
+	})
+	if err != nil {
+		t.Fatalf("Error inserting chat: %v", err)
+	}
+	chatList, err := chatRepository.GetChatListByRepetitorID(repetitorID, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 2 {
+		t.Fatalf("Chat list not correct: %v", chatList)
+	}
+	if chatList[0].RepetitorID != repetitorID || chatList[1].RepetitorID != repetitorID {
+		t.Fatalf("Repetitor id not updated: %v", chatList)
+	}
+	chatList, err = chatRepository.GetChatListByRepetitorID(repetitorID+1, 0, 10)
+	if err != nil {
+		t.Fatalf("Error getting chat list: %v", err)
+	}
+	if len(chatList) != 0 {
+		t.Fatalf("Chat list not correct: %v", chatList)
 	}
 }
 
@@ -199,12 +369,7 @@ func TestGetChatIdByCIDAndMIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -235,9 +400,12 @@ func TestGetChatIdByCIDAndMIDCorrect(t *testing.T) {
 	if chatID != insertedChatID {
 		t.Fatalf("Chat id not correct: %v", chatID)
 	}
-	_, err = chatRepository.GetChatIdByCIDAndMID(clientID+1, moderatorID)
+	chatID, err = chatRepository.GetChatIdByCIDAndMID(clientID+1, moderatorID)
 	if err != nil {
 		t.Fatalf("Error getting chat id: %v", err)
+	}
+	if chatID != 0 {
+		t.Fatalf("Chat id is not 0: %v", chatID)
 	}
 }
 
@@ -246,12 +414,7 @@ func TestGetChatIdByCIDAndRIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -282,9 +445,12 @@ func TestGetChatIdByCIDAndRIDCorrect(t *testing.T) {
 	if chatID != insertedChatID {
 		t.Fatalf("Chat id not correct: %v", chatID)
 	}
-	_, err = chatRepository.GetChatIdByCIDAndRID(clientID+1, repetitorID)
+	chatID, err = chatRepository.GetChatIdByCIDAndRID(clientID+1, repetitorID)
 	if err != nil {
 		t.Fatalf("Error getting chat id: %v", err)
+	}
+	if chatID != 0 {
+		t.Fatalf("Chat id is not 0: %v", chatID)
 	}
 }
 
@@ -293,12 +459,7 @@ func TestGetChatIdByMIDAndRIDCorrect(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	err = setupChatTables(db)
 	if err != nil {
 		t.Fatalf("Error setting up chat tables: %v", err)
@@ -329,8 +490,11 @@ func TestGetChatIdByMIDAndRIDCorrect(t *testing.T) {
 	if chatID != insertedChatID {
 		t.Fatalf("Chat id not correct: %v", chatID)
 	}
-	_, err = chatRepository.GetChatIdByMIDAndRID(moderatorID+1, repetitorID)
+	chatID, err = chatRepository.GetChatIdByMIDAndRID(moderatorID+1, repetitorID)
 	if err != nil {
 		t.Fatalf("Error getting chat id: %v", err)
+	}
+	if chatID != 0 {
+		t.Fatalf("Chat id is not 0: %v", chatID)
 	}
 }

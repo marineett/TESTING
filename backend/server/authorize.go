@@ -90,11 +90,7 @@ func AuthorizeHandler(authService service_logic.IAuthService, logger *log.Logger
 			return
 		}
 		serverVerdict := types.MapperVerdictServiceToServer(&verdict)
-		err = json.NewEncoder(w).Encode(serverVerdict)
-		if err != nil {
-			http.Error(w, "Error encoding verdict", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverVerdict)
 		logger.Printf("Authorized: %v", verdict)
 	}
 }

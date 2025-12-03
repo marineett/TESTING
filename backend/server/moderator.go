@@ -58,11 +58,7 @@ func ModeratorsListHandlerV2(moderatorService service_logic.IModeratorService) h
 		for i, moderator := range moderators {
 			serverModerators[i] = *types.MapperModeratorProfileWithIDServiceToServer(moderator)
 		}
-		err = json.NewEncoder(w).Encode(serverModerators)
-		if err != nil {
-			http.Error(w, "Error encoding moderators", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverModerators)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -103,11 +99,7 @@ func AdminGetModeratorsHandler(moderatorService service_logic.IModeratorService,
 			serverModerators[i] = *types.MapperModeratorProfileWithIDServiceToServer(moderator)
 		}
 		logger.Printf("Got moderators: %v", serverModerators)
-		err = json.NewEncoder(w).Encode(serverModerators)
-		if err != nil {
-			http.Error(w, "Error encoding moderators", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverModerators)
 	}
 }
 
@@ -174,11 +166,7 @@ func ModeratorGetProfileHandler(moderatorService service_logic.IModeratorService
 		serverModerator := types.MapperModeratorProfileServiceToServer(moderator)
 		logger.Printf("Moderator retrieved: %v", serverModerator)
 		w.WriteHeader(http.StatusOK)
-		err = json.NewEncoder(w).Encode(serverModerator)
-		if err != nil {
-			http.Error(w, "Error encoding moderator", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverModerator)
 	}
 }
 
@@ -198,11 +186,7 @@ func ModeratorGetTransactionsToApproveHandler(transactionService service_logic.I
 		}
 		serverTransaction := types.ServerPendingContractPaymentTransaction(*transaction)
 		logger.Printf("Transaction retrieved: %v", serverTransaction)
-		err = json.NewEncoder(w).Encode(serverTransaction)
-		if err != nil {
-			http.Error(w, "Error encoding transaction", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverTransaction)
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -287,11 +271,7 @@ func ModeratorGetContractsHandler(contractService service_logic.IContractService
 			serverContracts[i] = *types.MapperContractServiceToServer(&contract)
 		}
 		logger.Printf("Contracts retrieved: %v", serverContracts)
-		err = json.NewEncoder(w).Encode(serverContracts)
-		if err != nil {
-			http.Error(w, "Error encoding contracts", http.StatusInternalServerError)
-			return
-		}
+		json.NewEncoder(w).Encode(serverContracts)
 		w.WriteHeader(http.StatusOK)
 	}
 }

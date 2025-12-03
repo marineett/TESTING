@@ -23,7 +23,7 @@ func TestCreateModeratorCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -61,11 +61,7 @@ func TestCreateModeratorCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -80,7 +76,7 @@ func TestCreateModeratorCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -102,7 +98,7 @@ func TestGetModeratorDataCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -126,11 +122,7 @@ func TestGetModeratorDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -146,7 +138,7 @@ func TestGetModeratorDataCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -188,7 +180,7 @@ func TestGetModeratorDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -203,11 +195,7 @@ func TestGetModeratorDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -223,7 +211,7 @@ func TestGetModeratorDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -256,10 +244,7 @@ func TestGetModeratorProfileCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
-	if err != nil {
-		t.Fatalf("Error creating moderator: %v", err)
-	}
+	moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	moderatorProfile, err := moderatorService.GetModeratorProfile(1)
 	if err != nil {
 		t.Fatalf("Error getting moderator profile: %v", err)
@@ -284,44 +269,12 @@ func TestGetModeratorProfileCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckModeratorProfile(
-	t *testing.T,
-	moderatorProfile *types.ServiceModeratorProfile,
-	salary int64,
-	firstName string,
-	lastName string,
-	middleName string,
-	telephoneNumber string,
-	email string,
-) {
-	if moderatorProfile.Salary != salary {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-	if moderatorProfile.FirstName != firstName {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-	if moderatorProfile.LastName != lastName {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-	if moderatorProfile.MiddleName != middleName {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-	if moderatorProfile.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-	if moderatorProfile.Email != email {
-		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
-	}
-}
-
 func TestGetModeratorProfileCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -337,7 +290,7 @@ func TestGetModeratorProfileCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -352,16 +305,24 @@ func TestGetModeratorProfileCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting moderator profile: %v", err)
 	}
-	CheckModeratorProfile(
-		t,
-		moderatorProfile,
-		0,
-		tu.TestPD.FirstName,
-		tu.TestPD.LastName,
-		tu.TestPD.MiddleName,
-		tu.TestPD.TelephoneNumber,
-		tu.TestPD.Email,
-	)
+	if moderatorProfile.Salary != 0 {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
+	if moderatorProfile.FirstName != tu.TestPD.FirstName {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
+	if moderatorProfile.LastName != tu.TestPD.LastName {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
+	if moderatorProfile.MiddleName != tu.TestPD.MiddleName {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
+	if moderatorProfile.TelephoneNumber != tu.TestPD.TelephoneNumber {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
+	if moderatorProfile.Email != tu.TestPD.Email {
+		t.Fatalf("Moderator profile not updated: %v", moderatorProfile)
+	}
 }
 
 func TestGetModeratorProfileIncorrectLondon(t *testing.T) {
@@ -380,7 +341,7 @@ func TestGetModeratorProfileIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -395,11 +356,7 @@ func TestGetModeratorProfileIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -415,7 +372,7 @@ func TestGetModeratorProfileIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -448,7 +405,7 @@ func TestUpdateModeratorPersonalDataCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -484,40 +441,12 @@ func TestUpdateModeratorPersonalDataCorrectLondon(t *testing.T) {
 	}
 }
 
-func CheckDBPersonalData(
-	t *testing.T,
-	personalData *types.DBPersonalData,
-	firstName string,
-	lastName string,
-	middleName string,
-	telephoneNumber string,
-	email string,
-) {
-	if personalData.FirstName != firstName {
-		t.Fatalf("Moderator personal data not updated: %v", personalData)
-	}
-	if personalData.LastName != lastName {
-		t.Fatalf("Moderator personal data not updated: %v", personalData)
-	}
-	if personalData.MiddleName != middleName {
-		t.Fatalf("Moderator personal data not updated: %v", personalData)
-	}
-	if personalData.TelephoneNumber != telephoneNumber {
-		t.Fatalf("Moderator personal data not updated: %v", personalData)
-	}
-	if personalData.Email != email {
-		t.Fatalf("Moderator personal data not updated: %v", personalData)
-	}
-}
-
 func TestUpdateModeratorPersonalDataCorrectClassic(t *testing.T) {
-	db := SetupDatabase(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	db, err := sql.Open("duckdb", ":memory:")
+	if err != nil {
+		t.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -533,7 +462,7 @@ func TestUpdateModeratorPersonalDataCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -558,15 +487,21 @@ func TestUpdateModeratorPersonalDataCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting personal data: %v", err)
 	}
-	CheckDBPersonalData(
-		t,
-		personalData,
-		"Petr",
-		"Petrov",
-		"Petrovich",
-		"88005553536",
-		"test2@test.com",
-	)
+	if personalData.FirstName != "Petr" {
+		t.Fatalf("Moderator personal data not updated: %v", personalData)
+	}
+	if personalData.LastName != "Petrov" {
+		t.Fatalf("Moderator personal data not updated: %v", personalData)
+	}
+	if personalData.MiddleName != "Petrovich" {
+		t.Fatalf("Moderator personal data not updated: %v", personalData)
+	}
+	if personalData.TelephoneNumber != "88005553536" {
+		t.Fatalf("Moderator personal data not updated: %v", personalData)
+	}
+	if personalData.Email != "test2@test.com" {
+		t.Fatalf("Moderator personal data not updated: %v", personalData)
+	}
 }
 
 func TestUpdateModeratorPersonalDataIncorrectLondon(t *testing.T) {
@@ -585,7 +520,7 @@ func TestUpdateModeratorPersonalDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -606,11 +541,7 @@ func TestUpdateModeratorPersonalDataIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -626,7 +557,7 @@ func TestUpdateModeratorPersonalDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -665,7 +596,7 @@ func TestUpdateModeratorPasswordCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -688,11 +619,7 @@ func TestUpdateModeratorPasswordCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -708,7 +635,7 @@ func TestUpdateModeratorPasswordCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -748,7 +675,7 @@ func TestUpdateModeratorPasswordIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -763,11 +690,7 @@ func TestUpdateModeratorPasswordIncorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -783,7 +706,7 @@ func TestUpdateModeratorPasswordIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -820,7 +743,7 @@ func TestUpdateModeratorSalaryCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -843,11 +766,7 @@ func TestUpdateModeratorSalaryCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -863,7 +782,7 @@ func TestUpdateModeratorSalaryCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -903,7 +822,7 @@ func TestUpdateModeratorSalaryIncorrectIdLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -918,11 +837,7 @@ func TestUpdateModeratorSalaryIncorrectIdClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -938,7 +853,7 @@ func TestUpdateModeratorSalaryIncorrectIdClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -975,7 +890,7 @@ func TestUpdateModeratorSalaryIncorrectSalaryLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -990,11 +905,7 @@ func TestUpdateModeratorSalaryIncorrectSalaryClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error opening database: %v", err)
 	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			t.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	module, err := tu.SetupModule(db)
 	if err != nil {
 		t.Fatalf("Error setting up moderator tables: %v", err)
@@ -1010,7 +921,7 @@ func TestUpdateModeratorSalaryIncorrectSalaryClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}

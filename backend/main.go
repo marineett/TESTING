@@ -4,8 +4,10 @@ import (
 	"data_base_project/data_base"
 	"data_base_project/server"
 	"data_base_project/service_logic"
+	"data_base_project/utility_module"
 	"database/sql"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -15,36 +17,32 @@ import (
 )
 
 func main() {
-	logger, err := os.OpenFile("./backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("Error opening log file: %v", err)
+	// Пытаемся загрузить .env, но не падаем, если файла нет (в Docker-окружении
+	// переменные обычно приходят из docker-compose env / Kubernetes и т.п.).
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not loaded: %v (using existing environment)", err)
+	} else {
+		defer utility_module.UnsetEnv()
 	}
-	defer func() {
-		err = logger.Close()
-		if err != nil {
-			log.Fatalf("Error closing log file: %v", err)
-		}
-	}()
-	log.Printf("Log file opened")
-	log.SetOutput(logger)
-	err = godotenv.Load()
-	if err != nil {
-		// In container/CI we often don't have a .env file and rely on environment variables.
-		// Treat missing .env as non-fatal: log and continue.
-		log.Printf("Warning loading .env file (using environment only): %v", err)
+
+	// Логируем одновременно в stdout (для docker logs / CI) и в файл внутри контейнера.
+	log.Println("backend starting, configuring logger...")
+	if logger, err := os.OpenFile("./backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666); err != nil {
+		log.Printf("Warning: cannot open backend.log file: %v (logging only to stdout)", err)
+	} else {
+		mw := io.MultiWriter(os.Stdout, logger)
+		log.SetOutput(mw)
+		defer logger.Close()
+		log.Println("Log file opened, logging to stdout and backend.log")
 	}
+
 	log.Printf("Connection string: %s", data_base.GetSqlConnectionString())
 	//db, err := data_base.CreateSqlConnection(data_base.GetSqlConnectionString())
 	db, err := sql.Open("duckdb", ":memory:")
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
-	defer func() {
-		err = db.Close()
-		if err != nil {
-			log.Fatalf("Error closing database: %v", err)
-		}
-	}()
+	defer db.Close()
 	/*
 		err = data_base.DropTables(
 			db,
@@ -205,8 +203,9 @@ func main() {
 		departmentRepository,
 		personalDataRepository,
 		lessonRepository,
+		service_logic.CreateEmailSender(),
 	)
-	err = data_base.SetupRoles(
+	data_base.SetupRoles(
 		db,
 		os.Getenv("PERSONAL_DATA_TABLE_NAME"),
 		os.Getenv("USER_TABLE_NAME"),
@@ -226,12 +225,7 @@ func main() {
 		os.Getenv("PENDING_CONTRACT_PAYMENT_TRANSACTIONS"),
 		os.Getenv("LESSON_TABLE_NAME"),
 		os.Getenv("SEQUENCE_NAME"),
-		false,
 	)
-	if err != nil {
-		log.Fatalf("Error setting up roles: %v", err)
-		return
-	}
 	fmt.Println("Server starting on port before setup", os.Getenv("BACKEND_PORT"))
 	server := server.SetupServer(serviceModule, os.Getenv("BACKEND_PORT"), log.Default())
 	fmt.Println("Server starting on port ", os.Getenv("BACKEND_PORT"))
