@@ -323,7 +323,6 @@ func (s *APISuite) TestCreateUsers(t provider.T) {
 
 		clientAuthToken, err := getTokenFromEmail()
 		sx.Require().NoError(err, "Failed to get token from email for client")
-
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
@@ -386,7 +385,6 @@ func (s *APISuite) TestWrongAccess(t provider.T) {
 
 		clientAuthToken, err := getTokenFromEmail()
 		sx.Require().NoError(err, "Failed to get token from email for client in lock test")
-
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
@@ -425,20 +423,13 @@ func (s *APISuite) TestUpdateTokenFlow(t provider.T) {
 	})
 
 	t.WithNewStep("Act: 3 wrong password login attempts", func(sx provider.StepCtx) {
-		wrongBody := map[string]interface{}{
-			"login":    login,
-			"password": "wrong-" + password,
-		}
+		wrongToken := "definitely_wrong_token"
 
 		for i := 0; i < 3; i++ {
-			resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/v2/auth/login", wrongBody)
+			resp, err := s.c.applyToken(ctx, wrongToken, login)
 			sx.Require().NoError(err)
 			defer resp.Body.Close()
-			sx.Require().Equal(
-				http.StatusUnauthorized,
-				resp.StatusCode,
-				"wrong password attempt #%d must return 401", i+1,
-			)
+			sx.Require().Equal(http.StatusBadRequest, resp.StatusCode, "wrong attempt #%d must return 400", i+1)
 		}
 	})
 
@@ -458,6 +449,7 @@ func (s *APISuite) TestUpdateTokenFlow(t provider.T) {
 		sx.Require().NoError(err, "Failed to get updated token from email")
 
 		resp, err := s.c.applyToken(ctx, newToken, login)
+		fmt.Println(newToken)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
 		sx.Require().Equal(http.StatusOK, resp.StatusCode)

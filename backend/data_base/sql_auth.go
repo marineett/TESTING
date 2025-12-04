@@ -204,10 +204,9 @@ func (r *SqlAuthRepository) AuthorizeByToken(token string, login string) (types.
 }
 
 func (r *SqlAuthRepository) UpdateToken(login string, password string, token string) (string, error) {
-	// Сначала достаём email пользователя, чтобы потом отправить на него новый токен.
 	var email string
 	selectQuery := `
-	SELECT email FROM ` + r.authTable + ` WHERE login = $1 AND password = $2 AND denied_access_count = 0
+	SELECT email FROM ` + r.authTable + ` WHERE login = $1 AND password = $2
 	`
 	err := r.db.QueryRow(selectQuery, login, password).Scan(&email)
 	if err != nil {
@@ -218,7 +217,7 @@ func (r *SqlAuthRepository) UpdateToken(login string, password string, token str
 	}
 
 	updateQuery := `
-	UPDATE ` + r.authTable + ` SET token = $1 WHERE login = $2 AND password = $3 AND denied_access_count = 0
+	UPDATE ` + r.authTable + ` SET token = $1, denied_access_count = 0 WHERE login = $2 AND password = $3
 	`
 	_, err = r.db.Exec(updateQuery, token, login, password)
 	if err != nil {
