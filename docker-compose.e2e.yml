@@ -96,6 +96,7 @@ services:
       
       API_URL: http://backend:8000
       
+
       IMAP_HOST: ${IMAP_HOST}
       IMAP_PORT: ${IMAP_PORT}
       IMAP_USER: ${IMAP_USER}
