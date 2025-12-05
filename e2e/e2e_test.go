@@ -235,7 +235,7 @@ func min(a, b int) int {
 }
 
 func extractTokenFromEmail(emailBody string) string {
-	prefix := "Token:"
+	prefix := "Token:" //как плакать
 	idx := strings.Index(emailBody, prefix)
 	if idx == -1 {
 		return ""
