@@ -157,6 +157,7 @@ func (r *TestAuthRepository) UpdateToken(login string, password string, token st
 	for _, auth := range r.data {
 		if auth.Login == login && auth.Password == password {
 			auth.Token = token
+			auth.LastTokenUpdate = time.Now()
 			return token, nil
 		}
 	}
@@ -171,6 +172,7 @@ func (r *TestAuthRepository) AuthorizeByToken(token string, login string) (types
 				UserType:          auth.UserType,
 				Token:             auth.Token,
 				DeniedAccessCount: auth.DeniedAccessCount,
+				LastTokenUpdate:   auth.LastTokenUpdate,
 			}, nil
 		}
 	}
@@ -204,6 +206,7 @@ func (r *TestAuthRepository) Authorize(authData types.DBAuthData) (types.DBAuthV
 				UserType:          auth.UserType,
 				Token:             auth.Token,
 				DeniedAccessCount: auth.DeniedAccessCount,
+				LastTokenUpdate:   auth.LastTokenUpdate,
 			}, nil
 		}
 	}
@@ -254,12 +257,14 @@ func (r *TestAdminRepository) InsertAdmin(admin types.DBAdminData, personalData 
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Admin,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:          userID,
+		UserType:        types.Admin,
+		Login:           auth.Login,
+		Password:        auth.Password,
+		Email:           personalData.Email,
+		Token:           auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate: time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -353,12 +358,14 @@ func (r *TestModeratorRepository) InsertModerator(moderator types.DBModeratorDat
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Moderator,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:            userID,
+		UserType:          types.Moderator,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -441,12 +448,14 @@ func (r *TestRepetiorRepository) InsertRepetitor(repetitor types.DBRepetitorData
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Repetitor,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:            userID,
+		UserType:          types.Repetitor,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -524,12 +533,14 @@ func (r *TestClientRepository) InsertClient(client types.DBClientData, personalD
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Client,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:            userID,
+		UserType:          types.Client,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err

@@ -3,10 +3,11 @@ package types
 import "time"
 
 type ServerAuthData struct {
-	Login             string `json:"login"`
-	Password          string `json:"password"`
-	Token             string `json:"token"`
-	DeniedAccessCount int    `json:"denied_access_count"`
+	Login             string    `json:"login"`
+	Password          string    `json:"password"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type ServerPassportData struct {
@@ -45,10 +46,11 @@ type ServerRegistrationData struct {
 }
 
 type ServerVerdict struct {
-	UserID            int64    `json:"user_id"`
-	UserType          UserType `json:"user_type"`
-	Token             string   `json:"token"`
-	DeniedAccessCount int      `json:"denied_access_count"`
+	UserID            int64     `json:"user_id"`
+	UserType          UserType  `json:"user_type"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type ServerRegistrationDataV2 struct {

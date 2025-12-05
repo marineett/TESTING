@@ -111,6 +111,10 @@ func ApplyTokenHandler(authService service_logic.IAuthService) http.HandlerFunc 
 			http.Error(w, "Too many failed attempts", http.StatusTooManyRequests)
 			return
 		}
+		if err != nil && err.Error() == "token expired" {
+			http.Error(w, "Token expired", 430)
+			return
+		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -376,10 +380,12 @@ func UpdateTokenHandler(authService service_logic.IAuthService, emailSender serv
 		token := uuid.New().String()
 		email, err := authService.UpdateToken(updateTokenData.Login, updateTokenData.Password, token)
 		if err != nil {
+			fmt.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = emailSender.SendEmail(email, "Token", "Token:"+token)
+		fmt.Println(email)
+		err = emailSender.SendEmail(email, "UpdatedToken", "Token:"+token)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusNotImplemented)
 			return

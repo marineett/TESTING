@@ -129,6 +129,7 @@ func MapperAuthDataServiceToDB(data *ServiceAuthData, token string) *DBAuthData 
 		Token:             token,
 		Email:             data.Email,
 		DeniedAccessCount: data.DeniedAccessCount,
+		LastTokenUpdate:   data.LastTokenUpdate,
 	}
 }
 

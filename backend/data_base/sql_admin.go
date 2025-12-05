@@ -68,12 +68,14 @@ func (r *SqlAdminRepository) InsertAdmin(admin types.DBAdminData, personalData t
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuthInSeq(tx, types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Admin,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:            userID,
+		UserType:          types.Admin,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err

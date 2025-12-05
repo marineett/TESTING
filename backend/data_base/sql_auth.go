@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 )
 
 type IAuthRepository interface {
@@ -27,7 +28,8 @@ func CreateSqlAuthTable(db *sql.DB, authTableName string, userTableName string, 
 		password VARCHAR(255) NOT NULL,
 		email VARCHAR(255) NOT NULL,
 		token VARCHAR(255),
-		denied_access_count INTEGER NOT NULL
+		denied_access_count INTEGER NOT NULL,
+		last_token_update TIMESTAMP NOT NULL
 	)`
 	_, err := db.Exec(query)
 	if err != nil {
@@ -57,8 +59,8 @@ func (r *SqlAuthRepository) InsertAuthInSeq(tx *sql.Tx, auth types.DBAuthInfo) (
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.authTable + ` (id, user_id, user_type, login, password, email, token, denied_access_count)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+	INSERT INTO ` + r.authTable + ` (id, user_id, user_type, login, password, email, token, denied_access_count, last_token_update)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
 	_, err = r.db.Exec(query,
 		id,
@@ -69,6 +71,7 @@ func (r *SqlAuthRepository) InsertAuthInSeq(tx *sql.Tx, auth types.DBAuthInfo) (
 		auth.Email,
 		auth.Token,
 		auth.DeniedAccessCount,
+		time.Now(),
 	)
 	if err != nil {
 		return 0, err
@@ -83,8 +86,8 @@ func (r *SqlAuthRepository) InsertAuth(auth types.DBAuthInfo) (int64, error) {
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.authTable + ` (id, user_id, user_type, login, password, email, token, denied_access_count)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+	INSERT INTO ` + r.authTable + ` (id, user_id, user_type, login, password, email, token, denied_access_count, last_token_update)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
 	_, err = r.db.Exec(query,
 		id,
@@ -95,6 +98,7 @@ func (r *SqlAuthRepository) InsertAuth(auth types.DBAuthInfo) (int64, error) {
 		auth.Email,
 		auth.Token,
 		auth.DeniedAccessCount,
+		time.Now(),
 	)
 	if err != nil {
 		return 0, err
@@ -134,6 +138,7 @@ func (r *SqlAuthRepository) Authorize(auth_data types.DBAuthData) (types.DBAuthV
 		&auth.Email,
 		&auth.Token,
 		&auth.DeniedAccessCount,
+		&auth.LastTokenUpdate,
 	)
 	if err != nil {
 		return types.DBAuthVerdict{}, err
@@ -146,6 +151,7 @@ func (r *SqlAuthRepository) Authorize(auth_data types.DBAuthData) (types.DBAuthV
 		UserType:          auth.UserType,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}, nil
 }
 
@@ -175,9 +181,13 @@ func (r *SqlAuthRepository) AuthorizeByToken(token string, login string) (types.
 		&auth.Email,
 		&auth.Token,
 		&auth.DeniedAccessCount,
+		&auth.LastTokenUpdate,
 	)
 	if err != nil {
 		return types.DBAuthVerdict{}, err
+	}
+	if auth.LastTokenUpdate.Before(time.Now().Add(-10 * time.Second)) {
+		return types.DBAuthVerdict{}, errors.New("token expired")
 	}
 	if auth.Token != token {
 		newCount := auth.DeniedAccessCount + 1
@@ -200,6 +210,7 @@ func (r *SqlAuthRepository) AuthorizeByToken(token string, login string) (types.
 		UserType:          auth.UserType,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}, nil
 }
 
@@ -217,7 +228,7 @@ func (r *SqlAuthRepository) UpdateToken(login string, password string, token str
 	}
 
 	updateQuery := `
-	UPDATE ` + r.authTable + ` SET token = $1, denied_access_count = 0 WHERE login = $2 AND password = $3
+	UPDATE ` + r.authTable + ` SET token = $1, denied_access_count = 0, last_token_update = NOW() WHERE login = $2 AND password = $3
 	`
 	_, err = r.db.Exec(updateQuery, token, login, password)
 	if err != nil {

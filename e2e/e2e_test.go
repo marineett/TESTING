@@ -294,7 +294,7 @@ func (s *APISuite) TestCreateUsers(t provider.T) {
 		imapUser := os.Getenv("IMAP_USER")
 		sx.Require().NotEmpty(imapUser)
 
-		login = createLogin("client", 8) // ARRANGE 
+		login = createLogin("client", 8)
 		password = createPassword(12)
 	})
 
@@ -319,9 +319,9 @@ func (s *APISuite) TestCreateUsers(t provider.T) {
 		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusCreated, resp.StatusCode) //act created
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
 
-		clientAuthToken, err := getTokenFromEmail() // извлекаем "Token:XXX"
+		clientAuthToken, err := getTokenFromEmail()
 		sx.Require().NoError(err, "Failed to get token from email for client")
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
@@ -369,7 +369,7 @@ func (s *APISuite) TestWrongAccess(t provider.T) {
 	})
 
 	t.WithNewStep("Act: 3 wrong token attempts then check lock", func(sx provider.StepCtx) {
-		wrongToken := "definitely_wrong_token" //ACT
+		wrongToken := "definitely_wrong_token"
 
 		for i := 0; i < 3; i++ {
 			resp, err := s.c.applyToken(ctx, wrongToken, login)
@@ -381,14 +381,14 @@ func (s *APISuite) TestWrongAccess(t provider.T) {
 		resp, err := s.c.applyToken(ctx, wrongToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "4th wrong attempt must return 429") // БЛОКИРОВКА
+		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "4th wrong attempt must return 429")
 
 		clientAuthToken, err := getTokenFromEmail()
 		sx.Require().NoError(err, "Failed to get token from email for client in lock test")
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "correct token must also return 429 after lock") // Все равно блокировка
+		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "correct token must also return 429 after lock")
 	})
 
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {})
@@ -449,10 +449,52 @@ func (s *APISuite) TestUpdateTokenFlow(t provider.T) {
 		sx.Require().NoError(err, "Failed to get updated token from email")
 
 		resp, err := s.c.applyToken(ctx, newToken, login)
-		fmt.Println(newToken)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
 		sx.Require().Equal(http.StatusOK, resp.StatusCode)
+	})
+
+	t.WithNewStep("Assert", func(sx provider.StepCtx) {})
+}
+
+func (s *APISuite) TestTokenExpiration(t provider.T) {
+	ctx := context.Background()
+	var login, password string
+
+	t.WithNewStep("Arrange: register client", func(sx provider.StepCtx) {
+		imapUser := os.Getenv("IMAP_USER")
+		sx.Require().NotEmpty(imapUser)
+
+		login = createLogin("client_expire", 8)
+		password = createPassword(12)
+
+		body := map[string]interface{}{
+			"login":            login,
+			"password":         password,
+			"first_name":       "Иван",
+			"last_name":        "Иванов",
+			"middle_name":      "Иванович",
+			"email":            imapUser,
+			"telephone_number": "+7-900-123-45-67",
+			"role":             "client",
+		}
+
+		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", body)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+	})
+
+	t.WithNewStep("Act: wait and apply expired token", func(sx provider.StepCtx) {
+		time.Sleep(15 * time.Second)
+
+		expiredToken, err := getTokenFromEmail()
+		sx.Require().NoError(err, "Failed to get token from email for expiration test")
+
+		resp, err := s.c.applyToken(ctx, expiredToken, login)
+		sx.Require().NoError(err)
+		defer resp.Body.Close()
+		sx.Require().Equal(430, resp.StatusCode, "expired token must return 430")
 	})
 
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {})

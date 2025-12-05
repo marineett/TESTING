@@ -87,10 +87,10 @@ func MapperInitClientServerToService(data *ServerInitClientData) *ServiceInitCli
 				MiddleName: data.MiddleName,
 			},
 			ServiceAuthData: ServiceAuthData{
-			Login:    data.Login,
-			Password: data.Password,
-			Email:    data.Email,
-			Token:    data.Token,
+				Login:    data.Login,
+				Password: data.Password,
+				Email:    data.Email,
+				Token:    data.Token,
 			},
 		},
 	}

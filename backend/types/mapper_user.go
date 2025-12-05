@@ -31,9 +31,10 @@ func MapperAuthDBToService(auth *DBAuthData) *ServiceAuthData {
 	return &ServiceAuthData{
 		Login:             auth.Login,
 		Password:          auth.Password,
-		Email:             "", // email не хранится в DBAuthData
+		Email:             auth.Email,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -44,8 +45,10 @@ func MapperAuthServiceToDB(auth *ServiceAuthData) *DBAuthData {
 	return &DBAuthData{
 		Login:             auth.Login,
 		Password:          auth.Password,
+		Email:             auth.Email,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -58,6 +61,7 @@ func MapperAuthVerdictDBToService(verdict *DBAuthVerdict) *ServiceAuthVerdict {
 		UserType:          verdict.UserType,
 		Token:             verdict.Token,
 		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -70,6 +74,7 @@ func MapperAuthVerdictServiceToDB(verdict *ServiceAuthVerdict) *DBAuthVerdict {
 		UserType:          verdict.UserType,
 		Token:             verdict.Token,
 		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -158,6 +163,7 @@ func MapperUserServiceToServerInit(user *ServiceInitUserData) *ServerInitUserDat
 			Password:          user.ServiceAuthData.Password,
 			Token:             user.ServiceAuthData.Token,
 			DeniedAccessCount: user.ServiceAuthData.DeniedAccessCount,
+			LastTokenUpdate:   user.ServiceAuthData.LastTokenUpdate,
 		},
 	}
 }
@@ -186,6 +192,7 @@ func MapperUserServerInitToService(user *ServerInitUserData) *ServiceInitUserDat
 			Email:             user.ServerPersonalData.Email,
 			Token:             user.Token,
 			DeniedAccessCount: user.DeniedAccessCount,
+			LastTokenUpdate:   user.LastTokenUpdate,
 		},
 	}
 }
@@ -261,6 +268,7 @@ func MapperAuthServiceToServer(auth *ServiceAuthData) *ServerAuthData {
 		Password:          auth.Password,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -273,6 +281,7 @@ func MapperAuthServerToService(auth *ServerAuthData) *ServiceAuthData {
 		Password:          auth.Password,
 		Token:             auth.Token,
 		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -309,6 +318,7 @@ func MapperVerdictServiceToServer(verdict *ServiceAuthVerdict) *ServerVerdict {
 		UserType:          verdict.UserType,
 		Token:             verdict.Token,
 		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -321,6 +331,7 @@ func MapperVerdictServerToService(verdict *ServerVerdict) *ServiceAuthVerdict {
 		UserType:          verdict.UserType,
 		Token:             verdict.Token,
 		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 

@@ -3,11 +3,12 @@ package types
 import "time"
 
 type ServiceAuthData struct {
-	Login             string `json:"login"`
-	Password          string `json:"password"`
-	Email             string `json:"auth_email"`
-	Token             string `json:"token"`
-	DeniedAccessCount int    `json:"denied_access_count"`
+	Login             string    `json:"login"`
+	Password          string    `json:"password"`
+	Email             string    `json:"auth_email"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type ServicePassportData struct {
@@ -39,8 +40,9 @@ type ServiceInitUserData struct {
 }
 
 type ServiceAuthVerdict struct {
-	UserID            int64    `json:"user_id"`
-	UserType          UserType `json:"user_type"`
-	Token             string   `json:"token"`
-	DeniedAccessCount int      `json:"denied_access_count"`
+	UserID            int64     `json:"user_id"`
+	UserType          UserType  `json:"user_type"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }

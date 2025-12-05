@@ -69,12 +69,14 @@ func (r *SqlModeratorRepository) InsertModerator(moderator types.DBModeratorData
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuthInSeq(tx, types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Moderator,
-		Login:    auth.Login,
-		Password: auth.Password,
-		Email:    personalData.Email,
-		Token:    auth.Token,
+		UserID:            userID,
+		UserType:          types.Moderator,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err

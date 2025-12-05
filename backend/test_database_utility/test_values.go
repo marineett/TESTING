@@ -44,7 +44,9 @@ var (
 		Login:             "test1",
 		Password:          "test2",
 		Email:             "test1@example.com",
+		Token:             "",
 		DeniedAccessCount: 0,
+		LastTokenUpdate:   time.Now(),
 	}
 	TestSalary        = int64(100000)
 	TestInitAdminData = types.DBAdminData{
