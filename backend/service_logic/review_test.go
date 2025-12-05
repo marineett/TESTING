@@ -45,7 +45,7 @@ func TestGetReviewCorrectClassic(t *testing.T) {
 	reviewService := CreateReviewService(reviewRepository)
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
 	repetitorService := CreateRepetitorService(repetitorRepository, personalDataRepository, userRepository, reviewRepository, resumeRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error creating client: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestGetReviewCorrectClassic(t *testing.T) {
 		t.Fatalf("Error authorizing: %v", err)
 	}
 	clientID := result.UserID
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -182,7 +182,7 @@ func TestGetReviewsByRepetitorIDCorrectClassic(t *testing.T) {
 	reviewService := CreateReviewService(reviewRepository)
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
 	repetitorService := CreateRepetitorService(repetitorRepository, personalDataRepository, userRepository, reviewRepository, resumeRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error creating client: %v", err)
 	}
@@ -195,7 +195,7 @@ func TestGetReviewsByRepetitorIDCorrectClassic(t *testing.T) {
 		t.Fatalf("Error authorizing: %v", err)
 	}
 	clientID := result.UserID
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -294,7 +294,7 @@ func TestGetReviewsByClientIDCorrectClassic(t *testing.T) {
 	reviewService := CreateReviewService(reviewRepository)
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
 	repetitorService := CreateRepetitorService(repetitorRepository, personalDataRepository, userRepository, reviewRepository, resumeRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error creating client: %v", err)
 	}
@@ -307,7 +307,7 @@ func TestGetReviewsByClientIDCorrectClassic(t *testing.T) {
 		t.Fatalf("Error authorizing: %v", err)
 	}
 	clientID := result.UserID
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}

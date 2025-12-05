@@ -1,0 +1,114 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    container_name: e2e-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+      POSTGRES_CLIENT_MIN_MESSAGES: notice
+      POSTGRES_LOG_MIN_MESSAGES: notice
+      POSTGRES_PORT: 5433
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    container_name: e2e-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_USER: ${DATABASE_USER:-user}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-pass}
+      DATABASE_NAME: ${DATABASE_NAME:-mydb}
+      
+      USER_TABLE_NAME: ${USER_TABLE_NAME:-users}
+      PERSONAL_DATA_TABLE_NAME: ${PERSONAL_DATA_TABLE_NAME:-personal_data}
+      AUTH_TABLE_NAME: ${AUTH_TABLE_NAME:-auth}
+      CHAT_TABLE_NAME: ${CHAT_TABLE_NAME:-chats}
+      MESSAGE_TABLE_NAME: ${MESSAGE_TABLE_NAME:-messages}
+      DEPARTMENT_TABLE_NAME: ${DEPARTMENT_TABLE_NAME:-departments}
+      HIRE_INFO_TABLE_NAME: ${HIRE_INFO_TABLE_NAME:-hire_infos}
+      CLIENT_TABLE_NAME: ${CLIENT_TABLE_NAME:-clients}
+      TRANSACTION_TABLE_NAME: ${TRANSACTION_TABLE_NAME:-transactions}
+      REPEATITOR_TABLE_NAME: ${REPEATITOR_TABLE_NAME:-repetitors}
+      RESUME_TABLE_NAME: ${RESUME_TABLE_NAME:-resumes}
+      REVIEW_TABLE_NAME: ${REVIEW_TABLE_NAME:-reviews}
+      CONTRACT_TABLE_NAME: ${CONTRACT_TABLE_NAME:-contracts}
+      ADMIN_TABLE_NAME: ${ADMIN_TABLE_NAME:-admins}
+      MODERATOR_TABLE_NAME: ${MODERATOR_TABLE_NAME:-moderators}
+      PENDING_CONTRACT_PAYMENT_TRANSACTIONS: ${PENDING_CONTRACT_PAYMENT_TRANSACTIONS:-pending_contract_payment_transactions}
+      LESSON_TABLE_NAME: ${LESSON_TABLE_NAME:-lessons}
+      SEQUENCE_NAME: ${SEQUENCE_NAME:-sequence}
+
+
+      JWT_TOKEN: ${JWT_TOKEN:-default_jwt_token}
+      JWT_SECRET: ${JWT_SECRET:-default_jwt_secret}
+      
+
+      SENDER_SMTP_HOST: ${SENDER_SMTP_HOST}
+      SENDER_SMTP_PORT: ${SENDER_SMTP_PORT}
+      SENDER_SMTP_USER: ${SENDER_SMTP_USER}
+      SENDER_SMTP_PASSWORD: ${SENDER_SMTP_PASSWORD}
+      SENDER_SMTP_FROM_EMAIL: ${SENDER_SMTP_FROM_EMAIL}
+      SENDER_SMTP_FROM_NAME: ${SENDER_SMTP_FROM_NAME:-sender}
+      
+      BACKEND_PORT: ${BACKEND_PORT:-8000}
+    networks:
+      - app-network
+    ports:
+      - "8001:8000"
+      - "9092:9090"
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/8000 || exit 1' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  e2e-tests:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.test-runner
+    container_name: e2e-tests
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      RUN_UNIT: false
+      RUN_INTEGRATION: false
+      RUN_E2E: true
+      WAIT_MAX_ATTEMPTS: 120
+      POST_TEST_SLEEP: 0
+      
+      API_URL: http://backend:8000
+      
+
+      IMAP_HOST: ${IMAP_HOST}
+      IMAP_PORT: ${IMAP_PORT}
+      IMAP_USER: ${IMAP_USER}
+      IMAP_PASSWORD: ${IMAP_PASSWORD}
+    networks:
+      - app-network
+    volumes:
+      - ./e2e/allure-results:/workspace/e2e/allure-results
+
+volumes:
+  prometheus_data:
+
+networks:
+  app-network:
+    driver: bridge

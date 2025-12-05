@@ -1,0 +1,30 @@
+services:
+  backend:
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
+
+  degradation-many-chats-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.degradation-many-chats-runner
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - ./metrics:/metrics
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/degradation"]
+    user: "0:0"
+    restart: "no"
+
+networks:
+  app-network:
+    external: false
+
+
+

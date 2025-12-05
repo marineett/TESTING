@@ -212,6 +212,23 @@ func GetContractInfo(serviceModule *service_logic.ServiceModule) {
 	PrintContract(contract)
 }
 
+func GetLessonById(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter lesson ID:")
+	lessonIDStr := ""
+	fmt.Scanln(&lessonIDStr)
+	lessonID, err := strconv.ParseInt(lessonIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	lesson, err := serviceModule.LessonService.GetLesson(lessonID)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	PrintLesson(lesson)
+}
+
 func CreateClientReview(serviceModule *service_logic.ServiceModule) {
 	var review types.ServiceReview
 	fmt.Println("Enter review text:")
@@ -257,7 +274,7 @@ func CreateClientReview(serviceModule *service_logic.ServiceModule) {
 		return
 	}
 	review.RepetitorID = contract.RepetitorID
-	err = serviceModule.ContractService.CreateContractReviewClient(contractID, review)
+	_, err = serviceModule.ContractService.CreateContractReviewClient(contractID, review)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -301,7 +318,7 @@ func CreateRepetitorReview(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Error:", err)
 		return
 	}
-	err = serviceModule.ContractService.CreateContractReviewRepetitor(contractID, review)
+	_, err = serviceModule.ContractService.CreateContractReviewRepetitor(contractID, review)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -600,6 +617,244 @@ func GetLessons(serviceModule *service_logic.ServiceModule) {
 	}
 }
 
+func ListContracts(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("List contracts (V2)")
+	fmt.Println("Enter client_id (0 for any):")
+	clientIDStr := ""
+	fmt.Scanln(&clientIDStr)
+	clientID, err := strconv.ParseInt(clientIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter repetitor_id (0 for any):")
+	repetitorIDStr := ""
+	fmt.Scanln(&repetitorIDStr)
+	repetitorID, err := strconv.ParseInt(repetitorIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter offset:")
+	offsetStr := ""
+	fmt.Scanln(&offsetStr)
+	offset, err := strconv.ParseInt(offsetStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter limit:")
+	limitStr := ""
+	fmt.Scanln(&limitStr)
+	limit, err := strconv.ParseInt(limitStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	contracts, err := serviceModule.ContractService.GetContracts(clientID, repetitorID, offset, limit)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if len(contracts) == 0 {
+		fmt.Println("No contracts found")
+		return
+	}
+	for _, c := range contracts {
+		fmt.Println("--- Contract ---")
+		fmt.Println("ID:", c.ID)
+		fmt.Println("Client ID:", c.ClientID)
+		if c.RepetitorID != nil {
+			fmt.Println("Repetitor ID:", *c.RepetitorID)
+		} else {
+			fmt.Println("Repetitor ID: <none>")
+		}
+		fmt.Println("Description:", c.Description)
+		fmt.Println("Rate:", c.Rate)
+		fmt.Println("Format:", c.Format)
+		fmt.Println("Status:", c.Status)
+		fmt.Println("CreatedAt:", c.CreatedAt)
+	}
+}
+
+func CreateContractV2(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Create contract (V2)")
+	var req types.ServerContractCreateV2
+	fmt.Println("Enter client_id:")
+	clientIDStr := ""
+	fmt.Scanln(&clientIDStr)
+	clientID, err := strconv.ParseInt(clientIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	req.ClientID = clientID
+	fmt.Println("Enter description:")
+	scanner := bufio.NewScanner(os.Stdin)
+	if scanner.Scan() {
+		req.Description = scanner.Text()
+	}
+	fmt.Println("Enter rate:")
+	rateStr := ""
+	fmt.Scanln(&rateStr)
+	rate, err := strconv.ParseInt(rateStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	req.Rate = rate
+	req.Format = "online"
+	init := types.MapperContractCreateV2ServerToServiceInit(&req)
+	id, err := serviceModule.ContractService.CreateContract(*init)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	contract, err := serviceModule.ContractService.GetContract(id)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	sc := types.MapperContractServiceToServerV2(contract)
+	fmt.Println("Contract created:")
+	fmt.Println("ID:", sc.ID)
+	fmt.Println("Client ID:", sc.ClientID)
+	if sc.RepetitorID != nil {
+		fmt.Println("Repetitor ID:", *sc.RepetitorID)
+	} else {
+		fmt.Println("Repetitor ID: <none>")
+	}
+	fmt.Println("Description:", sc.Description)
+	fmt.Println("Rate:", sc.Rate)
+	fmt.Println("Format:", sc.Format)
+	fmt.Println("Status:", sc.Status)
+}
+
+func PatchLesson(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Patch lesson is not supported in current server API")
+}
+
+func DeleteLesson(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Delete lesson is not supported in current server API")
+}
+
+func ListContractTransactions(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("List contract transactions (V2)")
+	fmt.Println("Enter contract ID:")
+	contractIDStr := ""
+	fmt.Scanln(&contractIDStr)
+	if _, err := strconv.ParseInt(contractIDStr, 10, 64); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter offset:")
+	offsetStr := ""
+	fmt.Scanln(&offsetStr)
+	if _, err := strconv.ParseInt(offsetStr, 10, 64); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter limit:")
+	limitStr := ""
+	fmt.Scanln(&limitStr)
+	if _, err := strconv.ParseInt(limitStr, 10, 64); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Transactions: [] (not implemented server-side)")
+}
+
+func CreateContractTransaction(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Create contract transaction (V2)")
+	fmt.Println("Enter contract ID:")
+	contractIDStr := ""
+	fmt.Scanln(&contractIDStr)
+	if _, err := strconv.ParseInt(contractIDStr, 10, 64); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter amount:")
+	amountStr := ""
+	fmt.Scanln(&amountStr)
+	amount, err := strconv.ParseInt(amountStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	tx := types.ServerTransactionV2{ID: 0, ContractID: 0, Amount: amount, Status: types.TransactionStatusPending.String(), CreatedAt: time.Now()}
+	fmt.Println("Created:")
+	fmt.Println("Amount:", tx.Amount)
+	fmt.Println("Status:", tx.Status)
+	fmt.Println("CreatedAt:", tx.CreatedAt)
+}
+
+func ApproveTransaction(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Approve transaction (V2)")
+	fmt.Println("Enter transaction ID:")
+	txIDStr := ""
+	fmt.Scanln(&txIDStr)
+	txID, err := strconv.ParseInt(txIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if err := serviceModule.TransactionService.ApproveTransaction(txID); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	tx, err := serviceModule.TransactionService.GetTransaction(txID)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	serverTx := types.MapperTransactionServiceToServerV2(tx)
+	fmt.Println("Approved:")
+	fmt.Println("ID:", serverTx.ID)
+	fmt.Println("Amount:", serverTx.Amount)
+	fmt.Println("Status:", serverTx.Status)
+	fmt.Println("CreatedAt:", serverTx.CreatedAt)
+}
+
+func ListContractReviews(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("List contract reviews (V2)")
+	fmt.Println("Enter contract ID:")
+	contractIDStr := ""
+	fmt.Scanln(&contractIDStr)
+	contractID, err := strconv.ParseInt(contractIDStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	contract, err := serviceModule.ContractService.GetContract(contractID)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	reviews := make([]types.ServiceReview, 0)
+	if contract.ReviewClientID != 0 {
+		if r, err := serviceModule.ReviewService.GetReview(contract.ReviewClientID); err == nil {
+			reviews = append(reviews, *r)
+		}
+	}
+	if contract.ReviewRepetitorID != 0 {
+		if r, err := serviceModule.ReviewService.GetReview(contract.ReviewRepetitorID); err == nil {
+			reviews = append(reviews, *r)
+		}
+	}
+	if len(reviews) == 0 {
+		fmt.Println("No reviews")
+		return
+	}
+	for _, r := range reviews {
+		fmt.Println("--- Review ---")
+		fmt.Println("Client ID:", r.ClientID)
+		fmt.Println("Repetitor ID:", r.RepetitorID)
+		fmt.Println("Score:", r.Rating)
+		fmt.Println("Text:", r.Comment)
+		fmt.Println("CreatedAt:", r.CreatedAt)
+	}
+}
+
 func ContractWork(serviceModule *service_logic.ServiceModule) {
 	for {
 		fmt.Println("Contract work")
@@ -611,7 +866,16 @@ func ContractWork(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("6. Get reviews")
 		fmt.Println("7. Add lesson")
 		fmt.Println("8. Get lessons")
-		fmt.Println("9. Exit")
+		fmt.Println("9. Get lesson by ID ")
+		fmt.Println("10. List contract reviews ")
+		fmt.Println("11. List contracts")
+		fmt.Println("12. Create contract via V2 ")
+		fmt.Println("13. Update lesson")
+		fmt.Println("14. Delete lesson")
+		fmt.Println("15. List contract transactions ")
+		fmt.Println("16. Create contract transaction ")
+		fmt.Println("17. Approve transaction")
+		fmt.Println("18. Exit")
 		choiceStr := ""
 		fmt.Scanln(&choiceStr)
 		choice, err := strconv.Atoi(choiceStr)
@@ -619,7 +883,7 @@ func ContractWork(serviceModule *service_logic.ServiceModule) {
 			fmt.Println("Error:", err)
 			return
 		}
-		if choice < 1 || choice > 9 {
+		if choice < 1 || choice > 18 {
 			fmt.Println("Invalid choice")
 			continue
 		}
@@ -641,6 +905,24 @@ func ContractWork(serviceModule *service_logic.ServiceModule) {
 		case 8:
 			GetLessons(serviceModule)
 		case 9:
+			GetLessonById(serviceModule)
+		case 10:
+			ListContractReviews(serviceModule)
+		case 11:
+			ListContracts(serviceModule)
+		case 12:
+			CreateContractV2(serviceModule)
+		case 13:
+			PatchLesson(serviceModule)
+		case 14:
+			DeleteLesson(serviceModule)
+		case 15:
+			ListContractTransactions(serviceModule)
+		case 16:
+			CreateContractTransaction(serviceModule)
+		case 17:
+			ApproveTransaction(serviceModule)
+		case 18:
 			return
 		default:
 			fmt.Println("Invalid choice")

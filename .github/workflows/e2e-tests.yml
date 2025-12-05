@@ -1,0 +1,42 @@
+name: e2e tests (manual)
+
+on:
+  # Запуск только вручную, чтобы не дублировать e2e из основного CI workflow.
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show Docker and Compose versions
+        run: |
+          docker version
+          docker compose version
+
+      - name: Build and run e2e stack
+        run: |
+          docker compose -f docker-compose.e2e.yml -p e2e-tests up --build --abort-on-container-exit
+
+      - name: Show logs (on failure)
+        if: failure()
+        run: |
+          docker compose -f docker-compose.e2e.yml -p e2e-tests logs backend e2e-tests || true
+
+      - name: Collect Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-allure-results
+          path: e2e/allure-results
+          if-no-files-found: ignore
+
+      - name: Tear down e2e stack
+        if: always()
+        run: |
+          docker compose -f docker-compose.e2e.yml -p e2e-tests down -v

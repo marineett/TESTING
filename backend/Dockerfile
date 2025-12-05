@@ -13,5 +13,10 @@ RUN go mod download
 
 COPY . .
 
+# Если в build-контексте присутствует файл .env.docker,
+# скопируем его в .env внутри образа, чтобы backend мог
+# читать переменные через godotenv.Load().
+RUN if [ -f .env.docker ]; then cp .env.docker .env; fi
+
 EXPOSE 8000
 CMD ["go", "run", "main.go"]

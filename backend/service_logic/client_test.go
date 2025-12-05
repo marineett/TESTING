@@ -28,7 +28,7 @@ func (s *ClientSuite) TestCreateClientCorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {
@@ -60,7 +60,7 @@ func (s *ClientSuite) TestCreateClientCorrectClassic(t provider.T) {
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		err := CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {
@@ -81,7 +81,7 @@ func (s *ClientSuite) TestGetClientDataCorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
@@ -113,7 +113,7 @@ func (s *ClientSuite) TestGetClientDataCorrectClassic(t provider.T) {
 		t.Cleanup(func() { _ = db.Close() })
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
-		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
 		sx.Assert().NoError(err)
@@ -144,7 +144,7 @@ func (s *ClientSuite) TestGetClientDataIncorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
@@ -180,7 +180,7 @@ func (s *ClientSuite) TestUpdateClientPersonalDataCorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
@@ -212,7 +212,7 @@ func (s *ClientSuite) TestUpdateClientPersonalDataCorrectClassic(t provider.T) {
 		t.Cleanup(func() { _ = db.Close() })
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
-		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
 		sx.Assert().NoError(err)
@@ -242,7 +242,7 @@ func (s *ClientSuite) TestUpdateClientPersonalDataIncorrectLondon(t provider.T) 
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
@@ -261,7 +261,7 @@ func (s *ClientSuite) TestUpdateClientPersonalDataIncorrectClassic(t provider.T)
 		t.Cleanup(func() { _ = db.Close() })
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
-		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
@@ -279,7 +279,7 @@ func (s *ClientSuite) TestUpdateClientPasswordCorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
@@ -306,7 +306,7 @@ func (s *ClientSuite) TestUpdateClientPasswordCorrectClassic(t provider.T) {
 		t.Cleanup(func() { _ = db.Close() })
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
-		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
 		sx.Assert().NoError(err)
@@ -331,7 +331,7 @@ func (s *ClientSuite) TestUpdateClientPasswordIncorrectLondon(t provider.T) {
 		cRepo  = tu.CreateTestClientRepository(pdRepo, aRepo, uRepo)
 	)
 	t.WithNewStep("Arrange", func(sx provider.StepCtx) {
-		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData)
+		err := CreateClientService(cRepo, pdRepo, uRepo, rRepo).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {
@@ -352,7 +352,7 @@ func (s *ClientSuite) TestUpdateClientPasswordIncorrectClassic(t provider.T) {
 		t.Cleanup(func() { _ = db.Close() })
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
-		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData)
+		err = CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository).CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act+Assert", func(sx provider.StepCtx) {

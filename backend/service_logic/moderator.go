@@ -7,7 +7,7 @@ import (
 )
 
 type IModeratorService interface {
-	CreateModerator(init_data types.ServiceInitModeratorData) error
+	CreateModerator(init_data types.ServiceInitModeratorData, token string) error
 	GetModeratorData(user_id int64) (*types.ServiceModeratorData, error)
 	GetModeratorProfile(user_id int64) (*types.ServiceModeratorProfile, error)
 	UpdateModeratorPersonalData(user_id int64, personal_data types.ServicePersonalData) error
@@ -38,30 +38,30 @@ func CreateModeratorService(
 	}
 }
 
-func (s *ModeratorService) transormInitModeratorData(init_data types.ServiceInitModeratorData) (*types.ServiceModeratorData, *types.ServicePersonalData, *types.ServiceAuthData) {
+func (s *ModeratorService) transormInitModeratorData(init_data types.ServiceInitModeratorData, token string) (*types.ServiceModeratorData, *types.ServicePersonalData, *types.ServiceAuthData) {
 	moderator := types.ServiceModeratorData{
-		Salary: 0,
+		Salary: int64(init_data.Salary),
 	}
 	return &moderator, &init_data.ServicePersonalData, &types.ServiceAuthData{
 		Login:    init_data.Login,
 		Password: init_data.Password,
+		Token:    token,
+		Email:    init_data.ServicePersonalData.Email,
 	}
 }
 
-func (s *ModeratorService) CreateModerator(init_data types.ServiceInitModeratorData) error {
-	moderator_data, personal_data, auth_info := s.transormInitModeratorData(init_data)
-	_, err := s.moderatorRepository.InsertModerator(types.DBModeratorData{
-		Salary: moderator_data.Salary,
-	}, types.DBPersonalData{
-		FirstName:       personal_data.FirstName,
-		LastName:        personal_data.LastName,
-		MiddleName:      personal_data.MiddleName,
-		TelephoneNumber: personal_data.TelephoneNumber,
-		Email:           personal_data.Email,
-	}, types.DBAuthData{
-		Login:    auth_info.Login,
-		Password: auth_info.Password,
-	})
+func (s *ModeratorService) CreateModerator(init_data types.ServiceInitModeratorData, token string) error {
+	moderator_data, personal_data, auth_info := s.transormInitModeratorData(init_data, token)
+	// При создании модератора счётчик неудачных попыток всегда начинается с 0.
+	auth_info.DeniedAccessCount = 0
+
+	_, err := s.moderatorRepository.InsertModerator(
+		types.DBModeratorData{
+			Salary: moderator_data.Salary,
+		},
+		*types.MapperPersonalDataServiceToDB(personal_data),
+		*types.MapperAuthDataServiceToDB(auth_info, auth_info.Token),
+	)
 	if err != nil {
 		return err
 	}
@@ -81,10 +81,7 @@ func (s *ModeratorService) UpdateModeratorPersonalData(user_id int64, personal_d
 }
 
 func (s *ModeratorService) UpdateModeratorPassword(user_id int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.moderatorRepository.UpdateModeratorPassword(user_id, types.DBAuthData{
-		Login:    authData.Login,
-		Password: authData.Password,
-	}, newPassword)
+	return s.moderatorRepository.UpdateModeratorPassword(user_id, *types.MapperAuthDataServiceToDB(&authData, authData.Token), newPassword)
 }
 
 func (s *ModeratorService) GetModeratorProfile(user_id int64) (*types.ServiceModeratorProfile, error) {

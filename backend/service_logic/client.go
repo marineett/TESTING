@@ -6,7 +6,7 @@ import (
 )
 
 type IClientService interface {
-	CreateClient(initData types.ServiceInitClientData) error
+	CreateClient(initData types.ServiceInitClientData, token string) error
 	//GetClientData(UserID int64) (*types.ServiceClientData, error)
 	GetClientProfile(UserID int64, reviewsOffset int64, reviewsLimit int64) (*types.ServiceClientProfile, error)
 	UpdateClientPersonalData(UserID int64, personalData types.ServicePersonalData) error
@@ -34,7 +34,7 @@ func CreateClientService(
 	}
 }
 
-func (s *ClientService) transormInitClientData(initData types.ServiceInitClientData) (*types.DBClientData, *types.DBPersonalData, *types.DBAuthData) {
+func (s *ClientService) transormInitClientData(initData types.ServiceInitClientData, token string) (*types.DBClientData, *types.DBPersonalData, *types.DBAuthData) {
 	client := types.DBClientData{
 		SummaryRating: 0,
 		ReviewsCount:  0,
@@ -44,15 +44,18 @@ func (s *ClientService) transormInitClientData(initData types.ServiceInitClientD
 			LastName:        initData.LastName,
 			MiddleName:      initData.MiddleName,
 			TelephoneNumber: initData.TelephoneNumber,
-			Email:           initData.Email,
+			Email:           initData.ServicePersonalData.Email,
 		}, &types.DBAuthData{
 			Login:    initData.Login,
 			Password: initData.Password,
+			Token:    token,
+			Email:    initData.ServicePersonalData.Email,
 		}
 }
 
-func (s *ClientService) CreateClient(initData types.ServiceInitClientData) error {
-	clientData, personalData, authData := s.transormInitClientData(initData)
+func (s *ClientService) CreateClient(initData types.ServiceInitClientData, token string) error {
+	clientData, personalData, authData := s.transormInitClientData(initData, token)
+	authData.DeniedAccessCount = 0
 	_, err := s.clientRepository.InsertClient(*clientData, *personalData, *authData)
 	if err != nil {
 		return err
@@ -69,7 +72,7 @@ func (s *ClientService) UpdateClientPersonalData(userID int64, personalData type
 }
 
 func (s *ClientService) UpdateClientPassword(userID int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.clientRepository.UpdateClientPassword(userID, *types.MapperAuthDataServiceToDB(&authData), newPassword)
+	return s.clientRepository.UpdateClientPassword(userID, *types.MapperAuthDataServiceToDB(&authData, authData.Token), newPassword)
 }
 
 func (s *ClientService) GetClientProfile(userID int64, reviewsOffset int64, reviewsLimit int64) (*types.ServiceClientProfile, error) {

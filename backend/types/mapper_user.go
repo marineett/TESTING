@@ -29,8 +29,12 @@ func MapperAuthDBToService(auth *DBAuthData) *ServiceAuthData {
 		return nil
 	}
 	return &ServiceAuthData{
-		Login:    auth.Login,
-		Password: auth.Password,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             auth.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -39,8 +43,12 @@ func MapperAuthServiceToDB(auth *ServiceAuthData) *DBAuthData {
 		return nil
 	}
 	return &DBAuthData{
-		Login:    auth.Login,
-		Password: auth.Password,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             auth.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -49,8 +57,11 @@ func MapperAuthVerdictDBToService(verdict *DBAuthVerdict) *ServiceAuthVerdict {
 		return nil
 	}
 	return &ServiceAuthVerdict{
-		UserID:   verdict.UserID,
-		UserType: verdict.UserType,
+		UserID:            verdict.UserID,
+		UserType:          verdict.UserType,
+		Token:             verdict.Token,
+		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -59,8 +70,11 @@ func MapperAuthVerdictServiceToDB(verdict *ServiceAuthVerdict) *DBAuthVerdict {
 		return nil
 	}
 	return &DBAuthVerdict{
-		UserID:   verdict.UserID,
-		UserType: verdict.UserType,
+		UserID:            verdict.UserID,
+		UserType:          verdict.UserType,
+		Token:             verdict.Token,
+		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -132,21 +146,24 @@ func MapperUserServiceToServerInit(user *ServiceInitUserData) *ServerInitUserDat
 	}
 	return &ServerInitUserData{
 		ServerPersonalData: ServerPersonalData{
-			TelephoneNumber: user.TelephoneNumber,
-			Email:           user.Email,
+			TelephoneNumber: user.ServicePersonalData.TelephoneNumber,
+			Email:           user.ServicePersonalData.Email,
 			ServerPassportData: ServerPassportData{
-				PassportNumber:   user.PassportNumber,
-				PassportSeries:   user.PassportSeries,
-				PassportDate:     user.PassportDate,
-				PassportIssuedBy: user.PassportIssuedBy,
+				PassportNumber:   user.ServicePersonalData.PassportNumber,
+				PassportSeries:   user.ServicePersonalData.PassportSeries,
+				PassportDate:     user.ServicePersonalData.PassportDate,
+				PassportIssuedBy: user.ServicePersonalData.PassportIssuedBy,
 			},
-			FirstName:  user.FirstName,
-			LastName:   user.LastName,
-			MiddleName: user.MiddleName,
+			FirstName:  user.ServicePersonalData.FirstName,
+			LastName:   user.ServicePersonalData.LastName,
+			MiddleName: user.ServicePersonalData.MiddleName,
 		},
 		ServerAuthData: ServerAuthData{
-			Login:    user.Login,
-			Password: user.Password,
+			Login:             user.ServiceAuthData.Login,
+			Password:          user.ServiceAuthData.Password,
+			Token:             user.ServiceAuthData.Token,
+			DeniedAccessCount: user.ServiceAuthData.DeniedAccessCount,
+			LastTokenUpdate:   user.ServiceAuthData.LastTokenUpdate,
 		},
 	}
 }
@@ -157,21 +174,25 @@ func MapperUserServerInitToService(user *ServerInitUserData) *ServiceInitUserDat
 	}
 	return &ServiceInitUserData{
 		ServicePersonalData: ServicePersonalData{
-			TelephoneNumber: user.TelephoneNumber,
-			Email:           user.Email,
+			TelephoneNumber: user.ServerPersonalData.TelephoneNumber,
+			Email:           user.ServerPersonalData.Email,
 			ServicePassportData: ServicePassportData{
-				PassportNumber:   user.PassportNumber,
-				PassportSeries:   user.PassportSeries,
-				PassportDate:     user.PassportDate,
-				PassportIssuedBy: user.PassportIssuedBy,
+				PassportNumber:   user.ServerPersonalData.PassportNumber,
+				PassportSeries:   user.ServerPersonalData.PassportSeries,
+				PassportDate:     user.ServerPersonalData.PassportDate,
+				PassportIssuedBy: user.ServerPersonalData.PassportIssuedBy,
 			},
-			FirstName:  user.FirstName,
-			LastName:   user.LastName,
-			MiddleName: user.MiddleName,
+			FirstName:  user.ServerPersonalData.FirstName,
+			LastName:   user.ServerPersonalData.LastName,
+			MiddleName: user.ServerPersonalData.MiddleName,
 		},
 		ServiceAuthData: ServiceAuthData{
-			Login:    user.Login,
-			Password: user.Password,
+			Login:             user.Login,
+			Password:          user.Password,
+			Email:             user.ServerPersonalData.Email,
+			Token:             user.Token,
+			DeniedAccessCount: user.DeniedAccessCount,
+			LastTokenUpdate:   user.LastTokenUpdate,
 		},
 	}
 }
@@ -243,8 +264,11 @@ func MapperAuthServiceToServer(auth *ServiceAuthData) *ServerAuthData {
 		return nil
 	}
 	return &ServerAuthData{
-		Login:    auth.Login,
-		Password: auth.Password,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -253,8 +277,11 @@ func MapperAuthServerToService(auth *ServerAuthData) *ServiceAuthData {
 		return nil
 	}
 	return &ServiceAuthData{
-		Login:    auth.Login,
-		Password: auth.Password,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   auth.LastTokenUpdate,
 	}
 }
 
@@ -287,8 +314,11 @@ func MapperVerdictServiceToServer(verdict *ServiceAuthVerdict) *ServerVerdict {
 		return nil
 	}
 	return &ServerVerdict{
-		UserID:   verdict.UserID,
-		UserType: verdict.UserType,
+		UserID:            verdict.UserID,
+		UserType:          verdict.UserType,
+		Token:             verdict.Token,
+		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -297,8 +327,11 @@ func MapperVerdictServerToService(verdict *ServerVerdict) *ServiceAuthVerdict {
 		return nil
 	}
 	return &ServiceAuthVerdict{
-		UserID:   verdict.UserID,
-		UserType: verdict.UserType,
+		UserID:            verdict.UserID,
+		UserType:          verdict.UserType,
+		Token:             verdict.Token,
+		DeniedAccessCount: verdict.DeniedAccessCount,
+		LastTokenUpdate:   verdict.LastTokenUpdate,
 	}
 }
 
@@ -320,3 +353,108 @@ func MapperPersonalDataDBToService(data *DBPersonalData) *ServicePersonalData {
 		},
 	}
 }
+
+func MapperRegistrationServerToClientRegistration(registration *ServerRegistrationDataV2) *ServerInitClientData {
+	if registration == nil {
+		return nil
+	}
+	return &ServerInitClientData{}
+}
+
+func MapperRegistrationV2ToServiceInitClient(data *ServerRegistrationDataV2) *ServiceInitClientData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitClientData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+				Token:    "", // Token is generated after registration
+			},
+		},
+	}
+}
+
+func MapperRegistrationV2ToServiceInitRepetitor(data *ServerRegistrationDataV2) *ServiceInitRepetitorData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitRepetitorData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+				Token:    "", // Token is generated after registration
+			},
+		},
+	}
+}
+
+func MapperRegistrationV2ToServiceInitModerator(data *ServerRegistrationDataV2) *ServiceInitModeratorData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitModeratorData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+				Token:    "", // Token is generated after registration
+			},
+		},
+		Salary: data.Salary,
+	}
+}
+
+func MapperRegistrationV2ToServiceInitAdmin(data *ServerRegistrationDataV2) *ServiceInitAdminData {
+	if data == nil {
+		return nil
+	}
+	return &ServiceInitAdminData{
+		ServiceInitUserData: ServiceInitUserData{
+			ServicePersonalData: ServicePersonalData{
+				TelephoneNumber:     data.TelephoneNumber,
+				Email:               data.Email,
+				ServicePassportData: ServicePassportData{},
+				FirstName:           data.FirstName,
+				LastName:            data.LastName,
+				MiddleName:          data.MiddleName,
+			},
+			ServiceAuthData: ServiceAuthData{
+				Login:    data.Login,
+				Password: data.Password,
+				Token:    "", // Token is generated after registration
+			},
+		},
+		Salary: int64(data.Salary),
+	}
+}
+
+// V2 client/repetitor mappers are defined in dedicated files:
+// - mapper_client.go
+// - mapper_repetitor.go

@@ -83,6 +83,8 @@ func MapperInitAdminServerToService(data *ServerInitAdminData) *ServiceInitAdmin
 			ServiceAuthData: ServiceAuthData{
 				Login:    data.Login,
 				Password: data.Password,
+				Email:    data.Email,
+				Token:    data.Token,
 			},
 		},
 	}
@@ -117,13 +119,17 @@ func MapperPersonalDataServiceToDB(data *ServicePersonalData) *DBPersonalData {
 	}
 }
 
-func MapperAuthDataServiceToDB(data *ServiceAuthData) *DBAuthData {
+func MapperAuthDataServiceToDB(data *ServiceAuthData, token string) *DBAuthData {
 	if data == nil {
 		return nil
 	}
 	return &DBAuthData{
-		Login:    data.Login,
-		Password: data.Password,
+		Login:             data.Login,
+		Password:          data.Password,
+		Token:             token,
+		Email:             data.Email,
+		DeniedAccessCount: data.DeniedAccessCount,
+		LastTokenUpdate:   data.LastTokenUpdate,
 	}
 }
 

@@ -23,7 +23,7 @@ func TestCreateModeratorCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -76,7 +76,7 @@ func TestCreateModeratorCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -98,7 +98,7 @@ func TestGetModeratorDataCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -138,7 +138,7 @@ func TestGetModeratorDataCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -180,7 +180,7 @@ func TestGetModeratorDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -211,7 +211,7 @@ func TestGetModeratorDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -244,7 +244,7 @@ func TestGetModeratorProfileCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	moderatorService.CreateModerator(tu.TestInitModeratorData)
+	moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	moderatorProfile, err := moderatorService.GetModeratorProfile(1)
 	if err != nil {
 		t.Fatalf("Error getting moderator profile: %v", err)
@@ -290,7 +290,7 @@ func TestGetModeratorProfileCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -341,7 +341,7 @@ func TestGetModeratorProfileIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -372,7 +372,7 @@ func TestGetModeratorProfileIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -405,7 +405,7 @@ func TestUpdateModeratorPersonalDataCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -462,7 +462,7 @@ func TestUpdateModeratorPersonalDataCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -520,7 +520,7 @@ func TestUpdateModeratorPersonalDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -557,7 +557,7 @@ func TestUpdateModeratorPersonalDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -596,7 +596,7 @@ func TestUpdateModeratorPasswordCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -635,7 +635,7 @@ func TestUpdateModeratorPasswordCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -675,7 +675,7 @@ func TestUpdateModeratorPasswordIncorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -706,7 +706,7 @@ func TestUpdateModeratorPasswordIncorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -743,7 +743,7 @@ func TestUpdateModeratorSalaryCorrectLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -782,7 +782,7 @@ func TestUpdateModeratorSalaryCorrectClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -822,7 +822,7 @@ func TestUpdateModeratorSalaryIncorrectIdLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -853,7 +853,7 @@ func TestUpdateModeratorSalaryIncorrectIdClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -890,7 +890,7 @@ func TestUpdateModeratorSalaryIncorrectSalaryLondon(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err := moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err := moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}
@@ -921,7 +921,7 @@ func TestUpdateModeratorSalaryIncorrectSalaryClassic(t *testing.T) {
 		userRepository,
 		departmentRepository,
 	)
-	err = moderatorService.CreateModerator(tu.TestInitModeratorData)
+	err = moderatorService.CreateModerator(tu.TestInitModeratorData, "")
 	if err != nil {
 		t.Fatalf("Error creating moderator: %v", err)
 	}

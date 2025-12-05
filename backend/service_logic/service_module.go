@@ -16,6 +16,7 @@ type ServiceModule struct {
 	PersonalDataService IPersonalDataService
 	ReviewService       IReviewService
 	LessonService       ILessonService
+	EmailSender         IEmailSender
 }
 
 func CreateServiceModule(
@@ -34,6 +35,7 @@ func CreateServiceModule(
 	departmentRepository data_base.IDepartmentRepository,
 	personalDataRepository data_base.IPersonalDataRepository,
 	lessonRepository data_base.ILessonRepository,
+	emailSender IEmailSender,
 ) *ServiceModule {
 	return &ServiceModule{
 		AuthService:         CreateAuthService(authRepository),
@@ -45,9 +47,10 @@ func CreateServiceModule(
 		ChatService:         CreateChatService(chatRepository, messageRepository),
 		ResumeService:       CreateResumeService(resumeRepository),
 		TransactionService:  CreateTransactionService(transactionRepository),
-		DepartmentService:   CreateDepartmentService(departmentRepository, moderatorRepository),
+		DepartmentService:   CreateDepartmentService(departmentRepository, moderatorRepository, userRepository, personalDataRepository),
 		PersonalDataService: CreatePersonalDataService(personalDataRepository),
 		ReviewService:       CreateReviewService(reviewRepository),
 		LessonService:       CreateLessonService(lessonRepository),
+		EmailSender:         emailSender,
 	}
 }

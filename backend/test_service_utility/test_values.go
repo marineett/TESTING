@@ -26,6 +26,7 @@ var (
 	TestAuth = types.ServiceAuthData{
 		Login:    "test1",
 		Password: "test2",
+		Email:    "test1@example.com",
 	}
 	TestSalary = int64(100000)
 

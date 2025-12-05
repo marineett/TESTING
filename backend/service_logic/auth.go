@@ -8,6 +8,8 @@ import (
 type IAuthService interface {
 	Authorize(auth_data types.ServiceAuthData) (types.ServiceAuthVerdict, error)
 	CheckLogin(username string) (bool, error)
+	AuthorizeByToken(token string, login string) (types.ServiceAuthVerdict, error)
+	UpdateToken(login string, password string, token string) (string, error)
 }
 
 type AuthService struct {
@@ -21,7 +23,7 @@ func CreateAuthService(authRepository data_base.IAuthRepository) *AuthService {
 }
 
 func (s *AuthService) Authorize(auth_data types.ServiceAuthData) (types.ServiceAuthVerdict, error) {
-	authVerdict, err := s.AuthRepository.Authorize(*types.MapperAuthDataServiceToDB(&auth_data))
+	authVerdict, err := s.AuthRepository.Authorize(*types.MapperAuthDataServiceToDB(&auth_data, auth_data.Token))
 	if err != nil {
 		return types.ServiceAuthVerdict{}, err
 	}
@@ -34,4 +36,16 @@ func (s *AuthService) CheckLogin(username string) (bool, error) {
 		return false, err
 	}
 	return loginExists, nil
+}
+
+func (s *AuthService) AuthorizeByToken(token string, login string) (types.ServiceAuthVerdict, error) {
+	authVerdict, err := s.AuthRepository.AuthorizeByToken(token, login)
+	if err != nil {
+		return types.ServiceAuthVerdict{}, err
+	}
+	return *types.MapperAuthVerdictDBToService(&authVerdict), nil
+}
+
+func (s *AuthService) UpdateToken(login string, password string, token string) (string, error) {
+	return s.AuthRepository.UpdateToken(login, password, token)
 }

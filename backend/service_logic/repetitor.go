@@ -6,7 +6,7 @@ import (
 )
 
 type IRepetitorService interface {
-	CreateRepetitor(initData types.ServiceInitRepetitorData) error
+	CreateRepetitor(initData types.ServiceInitRepetitorData, token string) error
 	GetRepetitorData(userID int64) (*types.ServiceRepetitorData, error)
 	GetRepetitorProfile(userID int64, reviewsOffset int64, reviewsLimit int64) (*types.ServiceRepetitorProfile, error)
 	GetRepetitors(repetitorsOffset int64, repetitorsLimit int64) ([]*types.ServiceRepetitorView, error)
@@ -37,17 +37,18 @@ func CreateRepetitorService(
 		resumeRepository:       resumeRepository,
 	}
 }
-func (s *RepetitorService) transormInitRepetitorData(initData types.ServiceInitRepetitorData) (*types.DBRepetitorData, *types.DBPersonalData, *types.DBAuthData) {
+func (s *RepetitorService) transormInitRepetitorData(initData types.ServiceInitRepetitorData, token string) (*types.DBRepetitorData, *types.DBPersonalData, *types.DBAuthData) {
 	repetitor := types.DBRepetitorData{
 		SummaryRating: 0,
 		ReviewsCount:  0,
 		ResumeID:      0,
 	}
-	return &repetitor, types.MapperPersonalDataServiceToDB(&initData.ServicePersonalData), types.MapperAuthDataServiceToDB(&initData.ServiceAuthData)
+	return &repetitor, types.MapperPersonalDataServiceToDB(&initData.ServicePersonalData), types.MapperAuthDataServiceToDB(&initData.ServiceAuthData, token)
 }
 
-func (s *RepetitorService) CreateRepetitor(initData types.ServiceInitRepetitorData) error {
-	repetitor, personalData, authData := s.transormInitRepetitorData(initData)
+func (s *RepetitorService) CreateRepetitor(initData types.ServiceInitRepetitorData, token string) error {
+	repetitor, personalData, authData := s.transormInitRepetitorData(initData, token)
+	authData.DeniedAccessCount = 0
 	_, err := s.repetitorRepository.InsertRepetitor(*repetitor, *personalData, *authData)
 	if err != nil {
 		return err
@@ -76,7 +77,7 @@ func (s *RepetitorService) UpdateRepetitorPersonalData(userID int64, personalDat
 }
 
 func (s *RepetitorService) UpdateRepetitorPassword(userID int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.repetitorRepository.UpdateRepetitorPassword(userID, *types.MapperAuthDataServiceToDB(&authData), newPassword)
+	return s.repetitorRepository.UpdateRepetitorPassword(userID, *types.MapperAuthDataServiceToDB(&authData, authData.Token), newPassword)
 }
 
 func (s *RepetitorService) GetRepetitorProfile(userID int64, reviewsOffset int64, reviewsLimit int64) (*types.ServiceRepetitorProfile, error) {

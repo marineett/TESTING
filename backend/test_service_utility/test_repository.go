@@ -153,6 +153,32 @@ func CreateTestAuthRepository() *TestAuthRepository {
 	}
 }
 
+func (r *TestAuthRepository) UpdateToken(login string, password string, token string) (string, error) {
+	for _, auth := range r.data {
+		if auth.Login == login && auth.Password == password {
+			auth.Token = token
+			auth.LastTokenUpdate = time.Now()
+			return token, nil
+		}
+	}
+	return "", errors.New("invalid login or password")
+}
+
+func (r *TestAuthRepository) AuthorizeByToken(token string, login string) (types.DBAuthVerdict, error) {
+	for _, auth := range r.data {
+		if auth.Token == token && auth.Login == login {
+			return types.DBAuthVerdict{
+				UserID:            auth.UserID,
+				UserType:          auth.UserType,
+				Token:             auth.Token,
+				DeniedAccessCount: auth.DeniedAccessCount,
+				LastTokenUpdate:   auth.LastTokenUpdate,
+			}, nil
+		}
+	}
+	return types.DBAuthVerdict{}, errors.New("invalid auth data")
+}
+
 func (r *TestAuthRepository) TestGetAuth(id int64) (*types.DBAuthInfo, error) {
 	value, ok := r.data[id]
 	if !ok {
@@ -176,8 +202,11 @@ func (r *TestAuthRepository) Authorize(authData types.DBAuthData) (types.DBAuthV
 	for _, auth := range r.data {
 		if auth.Login == authData.Login && auth.Password == authData.Password {
 			return types.DBAuthVerdict{
-				UserID:   auth.UserID,
-				UserType: auth.UserType,
+				UserID:            auth.UserID,
+				UserType:          auth.UserType,
+				Token:             auth.Token,
+				DeniedAccessCount: auth.DeniedAccessCount,
+				LastTokenUpdate:   auth.LastTokenUpdate,
 			}, nil
 		}
 	}
@@ -228,10 +257,14 @@ func (r *TestAdminRepository) InsertAdmin(admin types.DBAdminData, personalData 
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Admin,
-		Login:    auth.Login,
-		Password: auth.Password,
+		UserID:          userID,
+		UserType:        types.Admin,
+		Login:           auth.Login,
+		Password:        auth.Password,
+		Email:           personalData.Email,
+		Token:           auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate: time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -253,7 +286,10 @@ func (r *TestAdminRepository) UpdateAdminPersonalData(adminId int64, personalDat
 	if _, ok := r.data[adminId]; !ok {
 		return errors.New("admin not found")
 	}
-	r.personalDataRepository.UpdatePersonalData(adminId, personalData)
+	err := r.personalDataRepository.UpdatePersonalData(adminId, personalData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -261,7 +297,10 @@ func (r *TestAdminRepository) UpdateAdminPassword(adminId int64, authData types.
 	if _, ok := r.data[adminId]; !ok {
 		return errors.New("admin not found")
 	}
-	r.authRepository.ChangePassword(adminId, authData, newPassword)
+	err := r.authRepository.ChangePassword(adminId, authData, newPassword)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -301,6 +340,10 @@ func CreateTestModeratorRepository(
 	}
 }
 
+func (r *TestModeratorRepository) GetModeratorsByDepartmentID(departmentID int64) ([]int64, error) {
+	return nil, nil
+}
+
 func (r *TestModeratorRepository) InsertModerator(moderator types.DBModeratorData, personalData types.DBPersonalData, auth types.DBAuthData) (int64, error) {
 	personalDataID, err := r.personalDataRepository.InsertPersonalData(personalData)
 	if err != nil {
@@ -315,10 +358,14 @@ func (r *TestModeratorRepository) InsertModerator(moderator types.DBModeratorDat
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Moderator,
-		Login:    auth.Login,
-		Password: auth.Password,
+		UserID:            userID,
+		UserType:          types.Moderator,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -401,10 +448,14 @@ func (r *TestRepetiorRepository) InsertRepetitor(repetitor types.DBRepetitorData
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Repetitor,
-		Login:    auth.Login,
-		Password: auth.Password,
+		UserID:            userID,
+		UserType:          types.Repetitor,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -482,10 +533,14 @@ func (r *TestClientRepository) InsertClient(client types.DBClientData, personalD
 		return 0, err
 	}
 	_, err = r.authRepository.InsertAuth(types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Client,
-		Login:    auth.Login,
-		Password: auth.Password,
+		UserID:            userID,
+		UserType:          types.Client,
+		Login:             auth.Login,
+		Password:          auth.Password,
+		Email:             personalData.Email,
+		Token:             auth.Token,
+		DeniedAccessCount: auth.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	})
 	if err != nil {
 		return 0, err
@@ -527,6 +582,16 @@ func CreateTestContractRepository() *TestContractRepository {
 	return &TestContractRepository{
 		data: make(map[int64]*types.DBContract),
 	}
+}
+
+func (r *TestContractRepository) GetContracts(clientID int64, repetitorID int64, from int64, size int64) ([]types.DBContract, error) {
+	contracts := make([]types.DBContract, 0)
+	for _, contract := range r.data {
+		if contract.ClientID == clientID && contract.RepetitorID == repetitorID {
+			contracts = append(contracts, *contract)
+		}
+	}
+	return contracts[from:min(from+size, int64(len(contracts)))], nil
 }
 
 func (r *TestContractRepository) InsertContract(contract types.DBContract) (int64, error) {
@@ -788,6 +853,23 @@ func CreateTestLessonRepository() *TestLessonRepository {
 	}
 }
 
+func (r *TestLessonRepository) UpdateLesson(lessonID int64, duration *int64, format *string) error {
+	if _, ok := r.data[lessonID]; !ok {
+		return errors.New("lesson not found")
+	}
+	r.data[lessonID].Duration = *duration
+	r.data[lessonID].Format = *format
+	return nil
+}
+
+func (r *TestLessonRepository) DeleteLesson(lessonID int64) error {
+	if _, ok := r.data[lessonID]; !ok {
+		return errors.New("lesson not found")
+	}
+	delete(r.data, lessonID)
+	return nil
+}
+
 func (r *TestLessonRepository) InsertLesson(lesson types.DBLesson) (int64, error) {
 	if lesson.ContractID == 0 {
 		return 0, errors.New("contract id is required")
@@ -831,6 +913,16 @@ func CreateTestTransactionRepository() *TestTransactionRepository {
 	return &TestTransactionRepository{
 		data: make(map[int64]*types.DBTransaction),
 	}
+}
+
+func (r *TestTransactionRepository) GetContractTransactionsList(contract_id int64, from int64, size int64) ([]types.DBTransaction, error) {
+	transactions := make([]types.DBTransaction, 0)
+	for _, transaction := range r.data {
+		if transaction.ContractID == contract_id {
+			transactions = append(transactions, *transaction)
+		}
+	}
+	return transactions[from:min(from+size, int64(len(transactions)))], nil
 }
 
 func (r *TestTransactionRepository) InsertTransaction(transaction types.DBTransaction) (int64, error) {
@@ -901,6 +993,26 @@ func CreateTestDepartmentRepository() *TestDepartmentRepository {
 	return &TestDepartmentRepository{
 		data: make(map[int64]*types.DBDepartment),
 	}
+}
+
+func (r *TestDepartmentRepository) UpdateDepartmentName(departmentID int64, name string) error {
+	if _, ok := r.data[departmentID]; !ok {
+		return errors.New("department not found")
+	}
+	r.data[departmentID].Name = name
+	return nil
+}
+
+func (r *TestDepartmentRepository) DeleteDepartment(departmentID int64) error {
+	if _, ok := r.data[departmentID]; !ok {
+		return errors.New("department not found")
+	}
+	delete(r.data, departmentID)
+	return nil
+}
+
+func (r *TestDepartmentRepository) GetModeratorsByDepartmentID(departmentID int64) ([]int64, error) {
+	return nil, nil
 }
 
 func (r *TestDepartmentRepository) InsertDepartment(department types.DBDepartment) (int64, error) {
@@ -974,6 +1086,14 @@ func CreateTestChatRepository() *TestChatRepository {
 	return &TestChatRepository{
 		data: make(map[int64]*types.DBChat),
 	}
+}
+
+func (r *TestChatRepository) UpdateChat(chatID int64, chatStatus string) error {
+	if _, ok := r.data[chatID]; !ok {
+		return errors.New("chat not found")
+	}
+	r.data[chatID].Status = chatStatus
+	return nil
 }
 
 func (r *TestChatRepository) DeleteChat(id int64) error {
@@ -1071,6 +1191,29 @@ func CreateTestMessageRepository() *TestMessageRepository {
 	return &TestMessageRepository{
 		data: make(map[int64]*types.DBMessage),
 	}
+}
+
+func (r *TestMessageRepository) UpdateMessageContent(messageID int64, content string) error {
+	if _, ok := r.data[messageID]; !ok {
+		return errors.New("message not found")
+	}
+	r.data[messageID].Content = content
+	return nil
+}
+
+func (r *TestMessageRepository) GetMessage(messageID int64) (*types.DBMessage, error) {
+	if _, ok := r.data[messageID]; !ok {
+		return nil, errors.New("message not found")
+	}
+	return r.data[messageID], nil
+}
+
+func (r *TestMessageRepository) DeleteMessage(messageID int64) error {
+	if _, ok := r.data[messageID]; !ok {
+		return errors.New("message not found")
+	}
+	delete(r.data, messageID)
+	return nil
 }
 
 func (r *TestMessageRepository) InsertMessage(message types.DBMessage) (int64, error) {

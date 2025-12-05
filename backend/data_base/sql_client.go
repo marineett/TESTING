@@ -67,10 +67,14 @@ func (r *SqlClientRepository) InsertClient(client types.DBClientData, personalDa
 		return 0, err
 	}
 	authInfo := types.DBAuthInfo{
-		UserID:   userID,
-		UserType: types.Client,
-		Login:    authData.Login,
-		Password: authData.Password,
+		UserID:            userID,
+		UserType:          types.Client,
+		Login:             authData.Login,
+		Password:          authData.Password,
+		Email:             personalData.Email,
+		Token:             authData.Token,
+		DeniedAccessCount: authData.DeniedAccessCount,
+		LastTokenUpdate:   time.Now(),
 	}
 	_, err = r.authRepository.InsertAuthInSeq(tx, authInfo)
 	if err != nil {

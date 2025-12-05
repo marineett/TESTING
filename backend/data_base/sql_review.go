@@ -19,6 +19,7 @@ func CreateSqlReviewTable(db *sql.DB, reviewTableName string, userTableName stri
 	query := `
 	CREATE TABLE IF NOT EXISTS ` + reviewTableName + ` (
 		id INTEGER PRIMARY KEY,
+        contract_id INTEGER NOT NULL,
 		client_id INTEGER NOT NULL,
 		repetitor_id INTEGER NOT NULL,
 		rating INTEGER NOT NULL,
@@ -53,9 +54,9 @@ func (r *SqlReviewRepository) InsertReview(review types.DBReview) (int64, error)
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.reviewTable + ` (id, client_id, repetitor_id, rating, comment, created_at) VALUES ($1, $2, $3, $4, $5, $6)
-	`
-	_, err = r.db.Exec(query, id, review.ClientID, review.RepetitorID, review.Rating, review.Comment, review.CreatedAt)
+    INSERT INTO ` + r.reviewTable + ` (id, contract_id, client_id, repetitor_id, rating, comment, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `
+	_, err = r.db.Exec(query, id, review.ContractID, review.ClientID, review.RepetitorID, review.Rating, review.Comment, review.CreatedAt)
 	if err != nil {
 		return 0, err
 	}
@@ -69,9 +70,9 @@ func (r *SqlReviewRepository) InsertReviewInSeq(tx *sql.Tx, review types.DBRevie
 		return 0, err
 	}
 	query := `
-	INSERT INTO ` + r.reviewTable + ` (id, client_id, repetitor_id, rating, comment, created_at) VALUES ($1, $2, $3, $4, $5, $6)
-	`
-	_, err = tx.Exec(query, id, review.ClientID, review.RepetitorID, review.Rating, review.Comment, review.CreatedAt)
+    INSERT INTO ` + r.reviewTable + ` (id, contract_id, client_id, repetitor_id, rating, comment, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `
+	_, err = tx.Exec(query, id, review.ContractID, review.ClientID, review.RepetitorID, review.Rating, review.Comment, review.CreatedAt)
 	if err != nil {
 		return 0, err
 	}
@@ -84,7 +85,7 @@ func (r *SqlReviewRepository) GetReview(id int64) (*types.DBReview, error) {
 	`
 	row := r.db.QueryRow(query, id)
 	var review types.DBReview
-	err := row.Scan(&review.ID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
+	err := row.Scan(&review.ID, &review.ContractID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -111,8 +112,8 @@ func (r *SqlReviewRepository) UpdateReview(review types.DBReview) error {
 
 func (r *SqlReviewRepository) GetReviewsByRepetitorID(repetitorID int64, from int64, size int64) ([]types.DBReview, error) {
 	query := `
-	SELECT * FROM ` + r.reviewTable + ` WHERE repetitor_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3
-	`
+    SELECT * FROM ` + r.reviewTable + ` WHERE repetitor_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3
+    `
 	rows, err := r.db.Query(query, repetitorID, size, from)
 	if err != nil {
 		return nil, err
@@ -121,7 +122,7 @@ func (r *SqlReviewRepository) GetReviewsByRepetitorID(repetitorID int64, from in
 	reviews := []types.DBReview{}
 	for rows.Next() {
 		var review types.DBReview
-		err := rows.Scan(&review.ID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
+		err := rows.Scan(&review.ID, &review.ContractID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -135,8 +136,8 @@ func (r *SqlReviewRepository) GetReviewsByRepetitorID(repetitorID int64, from in
 
 func (r *SqlReviewRepository) GetReviewsByClientID(clientID int64, from int64, size int64) ([]types.DBReview, error) {
 	query := `
-	SELECT * FROM ` + r.reviewTable + ` WHERE client_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3
-	`
+    SELECT * FROM ` + r.reviewTable + ` WHERE client_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3
+    `
 	rows, err := r.db.Query(query, clientID, size, from)
 	if err != nil {
 		return nil, err
@@ -145,7 +146,7 @@ func (r *SqlReviewRepository) GetReviewsByClientID(clientID int64, from int64, s
 	reviews := []types.DBReview{}
 	for rows.Next() {
 		var review types.DBReview
-		err := rows.Scan(&review.ID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
+		err := rows.Scan(&review.ID, &review.ContractID, &review.ClientID, &review.RepetitorID, &review.Rating, &review.Comment, &review.CreatedAt)
 		if err != nil {
 			return nil, err
 		}

@@ -271,7 +271,7 @@ func (s *ChatSuite) TestSendMessageCorrect(t provider.T) {
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		cs := service_logic.CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
-		err = cs.CreateClient(tu.TestInitClientData)
+		err = cs.CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
 		sx.Assert().NoError(err)
@@ -280,7 +280,7 @@ func (s *ChatSuite) TestSendMessageCorrect(t provider.T) {
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Act", func(sx provider.StepCtx) {
-		err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).SendMessage(chatID, userID, "Hello")
+		_, err := service_logic.CreateChatService(mod.ChatRepository, mod.MessageRepository).SendMessage(chatID, userID, "Hello")
 		sx.Assert().NoError(err)
 	})
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {
@@ -308,7 +308,7 @@ func (s *ChatSuite) TestGetMessagesCorrect(t provider.T) {
 		mod, err = tu.SetupModule(db)
 		sx.Assert().NoError(err)
 		cs := service_logic.CreateClientService(mod.ClientRepository, mod.PersonalDataRepository, mod.UserRepository, mod.ReviewRepository)
-		err = cs.CreateClient(tu.TestInitClientData)
+		err = cs.CreateClient(tu.TestInitClientData, "")
 		sx.Assert().NoError(err)
 		res, err := mod.AuthRepository.Authorize(types.DBAuthData{Login: tu.TestAuth.Login, Password: tu.TestAuth.Password})
 		sx.Assert().NoError(err)

@@ -26,7 +26,7 @@ func TestCreateRepetitorCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -41,8 +41,8 @@ func TestCreateRepetitorCorrectLondon(t *testing.T) {
 		t.Fatalf("Personal data not updated: %v", personalData)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -51,10 +51,10 @@ func TestCreateRepetitorCorrectLondon(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error getting auth data: %v", err)
 	}
-	if authData.Login != tu.TestInitRepetitorData.ServiceAuthData.Login {
+	if authData.Login != tu.TestInitRepetitorData.Login {
 		t.Fatalf("Auth data not updated: %v", authData)
 	}
-	if authData.Password != tu.TestInitRepetitorData.ServiceAuthData.Password {
+	if authData.Password != tu.TestInitRepetitorData.Password {
 		t.Fatalf("Auth data not updated: %v", authData)
 	}
 	repetitorData, err := repetitorRepository.GetRepetitor(1)
@@ -79,13 +79,13 @@ func TestCreateRepetitorDataCorrectClassic(t *testing.T) {
 	authRepository := module.AuthRepository
 	repetitorRepository := module.RepetitorRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -117,7 +117,7 @@ func TestGetRepetitorDataCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -161,13 +161,13 @@ func TestGetRepetitorDataCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -218,7 +218,7 @@ func TestGetRepetitorDataIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -241,13 +241,13 @@ func TestGetRepetitorDataIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -277,7 +277,7 @@ func TestUpdateRepetitorPersonalDataCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -326,13 +326,13 @@ func TestUpdateRepetitorPersonalDataCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -368,7 +368,7 @@ func TestUpdateRepetitorPersonalDataIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -397,13 +397,13 @@ func TestUpdateRepetitorPersonalDataIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -439,7 +439,7 @@ func TestUpdateRepetitorPasswordCorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -449,7 +449,7 @@ func TestUpdateRepetitorPasswordCorrectLondon(t *testing.T) {
 		t.Fatalf("Error updating repetitor password: %v", err)
 	}
 	_, err = authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
+		Login:    tu.TestInitRepetitorData.Login,
 		Password: newPassword,
 	})
 	if err != nil {
@@ -470,13 +470,13 @@ func TestUpdateRepetitorPasswordCorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)
@@ -506,7 +506,7 @@ func TestUpdateRepetitorPasswordIncorrectLondon(t *testing.T) {
 		reviewRepository,
 		resumeRepository,
 	)
-	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err := repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
@@ -529,13 +529,13 @@ func TestUpdateRepetitorPasswordIncorrectClassic(t *testing.T) {
 	repetitorRepository := module.RepetitorRepository
 	authRepository := module.AuthRepository
 	repetitorService := CreateRepetitorService(repetitorRepository, module.PersonalDataRepository, module.UserRepository, module.ReviewRepository, module.ResumeRepository)
-	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData)
+	err = repetitorService.CreateRepetitor(tu.TestInitRepetitorData, "")
 	if err != nil {
 		t.Fatalf("Error creating repetitor: %v", err)
 	}
 	result, err := authRepository.Authorize(types.DBAuthData{
-		Login:    tu.TestInitRepetitorData.ServiceAuthData.Login,
-		Password: tu.TestInitRepetitorData.ServiceAuthData.Password,
+		Login:    tu.TestInitRepetitorData.Login,
+		Password: tu.TestInitRepetitorData.Password,
 	})
 	if err != nil {
 		t.Fatalf("Error authorizing: %v", err)

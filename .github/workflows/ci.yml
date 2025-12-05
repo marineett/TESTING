@@ -1,0 +1,299 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, lab1, lab2, lab_4]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      tests_ok: ${{ steps.run_unit.outputs.tests_ok }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Run unit tests (both modules)
+        id: run_unit
+        working-directory: backend
+        env:
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/data_base/allure-results
+        run: |
+          set +e
+          go test -v ./data_base -run Test -count=1
+          CODE1=$?
+          ALLURE_OUTPUT_PATH="${{ github.workspace }}/backend/service_logic/allure-results" \
+            go test -v ./service_logic -run Test -count=1
+          CODE2=$?
+          if [ "$CODE1" -eq 0 ] && [ "$CODE2" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Ensure Allure target dir exists (unit)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
+      - name: Collect Allure results
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: true
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (unit)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-unit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: unit-tests
+    if: ${{ needs.unit-tests.outputs.tests_ok == 'true' }}
+    outputs:
+      tests_ok: ${{ steps.run_integration.outputs.tests_ok }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Apache Arrow C headers (Ubuntu)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y -V ca-certificates lsb-release wget gnupg build-essential pkg-config
+          DISTRO=$(lsb_release -cs)
+          wget -q https://apache.jfrog.io/artifactory/arrow/ubuntu/apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get install -y ./apache-arrow-apt-source-latest-$DISTRO.deb
+          sudo apt-get update
+          sudo apt-get install -y -V libarrow-dev
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Run integration tests
+        id: run_integration
+        env:
+          ALLURE_OUTPUT_PATH: ${{ github.workspace }}/backend/integration_tests/allure-results
+        run: |
+          set +e
+          cd backend
+          go test -v ./integration_tests -run Test -count=1
+          CODE=$?
+          if [ "$CODE" -eq 0 ]; then OK=true; else OK=false; fi
+          echo "tests_ok=$OK" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Ensure Allure target dir exists (integration)
+        if: ${{ always() }}
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/e2e/allure-results"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
+      - name: Collect Allure results (integration)
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: true
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (integration)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+  e2e-tests:
+    needs: integration-tests
+    if: ${{ needs.integration-tests.outputs.tests_ok == 'true' }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    environment: ci_envs  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Docker and Compose versions
+        run: |
+          docker version
+          docker compose version
+
+      - name: Build and run e2e stack with secrets
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
+
+          USER_TABLE_NAME: ${{ secrets.USER_TABLE_NAME }}
+          PERSONAL_DATA_TABLE_NAME: ${{ secrets.PERSONAL_DATA_TABLE_NAME }}
+          AUTH_TABLE_NAME: ${{ secrets.AUTH_TABLE_NAME }}
+          CHAT_TABLE_NAME: ${{ secrets.CHAT_TABLE_NAME }}
+          MESSAGE_TABLE_NAME: ${{ secrets.MESSAGE_TABLE_NAME }}
+          DEPARTMENT_TABLE_NAME: ${{ secrets.DEPARTMENT_TABLE_NAME }}
+          HIRE_INFO_TABLE_NAME: ${{ secrets.HIRE_INFO_TABLE_NAME }}
+          CLIENT_TABLE_NAME: ${{ secrets.CLIENT_TABLE_NAME }}
+          TRANSACTION_TABLE_NAME: ${{ secrets.TRANSACTION_TABLE_NAME }}
+          REPEATITOR_TABLE_NAME: ${{ secrets.REPEATITOR_TABLE_NAME }}
+          RESUME_TABLE_NAME: ${{ secrets.RESUME_TABLE_NAME }}
+          REVIEW_TABLE_NAME: ${{ secrets.REVIEW_TABLE_NAME }}
+          CONTRACT_TABLE_NAME: ${{ secrets.CONTRACT_TABLE_NAME }}
+          ADMIN_TABLE_NAME: ${{ secrets.ADMIN_TABLE_NAME }}
+          MODERATOR_TABLE_NAME: ${{ secrets.MODERATOR_TABLE_NAME }}
+          PENDING_CONTRACT_PAYMENT_TRANSACTIONS: ${{ secrets.PENDING_CONTRACT_PAYMENT_TRANSACTIONS }}
+          LESSON_TABLE_NAME: ${{ secrets.LESSON_TABLE_NAME }}
+          SEQUENCE_NAME: ${{ secrets.SEQUENCE_NAME }}
+          
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          
+          IMAP_HOST: ${{ secrets.IMAP_HOST }}
+          IMAP_PORT: ${{ secrets.IMAP_PORT }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          
+          SENDER_SMTP_HOST: ${{ secrets.SENDER_SMTP_HOST }}
+          SENDER_SMTP_PORT: ${{ secrets.SENDER_SMTP_PORT }}
+          SENDER_SMTP_USER: ${{ secrets.SENDER_SMTP_USER }}
+          SENDER_SMTP_PASSWORD: ${{ secrets.SENDER_SMTP_PASSWORD }}
+          SENDER_SMTP_FROM_EMAIL: ${{ secrets.SENDER_SMTP_FROM_EMAIL }}
+          SENDER_SMTP_FROM_NAME: ${{ secrets.SENDER_SMTP_FROM_NAME }}
+          
+          BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+        run: |
+          # Экспортируем все переменные чтобы docker compose их увидел
+          export DATABASE_HOST DATABASE_PORT DATABASE_USER DATABASE_PASSWORD DATABASE_NAME
+          export USER_TABLE_NAME PERSONAL_DATA_TABLE_NAME AUTH_TABLE_NAME
+          export CHAT_TABLE_NAME MESSAGE_TABLE_NAME DEPARTMENT_TABLE_NAME
+          export HIRE_INFO_TABLE_NAME CLIENT_TABLE_NAME TRANSACTION_TABLE_NAME
+          export REPEATITOR_TABLE_NAME RESUME_TABLE_NAME REVIEW_TABLE_NAME
+          export CONTRACT_TABLE_NAME ADMIN_TABLE_NAME MODERATOR_TABLE_NAME
+          export PENDING_CONTRACT_PAYMENT_TRANSACTIONS LESSON_TABLE_NAME SEQUENCE_NAME
+          export JWT_TOKEN JWT_SECRET
+          export IMAP_HOST IMAP_PORT IMAP_USER IMAP_PASSWORD
+          export SENDER_SMTP_HOST SENDER_SMTP_PORT SENDER_SMTP_USER SENDER_SMTP_PASSWORD
+          export SENDER_SMTP_FROM_EMAIL SENDER_SMTP_FROM_NAME
+          export BACKEND_PORT
+          
+          # Запускаем docker compose
+          docker compose -f docker-compose.e2e.yml -p e2e-tests up --build --abort-on-container-exit
+
+      - name: Show logs (on failure)
+        if: failure()
+        run: |
+          docker compose -f docker-compose.e2e.yml -p e2e-tests logs backend e2e-tests || true
+
+      - name: Collect Allure results (e2e)
+        if: always()
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: false
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (e2e)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-e2e-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+      - name: Tear down e2e stack
+        if: always()
+        run: |
+          docker compose -f docker-compose.e2e.yml -p e2e-tests down -v
+
+  integration-allure-placeholder:
+    needs: unit-tests
+    if: ${{ needs.unit-tests.outputs.tests_ok != 'true' }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create placeholder Allure for integration
+        run: |
+          mkdir -p e2e/allure-results
+          echo "Integration tests were skipped (gated by unit)." > e2e/allure-results/placeholder.txt
+
+      - name: Upload Allure results (integration placeholder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results
+
+  e2e-allure-placeholder:
+    needs: [unit-tests, integration-tests]
+    if: ${{ needs.integration-tests.result != 'success' }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create placeholder Allure for e2e
+        run: |
+          mkdir -p e2e/allure-results
+          echo "E2E tests were skipped (gated by integration)." > e2e/allure-results/placeholder.txt
+
+      - name: Fix permissions for Allure dir (e2e placeholder)
+        if: ${{ always() }}
+        run: |
+          sudo mkdir -p "${GITHUB_WORKSPACE}/e2e"
+          sudo chown -R "$USER":"$USER" "${GITHUB_WORKSPACE}/e2e" || true
+
+      - name: Collect Allure results (e2e placeholder)
+        if: ${{ always() }}
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          CLEAN: false
+        run: bash e2e/collect-allure.sh
+
+      - name: Upload Allure results (e2e placeholder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-e2e-${{ github.run_id }}-${{ github.run_attempt }}
+          path: e2e/allure-results

@@ -12,6 +12,21 @@ const (
 	Admin
 )
 
+func (u UserType) String() string {
+	switch u {
+	case Client:
+		return "client"
+	case Repetitor:
+		return "repetitor"
+	case Moderator:
+		return "moderator"
+	case Admin:
+		return "admin"
+	default:
+		return "guest"
+	}
+}
+
 type DBUserData struct {
 	ID               int64     `json:"id"`
 	RegistrationDate time.Time `json:"registration_date"`
@@ -20,21 +35,32 @@ type DBUserData struct {
 }
 
 type DBAuthData struct {
-	Login    string `json:"login"`
-	Password string `json:"password"`
+	Login             string    `json:"login"`
+	Password          string    `json:"password"`
+	Email             string    `json:"email"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type DBAuthVerdict struct {
-	UserID   int64    `json:"user_id"`
-	UserType UserType `json:"user_type"`
+	UserID            int64     `json:"user_id"`
+	UserType          UserType  `json:"user_type"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type DBAuthInfo struct {
-	ID       int64    `json:"id"`
-	UserID   int64    `json:"user_id"`
-	UserType UserType `json:"user_type"`
-	Login    string   `json:"login"`
-	Password string   `json:"password"`
+	ID                int64     `json:"id"`
+	UserID            int64     `json:"user_id"`
+	UserType          UserType  `json:"user_type"`
+	Login             string    `json:"login"`
+	Password          string    `json:"password"`
+	Email             string    `json:"email"`
+	Token             string    `json:"token"`
+	DeniedAccessCount int       `json:"denied_access_count"`
+	LastTokenUpdate   time.Time `json:"last_token_update"`
 }
 
 type DBPassportData struct {

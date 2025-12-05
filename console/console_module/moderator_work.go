@@ -144,7 +144,9 @@ func ModeratorWork(serviceModule *service_logic.ServiceModule) {
 		fmt.Println("Moderator work")
 		fmt.Println("1. Get moderator info")
 		fmt.Println("2. Update moderator info")
-		fmt.Println("3. Exit")
+		fmt.Println("3. List all moderators")
+		fmt.Println("4. Update moderator salary")
+		fmt.Println("5. Exit")
 		var choiceStr string
 		fmt.Scanln(&choiceStr)
 		choice, err := strconv.Atoi(choiceStr)
@@ -152,7 +154,7 @@ func ModeratorWork(serviceModule *service_logic.ServiceModule) {
 			fmt.Println("Error:", err)
 			return
 		}
-		if choice < 1 || choice > 3 {
+		if choice < 1 || choice > 5 {
 			fmt.Println("Invalid choice")
 			continue
 		}
@@ -162,7 +164,57 @@ func ModeratorWork(serviceModule *service_logic.ServiceModule) {
 		case 2:
 			UpdateModeratorInfo(serviceModule)
 		case 3:
+			ListAllModerators(serviceModule)
+		case 4:
+			UpdateModeratorSalary(serviceModule)
+		case 5:
 			return
 		}
 	}
+}
+
+func ListAllModerators(serviceModule *service_logic.ServiceModule) {
+	moderators, err := serviceModule.ModeratorService.GetModerators()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if len(moderators) == 0 {
+		fmt.Println("No moderators found")
+		return
+	}
+	for _, m := range moderators {
+		fmt.Println("--- Moderator ---")
+		fmt.Println("ID:", m.ID)
+		fmt.Println("First name:", m.FirstName)
+		fmt.Println("Last name:", m.LastName)
+		fmt.Println("Middle name:", m.MiddleName)
+		fmt.Println("Telephone number:", m.TelephoneNumber)
+		fmt.Println("Email:", m.Email)
+		fmt.Println("Salary:", m.Salary)
+	}
+}
+
+func UpdateModeratorSalary(serviceModule *service_logic.ServiceModule) {
+	fmt.Println("Enter moderator ID:")
+	idStr := ""
+	fmt.Scanln(&idStr)
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Enter new salary:")
+	salaryStr := ""
+	fmt.Scanln(&salaryStr)
+	salary, err := strconv.ParseInt(salaryStr, 10, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	if err := serviceModule.ModeratorService.UpdateModeratorSalary(id, salary); err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Salary updated")
 }

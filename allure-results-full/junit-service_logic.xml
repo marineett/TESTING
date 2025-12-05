@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="223">
+	<testsuite name="./service_logic" tests="223" failures="0" errors="0" id="0" hostname="MacBook-Pro-Marina.local" time="4.130" timestamp="2025-10-30T22:03:46+03:00">
+		<testcase name="TestCreateAdminCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateAdminCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestCreateAdminIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateAdminIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetAdminDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetAdminDataCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetAdminDataInCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetAdminDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetAdminProfileCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetAdminProfileCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetAdminProfileIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetAdminProfileIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminPersonalDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminPasswordCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminPasswordCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateAdminPasswordIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminPasswordIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminDepartmentCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminDepartmentIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminDepartmentIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminSalaryCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminSalaryCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateAdminSalaryIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminSalaryIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateAdminSalaryIncorrectSalaryLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateAdminSalaryIncorrectSalaryClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunAuthSuite" classname="./service_logic" time="0.100"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite" classname="./service_logic" time="0.100"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests" classname="./service_logic" time="0.100"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestCreateCRChatCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateCRChatCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestCreateRMChatCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateRMChatCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestCreateCMChatCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateCMChatCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatListByClientIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatListByClientIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatListByRepetitorIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatListByRepetitorIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatListByModeratorIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatListByModeratorIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestSendMessageCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestSendMessageCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetMessagesCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetMessagesCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetMessagesIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetMessagesIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatIdByCIDAndMIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatIdByCIDAndMIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatIdByCIDAndRIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatIdByCIDAndRIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetChatIdByMIDAndRIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetChatIdByMIDAndRIDCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunClientSuite" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetContractCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetContractCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetContractIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetContractIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateContractStatusCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateContractStatusCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateContractStatusIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateContractStatusIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateContractPaymentStatusCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateContractPaymentStatusCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestCreateContractReviewClientCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractReviewClientCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestCreateContractReviewClientIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractReviewClientIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestCreateContractReviewRepetitorCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractReviewRepetitorCorrectClassic" classname="./service_logic" time="0.040"></testcase>
+		<testcase name="TestCreateContractReviewRepetitorIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractReviewRepetitorIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateContractReviewClientIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateContractReviewClientIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateContractReviewRepetitorIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateContractReviewRepetitorIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetRepetitorContractListCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetRepetitorContractListCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetClientContractListCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetClientContractListCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetContractListCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetContractListCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetAllContractsCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetAllContractsCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests" classname="./service_logic" time="0.180"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunLessonSuite" classname="./service_logic" time="0.080"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite" classname="./service_logic" time="0.080"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests" classname="./service_logic" time="0.080"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateModeratorCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateModeratorCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetModeratorDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetModeratorDataCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetModeratorDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetModeratorDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetModeratorProfileCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetModeratorProfileCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetModeratorProfileIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetModeratorProfileIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorPersonalDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorPasswordCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorPasswordCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateModeratorPasswordIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorPasswordIncorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateModeratorSalaryCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorSalaryCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateModeratorSalaryIncorrectIdLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorSalaryIncorrectIdClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateModeratorSalaryIncorrectSalaryLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateModeratorSalaryIncorrectSalaryClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunPersonalDataSuite" classname="./service_logic" time="0.040"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite" classname="./service_logic" time="0.040"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite/Tests" classname="./service_logic" time="0.040"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateRepetitorCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateRepetitorDataCorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetRepetitorDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetRepetitorDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetRepetitorDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetRepetitorDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateRepetitorPersonalDataIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateRepetitorPasswordIncorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestCreateResumeCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetResumeIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumeTitleCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumeTitleIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumeDescriptionCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumeDescriptionIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumePricesCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestUpdateResumePricesIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestDeleteResumeCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestDeleteResumeIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetReviewCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetReviewCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetReviewIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetReviewIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetReviewsByRepetitorIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetReviewsByRepetitorIDCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetReviewsByClientIDCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetReviewsByClientIDCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestCreateContractPaymentTransactionCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestCreateContractPaymentTransactionCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetTransactionsListCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetTransactionsListCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetTransactionsListIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetTransactionsListIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestChangeTransactionStatusCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestChangeTransactionStatusCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestChangeTransactionStatusIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestChangeTransactionStatusIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<testcase name="TestGetTransactionCorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetTransactionCorrectClassic" classname="./service_logic" time="0.030"></testcase>
+		<testcase name="TestGetTransactionIncorrectLondon" classname="./service_logic" time="0.000"></testcase>
+		<testcase name="TestGetTransactionIncorrectClassic" classname="./service_logic" time="0.020"></testcase>
+		<system-out><![CDATA[{"Time":"2025-10-30T22:03:42.905801+03:00","Action":"start","Package":"data_base_project/service_logic"}
+{"Time":"2025-10-30T22:03:44.474678+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.474744+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectLondon","Output":"=== RUN   TestCreateAdminCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.476226+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.476241+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.476678+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.476684+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectClassic","Output":"=== RUN   TestCreateAdminCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.500641+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.500667+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateAdminCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:44.501141+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.501147+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectLondon","Output":"=== RUN   TestCreateAdminIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.501157+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.501163+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.501166+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.501187+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectClassic","Output":"=== RUN   TestCreateAdminIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.517774+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.517813+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateAdminIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.517821+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.517825+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectLondon","Output":"=== RUN   TestGetAdminDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.517956+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.517972+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.517977+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.51798+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectClassic","Output":"=== RUN   TestGetAdminDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.542199+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.542247+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminDataCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.542254+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminDataInCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.542258+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataInCorrectLondon","Output":"=== RUN   TestGetAdminDataInCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.542262+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataInCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.542266+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminDataInCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.542269+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.542285+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataIncorrectClassic","Output":"=== RUN   TestGetAdminDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.562299+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.562326+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.562362+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.56237+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectLondon","Output":"=== RUN   TestGetAdminProfileCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.562381+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.562385+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.562388+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.562391+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectClassic","Output":"=== RUN   TestGetAdminProfileCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.588697+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.588728+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:44.588743+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.588748+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectLondon","Output":"=== RUN   TestGetAdminProfileIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.588758+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.588764+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.588768+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.588772+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectClassic","Output":"=== RUN   TestGetAdminProfileIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.613024+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.613055+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAdminProfileIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.613084+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.613089+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectLondon","Output":"=== RUN   TestUpdateAdminPersonalDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.613109+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.613121+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.613126+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.613131+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectClassic","Output":"=== RUN   TestUpdateAdminPersonalDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.64092+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.640953+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:44.64096+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.64097+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectLondon","Output":"=== RUN   TestUpdateAdminPersonalDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.640974+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.640999+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.641009+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.641014+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectClassic","Output":"=== RUN   TestUpdateAdminPersonalDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.665045+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.665076+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPersonalDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.665083+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.665086+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectLondon","Output":"=== RUN   TestUpdateAdminPasswordCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.665093+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.665098+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.665101+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.665105+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectClassic","Output":"=== RUN   TestUpdateAdminPasswordCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.69067+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.690701+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:44.69072+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.690733+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectLondon","Output":"=== RUN   TestUpdateAdminPasswordIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.690741+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.690749+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.690753+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.690756+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectClassic","Output":"=== RUN   TestUpdateAdminPasswordIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.714621+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.714652+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminPasswordIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.714666+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.71467+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectLondon","Output":"=== RUN   TestUpdateAdminDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.714675+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.71468+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.714685+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.71471+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectClassic","Output":"=== RUN   TestUpdateAdminDepartmentCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.738941+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.738968+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.738975+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.738978+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectLondon","Output":"=== RUN   TestUpdateAdminDepartmentIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.738986+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.738999+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.739002+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.739005+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectClassic","Output":"=== RUN   TestUpdateAdminDepartmentIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.762893+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.76292+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminDepartmentIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.762926+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.76293+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectLondon","Output":"=== RUN   TestUpdateAdminSalaryCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.762945+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.762951+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.762956+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.76296+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectClassic","Output":"=== RUN   TestUpdateAdminSalaryCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.788016+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.788045+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:44.788051+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.788055+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectLondon","Output":"=== RUN   TestUpdateAdminSalaryIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.788059+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.788073+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.788078+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.788094+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectClassic","Output":"=== RUN   TestUpdateAdminSalaryIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.811775+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.811802+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.811809+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryLondon"}
+{"Time":"2025-10-30T22:03:44.81182+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryLondon","Output":"=== RUN   TestUpdateAdminSalaryIncorrectSalaryLondon\n"}
+{"Time":"2025-10-30T22:03:44.811829+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryLondon","Output":"
+{"Time":"2025-10-30T22:03:44.811835+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.811839+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryClassic"}
+{"Time":"2025-10-30T22:03:44.811844+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryClassic","Output":"=== RUN   TestUpdateAdminSalaryIncorrectSalaryClassic\n"}
+{"Time":"2025-10-30T22:03:44.835216+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryClassic","Output":"
+{"Time":"2025-10-30T22:03:44.835251+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateAdminSalaryIncorrectSalaryClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.835258+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite"}
+{"Time":"2025-10-30T22:03:44.835262+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite","Output":"=== RUN   TestRunAuthSuite\n"}
+{"Time":"2025-10-30T22:03:44.835824+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite"}
+{"Time":"2025-10-30T22:03:44.835832+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite","Output":"=== RUN   TestRunAuthSuite/AuthSuite\n"}
+{"Time":"2025-10-30T22:03:44.835869+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests"}
+{"Time":"2025-10-30T22:03:44.835874+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests\n"}
+{"Time":"2025-10-30T22:03:44.835909+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.835913+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.855899+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.855922+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.875624+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.875648+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.876022+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.876035+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.87635+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon"}
+{"Time":"2025-10-30T22:03:44.876362+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.876654+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.876665+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.896516+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon"}
+{"Time":"2025-10-30T22:03:44.896539+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon\n"}
+{"Time":"2025-10-30T22:03:44.896901+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic"}
+{"Time":"2025-10-30T22:03:44.896908+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic\n"}
+{"Time":"2025-10-30T22:03:44.916548+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon"}
+{"Time":"2025-10-30T22:03:44.916572+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon\n"}
+{"Time":"2025-10-30T22:03:44.916937+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic"}
+{"Time":"2025-10-30T22:03:44.916945+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic","Output":"=== RUN   TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.935182+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite","Output":"
+{"Time":"2025-10-30T22:03:44.935211+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite","Output":"
+{"Time":"2025-10-30T22:03:44.935239+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests","Output":"
+{"Time":"2025-10-30T22:03:44.935288+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.935318+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.935341+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.935349+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.935355+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935368+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.935371+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935376+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.93538+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935394+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.935398+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.935402+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.935411+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935432+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectLoginLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.935439+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic","Output":"
+{"Time":"2025-10-30T22:03:44.935443+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.935448+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935454+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestAuthorizeIncorrectPasswordLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.935459+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.935464+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests/TestCheckLoginIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.935467+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite/Tests","Elapsed":0.1}
+{"Time":"2025-10-30T22:03:44.93547+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite/AuthSuite","Elapsed":0.1}
+{"Time":"2025-10-30T22:03:44.935473+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunAuthSuite","Elapsed":0.1}
+{"Time":"2025-10-30T22:03:44.935477+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.935483+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectLondon","Output":"=== RUN   TestCreateCRChatCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.935509+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.935519+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.935522+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.935525+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectClassic","Output":"=== RUN   TestCreateCRChatCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.955918+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.955946+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateCRChatCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.955952+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.956013+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectLondon","Output":"=== RUN   TestCreateRMChatCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.956028+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.956032+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.956035+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.956038+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectClassic","Output":"=== RUN   TestCreateRMChatCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.975762+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.97579+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateRMChatCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.975796+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.975799+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectLondon","Output":"=== RUN   TestCreateCMChatCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.975804+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.975838+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.975843+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.975846+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectClassic","Output":"=== RUN   TestCreateCMChatCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:44.995322+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:44.995347+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateCMChatCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:44.995376+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:44.995391+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectLondon","Output":"=== RUN   TestGetChatListByClientIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:44.995404+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:44.995408+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:44.995411+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:44.995414+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectClassic","Output":"=== RUN   TestGetChatListByClientIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.019161+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.019189+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByClientIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.019197+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.0192+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectLondon","Output":"=== RUN   TestGetChatListByRepetitorIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.019207+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.019211+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.019214+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.019217+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectClassic","Output":"=== RUN   TestGetChatListByRepetitorIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.042868+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.042897+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByRepetitorIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.042904+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.042908+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectLondon","Output":"=== RUN   TestGetChatListByModeratorIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.042914+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.042927+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.042932+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.042937+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectClassic","Output":"=== RUN   TestGetChatListByModeratorIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.066397+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.066427+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatListByModeratorIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.066434+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.066437+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectLondon","Output":"=== RUN   TestGetChatCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.066442+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.066446+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.066449+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.066452+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectClassic","Output":"=== RUN   TestGetChatCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.086253+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.086282+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.086295+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.086299+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectLondon","Output":"=== RUN   TestSendMessageCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.086319+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.086326+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.08633+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.086332+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectClassic","Output":"=== RUN   TestSendMessageCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.113819+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.113848+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestSendMessageCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.113855+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.113858+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectLondon","Output":"=== RUN   TestGetMessagesCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.113866+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.113869+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.113872+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.113875+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectClassic","Output":"=== RUN   TestGetMessagesCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.141479+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.141509+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetMessagesCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.141515+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.141519+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectLondon","Output":"=== RUN   TestGetMessagesIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.141524+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.141532+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.141537+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.14154+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectClassic","Output":"=== RUN   TestGetMessagesIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.160476+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.160509+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetMessagesIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.160515+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.160518+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectLondon","Output":"=== RUN   TestGetChatIdByCIDAndMIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.160522+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.160527+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.160532+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.160536+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectClassic","Output":"=== RUN   TestGetChatIdByCIDAndMIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.182858+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.182891+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndMIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.182899+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.182904+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectLondon","Output":"=== RUN   TestGetChatIdByCIDAndRIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.182914+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.182946+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.182951+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.182964+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectClassic","Output":"=== RUN   TestGetChatIdByCIDAndRIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.203552+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.203585+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByCIDAndRIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.203595+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.203599+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectLondon","Output":"=== RUN   TestGetChatIdByMIDAndRIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.203607+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.203612+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.203615+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.20362+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectClassic","Output":"=== RUN   TestGetChatIdByMIDAndRIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.222328+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.222353+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetChatIdByMIDAndRIDCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.22236+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite"}
+{"Time":"2025-10-30T22:03:45.222364+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite","Output":"=== RUN   TestRunClientSuite\n"}
+{"Time":"2025-10-30T22:03:45.222674+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite"}
+{"Time":"2025-10-30T22:03:45.222685+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite","Output":"=== RUN   TestRunClientSuite/ClientSuite\n"}
+{"Time":"2025-10-30T22:03:45.222693+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests"}
+{"Time":"2025-10-30T22:03:45.222697+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests\n"}
+{"Time":"2025-10-30T22:03:45.222749+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.222755+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.223202+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.223218+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.24826+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.248283+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.272551+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.272578+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.272947+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.27296+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.297453+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.297477+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.328473+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.328501+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.329087+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.329108+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.347652+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.347676+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.37412+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.374152+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.401578+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.401602+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.40196+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.401971+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.402251+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.402259+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.402605+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.402616+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon","Output":"=== RUN   TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.402954+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite","Output":"
+{"Time":"2025-10-30T22:03:45.402987+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite","Output":"
+{"Time":"2025-10-30T22:03:45.402993+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests","Output":"
+{"Time":"2025-10-30T22:03:45.403+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.403007+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403012+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403016+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.40302+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403033+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.403036+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.40304+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403043+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403047+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.40305+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403054+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.403057+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.403076+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403081+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403085+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.403089+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403095+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.403101+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.403105+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.40311+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.403114+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestGetClientDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403117+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.40312+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPasswordIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403123+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.40313+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestUpdateClientPersonalDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403133+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.403136+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests/TestCreateClientCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403139+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite/Tests","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.403142+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite/ClientSuite","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.403145+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunClientSuite","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.403148+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.403151+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectLondon","Output":"=== RUN   TestCreateContractCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.403158+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.403161+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.403164+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.403167+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectClassic","Output":"=== RUN   TestCreateContractCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.432878+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.432906+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.432914+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.432917+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectLondon","Output":"=== RUN   TestGetContractCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.432922+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.432929+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.432932+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.432934+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectClassic","Output":"=== RUN   TestGetContractCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.462063+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.462089+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.462097+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.462101+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectLondon","Output":"=== RUN   TestGetContractIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.462107+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.462117+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.462121+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.462125+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectClassic","Output":"=== RUN   TestGetContractIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.481525+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.481552+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.481573+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.481583+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectLondon","Output":"=== RUN   TestUpdateContractStatusCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.481599+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.481618+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.481623+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.481627+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectClassic","Output":"=== RUN   TestUpdateContractStatusCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.508939+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.508991+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.509001+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.509007+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectLondon","Output":"=== RUN   TestUpdateContractStatusIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.509017+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.509035+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.50904+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.509044+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectClassic","Output":"=== RUN   TestUpdateContractStatusIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.527105+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.527148+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractStatusIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.527155+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.527176+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectLondon","Output":"=== RUN   TestUpdateContractPaymentStatusCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.527186+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.52719+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.527193+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.527195+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectClassic","Output":"=== RUN   TestUpdateContractPaymentStatusCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.554856+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.554877+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractPaymentStatusCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.554883+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.554886+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectLondon","Output":"=== RUN   TestCreateContractReviewClientCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.554894+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.55492+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.554929+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.554932+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectClassic","Output":"=== RUN   TestCreateContractReviewClientCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.583445+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.583476+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.583484+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.583487+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectLondon","Output":"=== RUN   TestCreateContractReviewClientIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.583491+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.583504+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.583508+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.58351+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectClassic","Output":"=== RUN   TestCreateContractReviewClientIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.602582+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.60261+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewClientIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.602616+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.60262+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectLondon","Output":"=== RUN   TestCreateContractReviewRepetitorCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.602627+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.602631+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.602634+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.602637+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectClassic","Output":"=== RUN   TestCreateContractReviewRepetitorCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.638445+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.638472+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorCorrectClassic","Elapsed":0.04}
+{"Time":"2025-10-30T22:03:45.63848+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.638483+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectLondon","Output":"=== RUN   TestCreateContractReviewRepetitorIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.638502+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.638519+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.638522+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.638525+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectClassic","Output":"=== RUN   TestCreateContractReviewRepetitorIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.657903+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.657934+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractReviewRepetitorIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.657941+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.657945+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectLondon","Output":"=== RUN   TestUpdateContractReviewClientIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.657951+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.657955+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.657958+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.657961+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectClassic","Output":"=== RUN   TestUpdateContractReviewClientIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.675561+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.675589+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewClientIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.675596+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.6756+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectLondon","Output":"=== RUN   TestUpdateContractReviewRepetitorIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.675606+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.67564+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.675648+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.675653+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectClassic","Output":"=== RUN   TestUpdateContractReviewRepetitorIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.693217+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.693245+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateContractReviewRepetitorIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.693252+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.693256+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectLondon","Output":"=== RUN   TestGetRepetitorContractListCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.693266+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.693272+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.693277+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.693281+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectClassic","Output":"=== RUN   TestGetRepetitorContractListCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.711898+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.711924+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorContractListCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.71193+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.711934+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectLondon","Output":"=== RUN   TestGetClientContractListCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.711942+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.711946+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.711949+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.711952+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectClassic","Output":"=== RUN   TestGetClientContractListCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.741827+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectClassic","Output":"contract\n"}
+{"Time":"2025-10-30T22:03:45.746441+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.746468+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetClientContractListCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.746475+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.746481+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectLondon","Output":"=== RUN   TestGetContractListCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.74649+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.746494+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.746498+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.746501+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectClassic","Output":"=== RUN   TestGetContractListCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.778845+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.778871+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetContractListCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.778877+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.778881+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectLondon","Output":"=== RUN   TestGetAllContractsCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.778887+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.778894+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.7789+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.778904+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectClassic","Output":"=== RUN   TestGetAllContractsCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.808978+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.809+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetAllContractsCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.809006+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite"}
+{"Time":"2025-10-30T22:03:45.80901+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite","Output":"=== RUN   TestRunDepartmentSuite\n"}
+{"Time":"2025-10-30T22:03:45.809255+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite"}
+{"Time":"2025-10-30T22:03:45.809266+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite\n"}
+{"Time":"2025-10-30T22:03:45.809273+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests"}
+{"Time":"2025-10-30T22:03:45.809277+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests\n"}
+{"Time":"2025-10-30T22:03:45.809296+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.8093+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.809733+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.809738+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.833393+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.833416+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.860471+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.860494+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.860865+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.860893+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.889231+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.889255+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.889637+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.88965+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.889947+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.889965+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.915737+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.915761+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.916165+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.916179+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.943234+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.943261+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.943756+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.943782+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.972741+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.972766+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.973095+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon"}
+{"Time":"2025-10-30T22:03:45.973102+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.973393+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic"}
+{"Time":"2025-10-30T22:03:45.973399+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:45.991819+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon"}
+{"Time":"2025-10-30T22:03:45.991858+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon","Output":"=== RUN   TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:45.992272+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite","Output":"
+{"Time":"2025-10-30T22:03:45.992294+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite","Output":"
+{"Time":"2025-10-30T22:03:45.992303+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests","Output":"
+{"Time":"2025-10-30T22:03:45.992308+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992313+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992318+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992322+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.992326+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992333+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.992336+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.99234+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992343+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992347+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.99235+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992354+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireModeratorFromDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992357+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992361+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992364+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992368+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestCreateDepartmentCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.992371+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992374+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992377+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992381+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.992384+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992388+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentsByHeadIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.99239+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992394+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:45.992403+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992407+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestGetDepartmentUsersIDsIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.99241+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.992416+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992419+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:45.992423+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestFireAdminFromDepartmentIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:45.992427+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:45.99243+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests/TestAssignAdminToDepartmentCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:45.992433+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite/Tests","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.992436+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite/DepartmentSuite","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.992439+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunDepartmentSuite","Elapsed":0.18}
+{"Time":"2025-10-30T22:03:45.992442+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite"}
+{"Time":"2025-10-30T22:03:45.992445+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite","Output":"=== RUN   TestRunLessonSuite\n"}
+{"Time":"2025-10-30T22:03:45.992493+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite"}
+{"Time":"2025-10-30T22:03:45.992498+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite","Output":"=== RUN   TestRunLessonSuite/LessonSuite\n"}
+{"Time":"2025-10-30T22:03:45.992502+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests"}
+{"Time":"2025-10-30T22:03:45.992504+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests\n"}
+{"Time":"2025-10-30T22:03:45.992508+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic"}
+{"Time":"2025-10-30T22:03:45.992511+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.021163+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.021188+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.021545+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.021557+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.041122+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.041146+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.041514+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.041526+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.07181+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.07183+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon","Output":"=== RUN   TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.072172+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite","Output":"
+{"Time":"2025-10-30T22:03:46.072186+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite","Output":"
+{"Time":"2025-10-30T22:03:46.072191+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests","Output":"
+{"Time":"2025-10-30T22:03:46.072196+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.0722+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.072206+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.072209+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.072212+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.072239+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.072243+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.072247+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestCreateLessonIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.072251+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.072254+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.072257+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.072261+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests/TestGetLessonsCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.072264+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite/Tests","Elapsed":0.08}
+{"Time":"2025-10-30T22:03:46.072267+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite/LessonSuite","Elapsed":0.08}
+{"Time":"2025-10-30T22:03:46.07227+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunLessonSuite","Elapsed":0.08}
+{"Time":"2025-10-30T22:03:46.072277+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.07228+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectLondon","Output":"=== RUN   TestCreateModeratorCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.072287+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.072291+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.072294+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.072308+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectClassic","Output":"=== RUN   TestCreateModeratorCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.095254+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.095281+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateModeratorCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.095299+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.095303+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectLondon","Output":"=== RUN   TestGetModeratorDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.095314+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.09532+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.095325+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.09533+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectClassic","Output":"=== RUN   TestGetModeratorDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.119157+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.119185+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.1192+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.119204+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectLondon","Output":"=== RUN   TestGetModeratorDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.119212+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.119216+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.119232+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.119235+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectClassic","Output":"=== RUN   TestGetModeratorDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.143128+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.143159+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.143167+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.14317+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectLondon","Output":"=== RUN   TestGetModeratorProfileCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.143175+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.14318+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.143183+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.143186+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectClassic","Output":"=== RUN   TestGetModeratorProfileCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.168934+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.168972+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.168978+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.168982+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectLondon","Output":"=== RUN   TestGetModeratorProfileIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.168987+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.168992+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.168995+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.168997+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectClassic","Output":"=== RUN   TestGetModeratorProfileIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.193331+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.193361+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetModeratorProfileIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.193368+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.193372+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectLondon","Output":"=== RUN   TestUpdateModeratorPersonalDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.193396+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.193403+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.193406+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.193409+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectClassic","Output":"=== RUN   TestUpdateModeratorPersonalDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.222003+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.222028+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.222034+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.222037+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectLondon","Output":"=== RUN   TestUpdateModeratorPersonalDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.222079+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.2221+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.222107+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.22211+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectClassic","Output":"=== RUN   TestUpdateModeratorPersonalDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.247096+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.247122+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPersonalDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.247129+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.247133+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectLondon","Output":"=== RUN   TestUpdateModeratorPasswordCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.247137+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.247143+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.247146+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.247149+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectClassic","Output":"=== RUN   TestUpdateModeratorPasswordCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.273354+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.273382+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.273388+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.273391+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectLondon","Output":"=== RUN   TestUpdateModeratorPasswordIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.273397+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.273423+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.273429+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.273434+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectClassic","Output":"=== RUN   TestUpdateModeratorPasswordIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.299504+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.299525+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorPasswordIncorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.299543+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.299554+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectLondon","Output":"=== RUN   TestUpdateModeratorSalaryCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.299569+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.299573+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.299577+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.29958+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectClassic","Output":"=== RUN   TestUpdateModeratorSalaryCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.32393+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.323972+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.323978+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdLondon"}
+{"Time":"2025-10-30T22:03:46.323982+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdLondon","Output":"=== RUN   TestUpdateModeratorSalaryIncorrectIdLondon\n"}
+{"Time":"2025-10-30T22:03:46.324005+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdLondon","Output":"
+{"Time":"2025-10-30T22:03:46.324015+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.324018+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdClassic"}
+{"Time":"2025-10-30T22:03:46.324028+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdClassic","Output":"=== RUN   TestUpdateModeratorSalaryIncorrectIdClassic\n"}
+{"Time":"2025-10-30T22:03:46.34967+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdClassic","Output":"
+{"Time":"2025-10-30T22:03:46.349697+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectIdClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.349704+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryLondon"}
+{"Time":"2025-10-30T22:03:46.349724+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryLondon","Output":"=== RUN   TestUpdateModeratorSalaryIncorrectSalaryLondon\n"}
+{"Time":"2025-10-30T22:03:46.349731+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryLondon","Output":"
+{"Time":"2025-10-30T22:03:46.349735+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.349738+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryClassic"}
+{"Time":"2025-10-30T22:03:46.349741+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryClassic","Output":"=== RUN   TestUpdateModeratorSalaryIncorrectSalaryClassic\n"}
+{"Time":"2025-10-30T22:03:46.373222+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryClassic","Output":"
+{"Time":"2025-10-30T22:03:46.37325+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateModeratorSalaryIncorrectSalaryClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.373256+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite"}
+{"Time":"2025-10-30T22:03:46.37326+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite","Output":"=== RUN   TestRunPersonalDataSuite\n"}
+{"Time":"2025-10-30T22:03:46.373429+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite"}
+{"Time":"2025-10-30T22:03:46.373441+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite\n"}
+{"Time":"2025-10-30T22:03:46.373449+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests"}
+{"Time":"2025-10-30T22:03:46.373452+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite/Tests\n"}
+{"Time":"2025-10-30T22:03:46.373479+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic"}
+{"Time":"2025-10-30T22:03:46.373484+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic\n"}
+{"Time":"2025-10-30T22:03:46.393529+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.393548+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.413693+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.413716+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.414044+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon"}
+{"Time":"2025-10-30T22:03:46.414057+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon","Output":"=== RUN   TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon\n"}
+{"Time":"2025-10-30T22:03:46.414428+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite","Output":"
+{"Time":"2025-10-30T22:03:46.414441+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite","Output":"
+{"Time":"2025-10-30T22:03:46.414462+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests","Output":"
+{"Time":"2025-10-30T22:03:46.414467+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic","Output":"
+{"Time":"2025-10-30T22:03:46.414472+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.414477+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.414481+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.414484+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.414488+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.414491+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon","Output":"
+{"Time":"2025-10-30T22:03:46.414497+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests/TestGetPersonalDataLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.4145+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite/Tests","Elapsed":0.04}
+{"Time":"2025-10-30T22:03:46.414503+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite/PersonalDataSuite","Elapsed":0.04}
+{"Time":"2025-10-30T22:03:46.414506+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestRunPersonalDataSuite","Elapsed":0.04}
+{"Time":"2025-10-30T22:03:46.414509+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.414515+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorCorrectLondon","Output":"=== RUN   TestCreateRepetitorCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.414518+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.414522+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.414524+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.414527+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorDataCorrectClassic","Output":"=== RUN   TestCreateRepetitorDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.439411+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.439433+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateRepetitorDataCorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.43944+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.439444+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectLondon","Output":"=== RUN   TestGetRepetitorDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.439448+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.439455+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.439474+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.439477+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectClassic","Output":"=== RUN   TestGetRepetitorDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.467232+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.467284+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.467303+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.467308+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectLondon","Output":"=== RUN   TestGetRepetitorDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.467316+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.467324+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.467329+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.467333+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectClassic","Output":"=== RUN   TestGetRepetitorDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.491074+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.491106+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetRepetitorDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.491112+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.491117+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectLondon","Output":"=== RUN   TestUpdateRepetitorPersonalDataCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.491124+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.491132+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.491136+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.491139+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectClassic","Output":"=== RUN   TestUpdateRepetitorPersonalDataCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.516189+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.51622+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.516227+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.516249+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectLondon","Output":"=== RUN   TestUpdateRepetitorPersonalDataIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.516267+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.516274+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.51628+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.516284+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectClassic","Output":"=== RUN   TestUpdateRepetitorPersonalDataIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.540163+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.540193+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPersonalDataIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.540201+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.540204+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectLondon","Output":"=== RUN   TestUpdateRepetitorPasswordCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.540209+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.540214+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.540217+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.540243+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectClassic","Output":"=== RUN   TestUpdateRepetitorPasswordCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.566593+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.566621+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.566628+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.566631+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectLondon","Output":"=== RUN   TestUpdateRepetitorPasswordIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.566639+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.566644+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.566647+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.566649+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectClassic","Output":"=== RUN   TestUpdateRepetitorPasswordIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.593438+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.593468+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateRepetitorPasswordIncorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.593474+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateResumeCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593478+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateResumeCorrectLondon","Output":"=== RUN   TestCreateResumeCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593489+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateResumeCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593494+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateResumeCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593498+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetResumeIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593501+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetResumeIncorrectLondon","Output":"=== RUN   TestGetResumeIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593505+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetResumeIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593509+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetResumeIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593513+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593517+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleCorrectLondon","Output":"=== RUN   TestUpdateResumeTitleCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593526+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593532+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593537+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593541+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleIncorrectLondon","Output":"=== RUN   TestUpdateResumeTitleIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593547+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593552+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumeTitleIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593555+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593574+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionCorrectLondon","Output":"=== RUN   TestUpdateResumeDescriptionCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593589+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593597+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593608+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593611+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionIncorrectLondon","Output":"=== RUN   TestUpdateResumeDescriptionIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593615+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593618+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumeDescriptionIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593621+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593624+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesCorrectLondon","Output":"=== RUN   TestUpdateResumePricesCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593627+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593633+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.59364+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593643+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesIncorrectLondon","Output":"=== RUN   TestUpdateResumePricesIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593648+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593675+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestUpdateResumePricesIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593689+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestDeleteResumeCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593693+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestDeleteResumeCorrectLondon","Output":"=== RUN   TestDeleteResumeCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593699+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestDeleteResumeCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593703+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestDeleteResumeCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593706+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestDeleteResumeIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593709+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestDeleteResumeIncorrectLondon","Output":"=== RUN   TestDeleteResumeIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593717+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestDeleteResumeIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.59372+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestDeleteResumeIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593723+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.593726+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectLondon","Output":"=== RUN   TestGetReviewCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.593739+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.593758+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.593761+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.593764+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectClassic","Output":"=== RUN   TestGetReviewCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.627121+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.627153+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.627159+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.627163+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectLondon","Output":"=== RUN   TestGetReviewIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.627167+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.627205+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.62721+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.627214+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectClassic","Output":"=== RUN   TestGetReviewIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.645376+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.645409+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.645418+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.645423+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectLondon","Output":"=== RUN   TestGetReviewsByRepetitorIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.645448+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.645458+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.645463+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.645466+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectClassic","Output":"=== RUN   TestGetReviewsByRepetitorIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.679049+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.67908+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewsByRepetitorIDCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.679087+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.679091+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectLondon","Output":"=== RUN   TestGetReviewsByClientIDCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.679096+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.679102+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.679106+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.67911+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectClassic","Output":"=== RUN   TestGetReviewsByClientIDCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.712226+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.712258+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetReviewsByClientIDCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.712266+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.712269+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectLondon","Output":"=== RUN   TestCreateContractPaymentTransactionCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.712296+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.712304+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.712308+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.712311+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectClassic","Output":"=== RUN   TestCreateContractPaymentTransactionCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.738082+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.738109+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestCreateContractPaymentTransactionCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.738115+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.738126+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectLondon","Output":"=== RUN   TestGetTransactionsListCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.738135+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.738139+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.738143+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.738147+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectClassic","Output":"=== RUN   TestGetTransactionsListCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.764021+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.764052+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.764059+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.764063+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectLondon","Output":"=== RUN   TestGetTransactionsListIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.764067+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.764072+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.764092+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.764098+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectClassic","Output":"=== RUN   TestGetTransactionsListIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.782132+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.782163+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionsListIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.78217+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.782174+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectLondon","Output":"=== RUN   TestChangeTransactionStatusCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.782222+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.782235+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.782241+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.782245+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectClassic","Output":"=== RUN   TestChangeTransactionStatusCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.808623+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.808649+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.808656+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.80866+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectLondon","Output":"=== RUN   TestChangeTransactionStatusIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.808668+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.808672+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.808675+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.808678+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectClassic","Output":"=== RUN   TestChangeTransactionStatusIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.826964+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.826997+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestChangeTransactionStatusIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.827005+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectLondon"}
+{"Time":"2025-10-30T22:03:46.827008+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectLondon","Output":"=== RUN   TestGetTransactionCorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.827031+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.827037+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.82704+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectClassic"}
+{"Time":"2025-10-30T22:03:46.827043+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectClassic","Output":"=== RUN   TestGetTransactionCorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.852248+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.852279+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionCorrectClassic","Elapsed":0.03}
+{"Time":"2025-10-30T22:03:46.852287+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectLondon"}
+{"Time":"2025-10-30T22:03:46.85229+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectLondon","Output":"=== RUN   TestGetTransactionIncorrectLondon\n"}
+{"Time":"2025-10-30T22:03:46.852295+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectLondon","Output":"
+{"Time":"2025-10-30T22:03:46.852322+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectLondon","Elapsed":0}
+{"Time":"2025-10-30T22:03:46.852331+03:00","Action":"run","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectClassic"}
+{"Time":"2025-10-30T22:03:46.852334+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectClassic","Output":"=== RUN   TestGetTransactionIncorrectClassic\n"}
+{"Time":"2025-10-30T22:03:46.869692+03:00","Action":"output","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectClassic","Output":"
+{"Time":"2025-10-30T22:03:46.869726+03:00","Action":"pass","Package":"data_base_project/service_logic","Test":"TestGetTransactionIncorrectClassic","Elapsed":0.02}
+{"Time":"2025-10-30T22:03:46.869734+03:00","Action":"output","Package":"data_base_project/service_logic","Output":"PASS\n"}
+{"Time":"2025-10-30T22:03:46.872822+03:00","Action":"output","Package":"data_base_project/service_logic","Output":"ok  \tdata_base_project/service_logic\t3.963s\n"}
+{"Time":"2025-10-30T22:03:46.87365+03:00","Action":"pass","Package":"data_base_project/service_logic","Elapsed":3.969}]]></system-out>
+	</testsuite>
+</testsuites>

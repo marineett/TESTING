@@ -1,0 +1,16 @@
+FROM golang:1.24 as builder
+WORKDIR /app
+COPY e2e/go.mod e2e/go.sum ./
+RUN go mod download
+COPY e2e/ ./
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /degradation_and_run ./cmd/degradation_and_run
+
+FROM alpine:3.20
+RUN adduser -D -u 10001 appuser
+USER appuser
+WORKDIR /home/appuser
+COPY --from=builder /degradation_and_run /usr/local/bin/degradation_and_run
+ENTRYPOINT ["/usr/local/bin/degradation_and_run"]
+
+
+

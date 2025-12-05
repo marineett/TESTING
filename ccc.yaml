@@ -1,0 +1,1688 @@
+openapi: 3.0.1
+info:
+  title: Tutoring Platform
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8000/api/v2
+
+tags:
+  - name: Auth
+    description: Авторизация и регистрация
+  - name: Client
+    description: Профили клиентов
+  - name: Repetitor
+    description: Профили репетиторов
+  - name: Chat
+    description: Управление чатами
+  - name: Message
+    description: Управление сообщениями
+  - name: Contract
+    description: Контракты и их подресурсы
+  - name: Lesson
+    description: Уроки в рамках контракта
+  - name: Review
+    description: Отзывы по контрактам
+  - name: Transaction
+    description: Платежи и модерация
+  - name: Admin
+    description: Операции администратора
+  - name: Department
+    description: Управление отделами
+  - name: Moderator
+    description: Управление модераторами
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+
+    AuthRequest:
+      type: object
+      required: [login, password]
+      properties:
+        login: { type: string }
+        password: { type: string, format: password }
+
+    AuthResponse:
+      type: object
+      required: [token, role, user_id]
+      properties:
+        token: { type: string, description: JWT }
+        role:
+          { type: string, enum: [guest, client, repetitor, moderator, admin] }
+        user_id: { type: integer, format: int64 }
+
+    UserRegister:
+      type: object
+      required:
+        [first_name, last_name, email, login, password, telephone_number, role]
+      properties:
+        first_name: { type: string }
+        last_name: { type: string }
+        middle_name: { type: string }
+        email: { type: string, format: email }
+        telephone_number: { type: string }
+        login: { type: string }
+        password: { type: string, format: password }
+        role:
+          {
+            type: string,
+            enum: [client, repetitor, moderator, admin],
+            description: "Роль пользователя при регистрации",
+          }
+        resume: { type: string, description: "Резюме (только для репетиторов)" }
+        salary:
+          {
+            type: integer,
+            format: int64,
+            description: "Зарплата (только для модераторов и администраторов)",
+          }
+
+    ClientProfile:
+      type: object
+      required: [id, first_name, last_name, email, telephone_number]
+      properties:
+        id: { type: integer, format: int64 }
+        first_name: { type: string }
+        last_name: { type: string }
+        middle_name: { type: string }
+        email: { type: string, format: email }
+        telephone_number: { type: string }
+        rating: { type: number, format: float, nullable: true }
+
+    RepetitorProfile:
+      type: object
+      required: [id, first_name, last_name, email, telephone_number]
+      properties:
+        id: { type: integer, format: int64 }
+        first_name: { type: string }
+        last_name: { type: string }
+        middle_name: { type: string }
+        email: { type: string, format: email }
+        telephone_number: { type: string }
+        resume: { type: string, nullable: true }
+        rating: { type: number, format: float, nullable: true }
+
+    Chat:
+      type: object
+      required: [id, type, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        type:
+          {
+            type: string,
+            enum: [client-moderator, client-repetitor, repetitor-moderator],
+          }
+        client_id: { type: integer, format: int64, nullable: true }
+        repetitor_id: { type: integer, format: int64, nullable: true }
+        moderator_id: { type: integer, format: int64, nullable: true }
+        status: { type: string, enum: [active, closed], default: active }
+        created_at: { type: string, format: date-time }
+
+    ChatCreate:
+      type: object
+      required: [type]
+      properties:
+        type:
+          {
+            type: string,
+            enum: [client-moderator, client-repetitor, repetitor-moderator],
+          }
+        client_id: { type: integer, format: int64 }
+        repetitor_id: { type: integer, format: int64 }
+        moderator_id: { type: integer, format: int64 }
+
+    ChatUpdate:
+      type: object
+      required: [type, status]
+      properties:
+        type:
+          {
+            type: string,
+            enum: [client-moderator, client-repetitor, repetitor-moderator],
+          }
+        status: { type: string, enum: [active, closed] }
+
+    ChatStatusPatch:
+      type: object
+      properties:
+        status: { type: string, enum: [active, closed] }
+
+    Message:
+      type: object
+      required: [id, sender_id, content, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        sender_id: { type: integer, format: int64 }
+        content: { type: string }
+        created_at: { type: string, format: date-time }
+
+    MessageCreate:
+      type: object
+      required: [content]
+      properties:
+        content: { type: string }
+
+    MessageContentPatch:
+      type: object
+      required: [content]
+      properties:
+        content: { type: string }
+
+    Contract:
+      type: object
+      required: [id, client_id, description, rate, status, format, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        client_id: { type: integer, format: int64 }
+        repetitor_id: { type: integer, format: int64, nullable: true }
+        description: { type: string }
+        rate: { type: integer, description: "ставка за урок (руб.)" }
+        format: { type: string, enum: [online, offline] }
+        status:
+          { type: string, enum: [review, active, completed, cancelled, banned] }
+        created_at: { type: string, format: date-time }
+
+    ContractCreate:
+      type: object
+      required: [client_id, description, rate, format]
+      properties:
+        client_id: { type: integer, format: int64 }
+        description: { type: string }
+        rate: { type: integer, minimum: 500, maximum: 10000 }
+        format: { type: string, enum: [online, offline] }
+
+    ContractStatusPatch:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [active, completed, cancelled] }
+
+    Lesson:
+      type: object
+      required: [id, contract_id, duration_min, format, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        contract_id: { type: integer, format: int64 }
+        duration_min: { type: integer, minimum: 15 }
+        format: { type: string, enum: [online, offline] }
+        created_at: { type: string, format: date-time }
+
+    LessonCreate:
+      type: object
+      required: [duration_min, format]
+      properties:
+        duration_min: { type: integer, minimum: 15 }
+        format: { type: string, enum: [online, offline] }
+
+    LessonPatch:
+      type: object
+      properties:
+        duration_min: { type: integer, minimum: 15 }
+        format: { type: string, enum: [online, offline] }
+
+    Review:
+      type: object
+      required:
+        [id, contract_id, from_user_id, to_user_id, score, text, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        contract_id: { type: integer, format: int64 }
+        from_user_id: { type: integer, format: int64 }
+        to_user_id: { type: integer, format: int64 }
+        score: { type: integer, minimum: 1, maximum: 5 }
+        text: { type: string }
+        created_at: { type: string, format: date-time }
+
+    ReviewCreate:
+      type: object
+      required: [score, text]
+      properties:
+        score: { type: integer, minimum: 1, maximum: 5 }
+        text: { type: string }
+
+    Transaction:
+      type: object
+      required: [id, contract_id, amount, status, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        contract_id: { type: integer, format: int64 }
+        amount: { type: integer }
+        status: { type: string, enum: [pending, confirmed, rejected] }
+        created_at: { type: string, format: date-time }
+
+    TransactionCreate:
+      type: object
+      required: [amount]
+      properties:
+        amount: { type: integer, minimum: 1 }
+
+    TransactionApprove:
+      type: object
+      properties:
+        approved: { type: boolean, default: true }
+
+    ServerAdminProfile:
+      type: object
+      required:
+        [first_name, last_name, middle_name, telephone_number, email, salary]
+      properties:
+        first_name: { type: string }
+        last_name: { type: string }
+        middle_name: { type: string }
+        telephone_number: { type: string }
+        email: { type: string, format: email }
+        salary: { type: integer, format: int64 }
+
+    ServerModeratorProfile:
+      type: object
+      required:
+        [
+          first_name,
+          last_name,
+          middle_name,
+          telephone_number,
+          email,
+          salary,
+          departments,
+        ]
+      properties:
+        first_name: { type: string }
+        last_name: { type: string }
+        middle_name: { type: string }
+        telephone_number: { type: string }
+        email: { type: string, format: email }
+        salary: { type: integer, format: int64 }
+        departments:
+          type: array
+          items: { type: string }
+
+    ServerModeratorProfileWithID:
+      type: object
+      required: [id, moderator]
+      properties:
+        id: { type: integer, format: int64 }
+        moderator: { $ref: "#/components/schemas/ServerModeratorProfile" }
+
+    ServerDepartment:
+      type: object
+      required: [id, name, head_id, moderators]
+      properties:
+        id: { type: integer, format: int64 }
+        name: { type: string }
+        head_id: { type: integer, format: int64 }
+        moderators:
+          type: array
+          items: { $ref: "#/components/schemas/ServerModeratorProfileWithID" }
+
+    DepartmentCreate:
+      type: object
+      required: [name, head_id]
+      properties:
+        name: { type: string }
+        head_id: { type: integer, format: int64 }
+
+    DepartmentNameUpdate:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+
+    ModeratorSalaryPatch:
+      type: object
+      required: [salary]
+      properties:
+        salary: { type: integer, format: int64, minimum: 0 }
+
+  responses:
+    BadRequest:
+      description: Bad request — invalid input
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            invalid_params:
+              {
+                value:
+                  {
+                    code: "bad_request",
+                    message: "Invalid request parameters",
+                  },
+              }
+            invalid_body:
+              {
+                value: { code: "bad_request", message: "Invalid request body" },
+              }
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            no_token:
+              {
+                value:
+                  {
+                    code: "unauthorized",
+                    message: "Authorization token is missing",
+                  },
+              }
+            bad_token:
+              { value: { code: "unauthorized", message: "Token is invalid" } }
+            token_expired:
+              { value: { code: "unauthorized", message: "Token expired" } }
+
+    Forbidden:
+      description: Forbidden — permission denied
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            not_participant:
+              {
+                value:
+                  {
+                    code: "forbidden",
+                    message: "User is not a participant of this chat",
+                  },
+              }
+            not_moderator:
+              {
+                value:
+                  { code: "forbidden", message: "Moderator role required" },
+              }
+            not_head:
+              {
+                value:
+                  {
+                    code: "forbidden",
+                    message: "Department head role required",
+                  },
+              }
+
+    NotFoundChat:
+      description: Chat not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  chat_nf:
+                    { value: { code: "not_found", message: "Chat not found" } },
+                },
+            },
+        }
+    NotFoundMessage:
+      description: Message not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  msg_nf:
+                    {
+                      value:
+                        { code: "not_found", message: "Message not found" },
+                    },
+                },
+            },
+        }
+    NotFoundDepartment:
+      description: Department not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  dept_nf:
+                    {
+                      value:
+                        { code: "not_found", message: "Department not found" },
+                    },
+                },
+            },
+        }
+    NotFoundProfile:
+      description: Profile not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  profile_nf:
+                    {
+                      value:
+                        { code: "not_found", message: "Profile not found" },
+                    },
+                },
+            },
+        }
+    NotFoundContract:
+      description: Contract not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  contract_nf:
+                    {
+                      value:
+                        { code: "not_found", message: "Contract not found" },
+                    },
+                },
+            },
+        }
+    NotFoundTransaction:
+      description: Transaction not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  tx_nf:
+                    {
+                      value:
+                        { code: "not_found", message: "Transaction not found" },
+                    },
+                },
+            },
+        }
+    NotFoundLesson:
+      description: Lesson not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  lesson_nf:
+                    {
+                      value: { code: "not_found", message: "Lesson not found" },
+                    },
+                },
+            },
+        }
+    NotFoundReview:
+      description: Review not found
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  review_nf:
+                    {
+                      value: { code: "not_found", message: "Review not found" },
+                    },
+                },
+            },
+        }
+
+    ConflictChatExists:
+      description: Conflict — chat already exists for these participants
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  chat_exists:
+                    {
+                      value:
+                        {
+                          code: "conflict",
+                          message: "Chat already exists for these participants",
+                        },
+                    },
+                },
+            },
+        }
+    ConflictDepartmentNameTaken:
+      description: Conflict — department name already in use
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  name_taken:
+                    {
+                      value:
+                        {
+                          code: "conflict",
+                          message: "Department name already in use",
+                        },
+                    },
+                },
+            },
+        }
+    ConflictModeratorAlreadyInDepartment:
+      description: Conflict — moderator already in department
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  mod_exists:
+                    {
+                      value:
+                        {
+                          code: "conflict",
+                          message: "Moderator already assigned to this department",
+                        },
+                    },
+                },
+            },
+        }
+
+    ServerError:
+      description: Internal server error
+      content:
+        {
+          application/json:
+            {
+              schema: { $ref: "#/components/schemas/Error" },
+              examples:
+                {
+                  err:
+                    {
+                      value:
+                        {
+                          code: "server_error",
+                          message: "Unexpected server error",
+                        },
+                    },
+                },
+            },
+        }
+
+paths:
+  /auth/login/:
+    post:
+      tags: [Auth]
+      summary: Авторизация пользователя (JWT)
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/AuthRequest" } },
+          }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/AuthResponse" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /registration/:
+    post:
+      tags: [Auth]
+      summary: Регистрация пользователя (client, repetitor, moderator, admin)
+      operationId: registerUser
+      description: Роль (client, repetitor, moderator, admin).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserRegister" }
+            examples:
+              client:
+                summary: Регистрация клиента
+                value:
+                  first_name: "Иван"
+                  last_name: "Иванов"
+                  middle_name: "Иванович"
+                  email: "ivan@example.com"
+                  telephone_number: "+79001234567"
+                  login: "ivan_client"
+                  password: "securePassword123"
+                  role: "client"
+              repetitor:
+                summary: Регистрация репетитора
+                value:
+                  first_name: "Мария"
+                  last_name: "Петрова"
+                  middle_name: "Сергеевна"
+                  email: "maria@example.com"
+                  telephone_number: "+79007654321"
+                  login: "maria_tutor"
+                  password: "securePassword456"
+                  role: "repetitor"
+                  resume: "Опыт преподавания математики 5 лет, кандидат наук"
+              moderator:
+                summary: Регистрация модератора
+                value:
+                  first_name: "Алексей"
+                  last_name: "Смирнов"
+                  middle_name: "Петрович"
+                  email: "alexey@example.com"
+                  telephone_number: "+79009876543"
+                  login: "alexey_mod"
+                  password: "securePassword789"
+                  role: "moderator"
+                  salary: 50000
+              admin:
+                summary: Регистрация администратора
+                value:
+                  first_name: "Екатерина"
+                  last_name: "Волкова"
+                  middle_name: "Дмитриевна"
+                  email: "ekaterina@example.com"
+                  telephone_number: "+79005555555"
+                  login: "ekaterina_admin"
+                  password: "securePassword000"
+                  role: "admin"
+                  salary: 80000
+      responses:
+        "201":
+          description: Успешная регистрация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id: { type: integer, format: int64 }
+                  role:
+                    {
+                      type: string,
+                      enum: [client, repetitor, moderator, admin],
+                    }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409":
+          description: Conflict — login or email already exists
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+              examples:
+                login_taken:
+                  {
+                    value:
+                      { code: "conflict", message: "Login already in use" },
+                  }
+                email_taken:
+                  {
+                    value:
+                      { code: "conflict", message: "Email already in use" },
+                  }
+
+  /clients/{clientId}/:
+    get:
+      tags: [Client]
+      summary: Получить профиль клиента
+      operationId: getClientProfile
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/ClientProfile" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundProfile" }
+
+  /repetitors/{repetitorId}/:
+    get:
+      tags: [Repetitor]
+      summary: Получить профиль репетитора
+      operationId: getRepetitorProfile
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: repetitorId
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/RepetitorProfile" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundProfile" }
+
+  /chats/:
+    get:
+      tags: [Chat]
+      summary: Получить список чатов пользователя
+      operationId: listUserChats
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - {
+            in: query,
+            name: userId,
+            required: true,
+            schema: { type: integer, format: int64 },
+          }
+        - {
+            in: query,
+            name: role,
+            required: true,
+            schema: { type: string, enum: [client, repetitor, moderator] },
+          }
+        - { in: query, name: offset, schema: { type: integer, default: 0 } }
+        - { in: query, name: limit, schema: { type: integer, default: 20 } }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Chat" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [Chat]
+      summary: Создать новый чат
+      operationId: createChat
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ChatCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Chat" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/ConflictChatExists" }
+
+  /chats/{chatId}/:
+    parameters:
+      - {
+          in: path,
+          name: chatId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Chat]
+      summary: Получить информацию о чате
+      operationId: getChatById
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Chat" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+    put:
+      tags: [Chat]
+      summary: Полностью заменить чат
+      operationId: replaceChat
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ChatUpdate" } },
+          }
+      responses:
+        "200":
+          {
+            description: Updated,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Chat" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+    patch:
+      tags: [Chat]
+      summary: Частично обновить чат (изменить статус)
+      operationId: updateChatStatus
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ChatStatusPatch" } },
+          }
+      responses:
+        "200":
+          {
+            description: Updated,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Chat" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+    delete:
+      tags: [Chat]
+      summary: Удалить чат
+      operationId: deleteChat
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204": { description: No Content }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+
+  /chats/{chatId}/messages/:
+    parameters:
+      - {
+          in: path,
+          name: chatId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Message]
+      summary: Получить список сообщений в чате
+      operationId: listChatMessages
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { in: query, name: offset, schema: { type: integer, default: 0 } }
+        - { in: query, name: limit, schema: { type: integer, default: 50 } }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Message" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+    post:
+      tags: [Message]
+      summary: Отправить сообщение в чат
+      operationId: sendMessageToChat
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/MessageCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Message" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundChat" }
+
+  /messages/{messageId}/:
+    parameters:
+      - {
+          in: path,
+          name: messageId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    patch:
+      tags: [Message]
+      summary: Изменить содержимое сообщения
+      operationId: updateMessageContent
+      description: Редактирование текста сообщения (доступно в течение ограниченного времени после отправки)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/MessageContentPatch" } },
+          }
+      responses:
+        "200":
+          {
+            description: Сообщение обновлено,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Message" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundMessage" }
+    delete:
+      tags: [Message]
+      summary: Удалить сообщение
+      operationId: deleteMessage
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204": { description: No Content }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundMessage" }
+
+  /contracts/:
+    get:
+      tags: [Contract]
+      summary: Получить список контрактов с фильтрацией
+      operationId: listContracts
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - {
+            in: query,
+            name: client_id,
+            schema: { type: integer, format: int64 },
+          }
+        - {
+            in: query,
+            name: repetitor_id,
+            schema: { type: integer, format: int64 },
+          }
+        - {
+            in: query,
+            name: status,
+            schema:
+              {
+                type: string,
+                enum: [review, active, completed, cancelled, banned],
+              },
+          }
+        - { in: query, name: offset, schema: { type: integer, default: 0 } }
+        - { in: query, name: limit, schema: { type: integer, default: 20 } }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Contract" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [Contract]
+      summary: Создать новый контракт
+      operationId: createContract
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ContractCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Contract" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /contracts/{contractId}/:
+    parameters:
+      - {
+          in: path,
+          name: contractId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Contract]
+      summary: Получить контракт по ID
+      operationId: getContractById
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Contract" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+    patch:
+      tags: [Contract]
+      summary: Изменить статус контракта
+      operationId: updateContractStatus
+      description: Активация, завершение или отмена контракта
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ContractStatusPatch" } },
+          }
+      responses:
+        "200":
+          {
+            description: Updated,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Contract" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+
+  /contracts/{contractId}/lessons/:
+    parameters:
+      - {
+          in: path,
+          name: contractId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Lesson]
+      summary: Получить список уроков контракта
+      operationId: listContractLessons
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Lesson" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+    post:
+      tags: [Lesson]
+      summary: Создать урок в контракте
+      operationId: createLessonInContract
+      description: Добавление урока с автоматическим созданием транзакции
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/LessonCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Lesson" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+
+  /lessons/{lessonId}/:
+    parameters:
+      - {
+          in: path,
+          name: lessonId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Lesson]
+      summary: Получить информацию об уроке
+      operationId: getLessonById
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Lesson" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundLesson" }
+    patch:
+      tags: [Lesson]
+      summary: Частично обновить урок
+      operationId: updateLessonDetails
+      description: Исправление ошибок в данных урока (длительность, формат)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/LessonPatch" } },
+          }
+      responses:
+        "200":
+          {
+            description: Урок обновлен,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Lesson" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundLesson" }
+    delete:
+      tags: [Lesson]
+      summary: Удалить урок
+      operationId: deleteLesson
+      description: Удаление урока в случае ошибочного создания или отмены
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204": { description: No Content }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundLesson" }
+
+  /contracts/{contractId}/reviews/:
+    parameters:
+      - {
+          in: path,
+          name: contractId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Review]
+      summary: Получить отзывы по контракту
+      operationId: listContractReviews
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Review" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+    post:
+      tags: [Review]
+      summary: Оставить отзыв по контракту
+      operationId: createReviewForContract
+      description: Создание отзыва после завершения контракта
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ReviewCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Review" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+
+  /contracts/{contractId}/transactions/:
+    parameters:
+      - {
+          in: path,
+          name: contractId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Transaction]
+      summary: Получить платежи по контракту
+      operationId: listContractTransactions
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items: { $ref: "#/components/schemas/Transaction" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+    post:
+      tags: [Transaction]
+      summary: Создать оплату по контракту
+      operationId: createTransactionForContract
+      description: Создание платежа со статусом pending (ожидает модерации)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/TransactionCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Transaction" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundContract" }
+
+  /transactions/{transactionId}/approval/:
+    parameters:
+      - {
+          in: path,
+          name: transactionId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    patch:
+      tags: [Moderator]
+      summary: Подтвердить транзакцию
+      operationId: approveTransaction
+      description: Модератор подтверждает транзакцию (pending → confirmed)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/TransactionApprove" } },
+          }
+      responses:
+        "200":
+          {
+            description: Approved,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Transaction" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundTransaction" }
+
+  /admins/{adminId}/:
+    parameters:
+      - {
+          in: path,
+          name: adminId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Admin]
+      summary: Получить профиль администратора
+      operationId: getAdminProfile
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema: { $ref: "#/components/schemas/ServerAdminProfile" },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundProfile" }
+
+  /departments/:
+    post:
+      tags: [Department]
+      summary: Создать новый отдел
+      operationId: createDepartment
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/DepartmentCreate" } },
+          }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/ServerDepartment" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/ConflictDepartmentNameTaken" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /admins/{adminId}/departments/:
+    parameters:
+      - {
+          in: path,
+          name: adminId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    get:
+      tags: [Department]
+      summary: Получить список отделов администратора
+      operationId: listAdminDepartments
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items:
+                          { $ref: "#/components/schemas/ServerDepartment" },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /departments/{departmentId}/:
+    parameters:
+      - {
+          in: path,
+          name: departmentId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    put:
+      tags: [Department]
+      summary: Полностью обновить информацию отдела
+      operationId: replaceDepartmentInfo
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/DepartmentNameUpdate" } },
+          }
+      responses:
+        "200":
+          {
+            description: Updated,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/ServerDepartment" } },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundDepartment" }
+    delete:
+      tags: [Department]
+      summary: Удалить отдел
+      operationId: deleteDepartment
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204": { description: No Content }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFoundDepartment" }
+
+  /moderators/:
+    get:
+      tags: [Moderator]
+      summary: Получить список всех модераторов
+      operationId: listAllModerators
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        type: array,
+                        items:
+                          {
+                            $ref: "#/components/schemas/ServerModeratorProfileWithID",
+                          },
+                      },
+                  },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /departments/{departmentId}/moderators/{moderatorId}/:
+    parameters:
+      - {
+          in: path,
+          name: departmentId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+      - {
+          in: path,
+          name: moderatorId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    put:
+      tags: [Department]
+      summary: Добавить модератора в отдел
+      operationId: assignModeratorToDepartment
+      description: Нанять модератора и добавить его в отдел
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          {
+            description: Added,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/ServerDepartment" } },
+              },
+          }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundDepartment" }
+        "409":
+          {
+            $ref: "#/components/responses/ConflictModeratorAlreadyInDepartment",
+          }
+    delete:
+      tags: [Department]
+      summary: Удалить модератора из отдела
+      operationId: removeModeratorFromDepartment
+      description: Уволить модератора из отдела
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204": { description: No Content }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundDepartment" }
+
+  /moderators/{moderatorId}/salary/:
+    parameters:
+      - {
+          in: path,
+          name: moderatorId,
+          required: true,
+          schema: { type: integer, format: int64 },
+        }
+    patch:
+      tags: [Moderator]
+      summary: Изменить зарплату модератора
+      operationId: updateModeratorSalary
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              { schema: { $ref: "#/components/schemas/ModeratorSalaryPatch" } },
+          }
+      responses:
+        "200":
+          {
+            description: Salary updated,
+            content:
+              {
+                application/json:
+                  {
+                    schema:
+                      {
+                        $ref: "#/components/schemas/ServerModeratorProfileWithID",
+                      },
+                  },
+              },
+          }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFoundProfile" }

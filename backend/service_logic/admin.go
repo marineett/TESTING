@@ -7,7 +7,7 @@ import (
 )
 
 type IAdminService interface {
-	CreateAdmin(initData types.ServiceInitAdminData) error
+	CreateAdmin(initData types.ServiceInitAdminData, token string) error
 	GetAdminData(userID int64) (*types.ServiceAdminData, error)
 	GetAdminProfile(userID int64) (*types.ServiceAdminProfile, error)
 	UpdateAdminPersonalData(userID int64, personalData types.ServicePersonalData) error
@@ -34,7 +34,7 @@ func CreateAdminService(
 	}
 }
 
-func (s *AdminService) transormInitAdminData(initData types.ServiceInitAdminData) (*types.ServiceAdminData, *types.ServicePersonalData, *types.ServiceAuthData) {
+func (s *AdminService) transormInitAdminData(initData types.ServiceInitAdminData, token string) (*types.ServiceAdminData, *types.ServicePersonalData, *types.ServiceAuthData) {
 	adminData := types.ServiceAdminData{
 		Salary:       initData.Salary,
 		DepartmentID: 0,
@@ -44,23 +44,26 @@ func (s *AdminService) transormInitAdminData(initData types.ServiceInitAdminData
 		LastName:        initData.LastName,
 		MiddleName:      initData.MiddleName,
 		TelephoneNumber: initData.TelephoneNumber,
-		Email:           initData.Email,
+		Email:           initData.ServicePersonalData.Email,
 	}
 	authData := types.ServiceAuthData{
 		Login:    initData.Login,
 		Password: initData.Password,
+		Token:    token,
+		Email:    initData.ServicePersonalData.Email,
 	}
 	return &adminData, &personalData, &authData
 }
-func (s *AdminService) CreateAdmin(initData types.ServiceInitAdminData) error {
-	adminData, personalData, authData := s.transormInitAdminData(initData)
+func (s *AdminService) CreateAdmin(initData types.ServiceInitAdminData, token string) error {
+	adminData, personalData, authData := s.transormInitAdminData(initData, token)
+	authData.DeniedAccessCount = 0
 	if adminData.Salary <= 0 {
 		return errors.New("salary must be greater than 0")
 	}
 	_, err := s.adminRepository.InsertAdmin(
 		*types.MapperAdminDataServiceToDB(adminData),
 		*types.MapperPersonalDataServiceToDB(personalData),
-		*types.MapperAuthDataServiceToDB(authData),
+		*types.MapperAuthDataServiceToDB(authData, token),
 	)
 	if err != nil {
 		return err
@@ -87,7 +90,7 @@ func (s *AdminService) UpdateAdminPersonalData(userID int64, personalData types.
 }
 
 func (s *AdminService) UpdateAdminPassword(userID int64, authData types.ServiceAuthData, newPassword string) error {
-	return s.adminRepository.UpdateAdminPassword(userID, *types.MapperAuthDataServiceToDB(&authData), newPassword)
+	return s.adminRepository.UpdateAdminPassword(userID, *types.MapperAuthDataServiceToDB(&authData, ""), newPassword)
 }
 
 func (s *AdminService) UpdateAdminDepartment(userID int64, departmentID int64) error {

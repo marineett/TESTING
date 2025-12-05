@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:15
@@ -11,7 +9,6 @@ services:
       POSTGRES_CLIENT_MIN_MESSAGES: notice
       POSTGRES_LOG_MIN_MESSAGES: notice
       POSTGRES_PORT: 5433
-    # No host port publish to avoid collisions across parallel runs
     tmpfs:
       - /var/lib/postgresql/data
     healthcheck:
@@ -21,22 +18,30 @@ services:
       retries: 5
     networks:
       - app-network
-
+  
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     depends_on:
       - db
+      - jaeger
     environment:
       DATABASE_HOST: db
       DATABASE_NAME: mydb
       DATABASE_USER: user
       DATABASE_PASSWORD: pass
+      BACKEND_PORT: "8000"
+      JWT_SECRET: "dev-secret"
+      SERVICE_NAME: "tutoring-platform"
+      SERVICE_VERSION: "1.0.0"
+      JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
     networks:
       - app-network
-    # volumes:
-    #   - ./logs:/build/logs
+    ports:
+      - "8000:8000"
+      - "9090:9090"  # Prometheus metrics endpoint
 
 
   # frontend:
@@ -62,6 +67,47 @@ services:
   #     - backend
   #   networks:
   #     - app-network
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    restart: unless-stopped
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Jaeger collector HTTP
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:16686"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - ./tools/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9091:9090"  # Prometheus UI
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+volumes:
+  prometheus_data:
 
 networks:
   app-network:

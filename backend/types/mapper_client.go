@@ -89,7 +89,55 @@ func MapperInitClientServerToService(data *ServerInitClientData) *ServiceInitCli
 			ServiceAuthData: ServiceAuthData{
 				Login:    data.Login,
 				Password: data.Password,
+				Email:    data.Email,
+				Token:    data.Token,
 			},
 		},
 	}
+}
+
+// --- V2 Client mappers ---
+func MapperClientProfileServiceToServerV2(profile *ServiceClientProfile) *ServerClientProfileV2 {
+	if profile == nil {
+		return nil
+	}
+	return &ServerClientProfileV2{
+		FirstName:       profile.FirstName,
+		LastName:        profile.LastName,
+		MiddleName:      profile.MiddleName,
+		TelephoneNumber: profile.TelephoneNumber,
+		Email:           profile.Email,
+		Raiting:         profile.MeanRating,
+	}
+}
+
+func MapperClientProfileV2ServerToService(profile *ServerClientProfileV2) *ServiceClientProfile {
+	if profile == nil {
+		return nil
+	}
+	return &ServiceClientProfile{
+		FirstName:       profile.FirstName,
+		LastName:        profile.LastName,
+		MiddleName:      profile.MiddleName,
+		TelephoneNumber: profile.TelephoneNumber,
+		Email:           profile.Email,
+		MeanRating:      profile.Raiting,
+	}
+}
+
+func MapperClientProfileWithIDServiceToServerV2(id int64, profile *ServiceClientProfile) *ServerClientProfileWithIDV2 {
+	if profile == nil {
+		return &ServerClientProfileWithIDV2{ID: id}
+	}
+	return &ServerClientProfileWithIDV2{
+		ID:     id,
+		Client: *MapperClientProfileServiceToServerV2(profile),
+	}
+}
+
+func MapperClientProfileWithIDServerV2ToService(wrapper *ServerClientProfileWithIDV2) (int64, *ServiceClientProfile) {
+	if wrapper == nil {
+		return 0, nil
+	}
+	return wrapper.ID, MapperClientProfileV2ServerToService(&wrapper.Client)
 }

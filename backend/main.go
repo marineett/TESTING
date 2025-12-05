@@ -6,6 +6,8 @@ import (
 	"data_base_project/service_logic"
 	"data_base_project/utility_module"
 	"database/sql"
+	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -15,18 +17,25 @@ import (
 )
 
 func main() {
-	logger, err := os.OpenFile("./backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("Error opening log file: %v", err)
+	// Пытаемся загрузить .env, но не падаем, если файла нет (в Docker-окружении
+	// переменные обычно приходят из docker-compose env / Kubernetes и т.п.).
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not loaded: %v (using existing environment)", err)
+	} else {
+		defer utility_module.UnsetEnv()
 	}
-	defer logger.Close()
-	log.Printf("Log file opened")
-	log.SetOutput(logger)
-	err = godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+
+	// Логируем одновременно в stdout (для docker logs / CI) и в файл внутри контейнера.
+	log.Println("backend starting, configuring logger...")
+	if logger, err := os.OpenFile("./backend.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666); err != nil {
+		log.Printf("Warning: cannot open backend.log file: %v (logging only to stdout)", err)
+	} else {
+		mw := io.MultiWriter(os.Stdout, logger)
+		log.SetOutput(mw)
+		defer logger.Close()
+		log.Println("Log file opened, logging to stdout and backend.log")
 	}
-	defer utility_module.UnsetEnv()
+
 	log.Printf("Connection string: %s", data_base.GetSqlConnectionString())
 	//db, err := data_base.CreateSqlConnection(data_base.GetSqlConnectionString())
 	db, err := sql.Open("duckdb", ":memory:")
@@ -194,6 +203,7 @@ func main() {
 		departmentRepository,
 		personalDataRepository,
 		lessonRepository,
+		service_logic.CreateEmailSender(),
 	)
 	data_base.SetupRoles(
 		db,
@@ -216,7 +226,11 @@ func main() {
 		os.Getenv("LESSON_TABLE_NAME"),
 		os.Getenv("SEQUENCE_NAME"),
 	)
-
+	fmt.Println("Server starting on port before setup", os.Getenv("BACKEND_PORT"))
 	server := server.SetupServer(serviceModule, os.Getenv("BACKEND_PORT"), log.Default())
-	server.ListenAndServe()
+	fmt.Println("Server starting on port ", os.Getenv("BACKEND_PORT"))
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }

@@ -23,7 +23,7 @@ func TestCreateAdminCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -74,7 +74,7 @@ func TestCreateAdminCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -100,7 +100,9 @@ func TestCreateAdminIncorrectLondon(t *testing.T) {
 			ServiceAuthData:     tu.TestAuth,
 		},
 		Salary: -500,
-	})
+	},
+		"",
+	)
 	if err == nil {
 		t.Fatalf("No error creating admin with salary -500: %v", err)
 	}
@@ -130,7 +132,9 @@ func TestCreateAdminIncorrectClassic(t *testing.T) {
 			ServiceAuthData:     tu.TestAuth,
 		},
 		Salary: -500,
-	})
+	},
+		"",
+	)
 	if err == nil {
 		t.Fatalf("No error creating admin with salary -500: %v", err)
 	}
@@ -150,7 +154,7 @@ func TestGetAdminDataCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -188,7 +192,7 @@ func TestGetAdminDataCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -228,7 +232,7 @@ func TestGetAdminDataInCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -261,7 +265,7 @@ func TestGetAdminDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -292,7 +296,7 @@ func TestGetAdminProfileCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	adminService.CreateAdmin(tu.TestInitAdminData)
+	adminService.CreateAdmin(tu.TestInitAdminData, "")
 	adminProfile, err := adminService.GetAdminProfile(1)
 	if err != nil {
 		t.Fatalf("Error getting admin profile: %v", err)
@@ -336,7 +340,7 @@ func TestGetAdminProfileCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -385,7 +389,7 @@ func TestGetAdminProfileIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -414,7 +418,7 @@ func TestGetAdminProfileIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -445,7 +449,7 @@ func TestUpdateAdminPersonalDataCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -501,7 +505,7 @@ func TestUpdateAdminPersonalDataCorrectClassic(t *testing.T) {
 		personalDataRepository,
 	)
 
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -551,7 +555,7 @@ func TestUpdateAdminPersonalDataIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -586,7 +590,7 @@ func TestUpdateAdminPersonalDataIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -617,7 +621,7 @@ func TestUpdateAdminPasswordCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -655,7 +659,7 @@ func TestUpdateAdminPasswordCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -693,7 +697,7 @@ func TestUpdateAdminPasswordIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -722,7 +726,7 @@ func TestUpdateAdminPasswordIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -753,7 +757,7 @@ func TestUpdateAdminDepartmentCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -790,7 +794,7 @@ func TestUpdateAdminDepartmentCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -828,7 +832,7 @@ func TestUpdateAdminDepartmentIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -857,7 +861,7 @@ func TestUpdateAdminDepartmentIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -888,7 +892,7 @@ func TestUpdateAdminSalaryCorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -925,7 +929,7 @@ func TestUpdateAdminSalaryCorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -963,7 +967,7 @@ func TestUpdateAdminSalaryIncorrectLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -992,7 +996,7 @@ func TestUpdateAdminSalaryIncorrectClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1023,7 +1027,7 @@ func TestUpdateAdminSalaryIncorrectSalaryLondon(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err := adminService.CreateAdmin(tu.TestInitAdminData)
+	err := adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}
@@ -1059,7 +1063,7 @@ func TestUpdateAdminSalaryIncorrectSalaryClassic(t *testing.T) {
 		userRepository,
 		personalDataRepository,
 	)
-	err = adminService.CreateAdmin(tu.TestInitAdminData)
+	err = adminService.CreateAdmin(tu.TestInitAdminData, "")
 	if err != nil {
 		t.Fatalf("Error creating admin: %v", err)
 	}

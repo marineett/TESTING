@@ -1,0 +1,114 @@
+services:
+  backend-once:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: mydb
+      DATABASE_USER: user
+      DATABASE_PASSWORD: pass
+      BACKEND_PORT: "8000"
+      JWT_SECRET: "dev-secret"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/health || exit 1"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
+    networks:
+      - app-network
+    volumes:
+      - ./logs:/build/logs
+      - ./README.md:/build/README.md:ro
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=2h"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prom_data:/prometheus
+    networks:
+      - app-network
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    command:
+      - "--disable_metrics=percpu,sched,tcp,udp,advtcp,referenced_memory"
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - app-network
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.1
+    # pid: host  # Not supported on macOS Docker Desktop
+    command:
+      - "--path.rootfs=/host"
+      - "--no-collector.filesystem.mount-points"
+    volumes:
+      - /:/host:ro  # Removed rslave - not supported on macOS
+    networks:
+      - app-network
+
+  degradation-and-run-runner:
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile.degradation-and-run
+    depends_on:
+      backend-once:
+        condition: service_healthy
+      prometheus:
+        condition: service_started
+      cadvisor:
+        condition: service_started
+      node-exporter:
+        condition: service_started
+    networks:
+      - app-network
+    environment:
+      - BACKEND_URL=http://backend-once:8000
+      - OUTPUT_DIR=/metrics/degradation_many_user_test
+      - MESSAGES_PER_CHAT=${MESSAGES_PER_CHAT:-20000}
+      - POST_TEST_SLEEP=${POST_TEST_SLEEP:-11}
+    volumes:
+      - ./metrics:/metrics
+    entrypoint: ["sh", "-lc", "mkdir -p /metrics/degradation_many_user_test && exec /usr/local/bin/degradation_and_run"]
+    user: "0:0"
+    restart: "no"
+
+  metrics-collector:
+    image: alpine:3.19
+    depends_on:
+      prometheus:
+        condition: service_started
+    environment:
+      PROM_URL: http://prometheus:9090
+      STEP: 5s
+      PROMQL_CPU: 'sum(rate(container_cpu_usage_seconds_total{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[120s]))'
+      PROMQL_MEM: 'max_over_time(container_memory_working_set_bytes{job="cadvisor",container_label_com_docker_compose_service="backend-once"}[5m])'
+    entrypoint: ["sh", "-lc", "apk add --no-cache curl jq >/dev/null; NOW=$$(date +%s); echo 'Waiting for fresh timestamps...'; while :; do if [ -f /metrics/degradation_many_user_test/timestamps.env ]; then END=$$(grep -E '^END_TS=' /metrics/degradation_many_user_test/timestamps.env | sed 's/END_TS=//'); if [ -n \"$$END\" ] && [ \"$$END\" -ge \"$$NOW\" ]; then break; fi; fi; sleep 2; done; OUTPUT_DIR=/metrics/degradation_many_user_test sh /collect.sh; echo 'Collection done.'"]
+    networks:
+      - app-network
+    volumes:
+      - ./metrics:/metrics
+      - ./monitoring/collect_prometheus.sh:/collect.sh:ro
+    restart: "no"
+
+networks:
+  app-network:
+    external: false
+
+volumes:
+  prom_data: {}
+
+
+

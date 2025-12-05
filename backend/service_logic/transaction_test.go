@@ -10,7 +10,7 @@ import (
 func TestCreateContractPaymentTransactionCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -40,7 +40,7 @@ func TestCreateContractPaymentTransactionCorrectClassic(t *testing.T) {
 	userRepository := module.UserRepository
 	reviewRepository := module.ReviewRepository
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("error creating client: %v", err)
 	}
@@ -52,7 +52,7 @@ func TestCreateContractPaymentTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -101,7 +101,7 @@ func TestGetTransactionsListCorrectClassic(t *testing.T) {
 	userRepository := module.UserRepository
 	reviewRepository := module.ReviewRepository
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("error creating client: %v", err)
 	}
@@ -113,7 +113,7 @@ func TestGetTransactionsListCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	_, err = transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	_, err = transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -162,7 +162,7 @@ func TestGetTransactionsListIncorrectClassic(t *testing.T) {
 func TestChangeTransactionStatusCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -203,7 +203,7 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 	userRepository := module.UserRepository
 	reviewRepository := module.ReviewRepository
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("error creating client: %v", err)
 	}
@@ -215,7 +215,7 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -235,7 +235,7 @@ func TestChangeTransactionStatusCorrectClassic(t *testing.T) {
 func TestChangeTransactionStatusIncorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -283,7 +283,7 @@ func TestChangeTransactionStatusIncorrectClassic(t *testing.T) {
 func TestGetTransactionCorrectLondon(t *testing.T) {
 	transactionRepository := tu.CreateTestTransactionRepository()
 	transactionService := CreateTransactionService(transactionRepository)
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, 1, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}
@@ -316,7 +316,7 @@ func TestGetTransactionCorrectClassic(t *testing.T) {
 	userRepository := module.UserRepository
 	reviewRepository := module.ReviewRepository
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("error creating client: %v", err)
 	}
@@ -328,7 +328,7 @@ func TestGetTransactionCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error authorizing: %v", err)
 	}
-	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID)
+	transactionID, err := transactionService.CreateContractPaymentTransaction(100, result.UserID, 5)
 	if err != nil {
 		t.Fatalf("error creating contract payment transaction: %v", err)
 	}

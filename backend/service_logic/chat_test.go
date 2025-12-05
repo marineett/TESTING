@@ -542,7 +542,7 @@ func TestSendMessageCorrectLondon(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting chat: %v", err)
 	}
-	err = chatService.SendMessage(chatID, 1, "Hello")
+	_, err = chatService.SendMessage(chatID, 1, "Hello")
 	if err != nil {
 		t.Fatalf("Error sending message: %v", err)
 	}
@@ -584,7 +584,7 @@ func TestSendMessageCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting auth: %v", err)
 	}
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error inserting client: %v", err)
 	}
@@ -604,7 +604,7 @@ func TestSendMessageCorrectClassic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error inserting chat: %v", err)
 	}
-	err = chatService.SendMessage(chatID, result.UserID, "Hello")
+	_, err = chatService.SendMessage(chatID, result.UserID, "Hello")
 	if err != nil {
 		t.Fatalf("Error sending message: %v", err)
 	}
@@ -682,7 +682,7 @@ func TestGetMessagesCorrectClassic(t *testing.T) {
 	reviewRepository := module.ReviewRepository
 	chatService := CreateChatService(chatRepository, messageRepository)
 	clientService := CreateClientService(clientRepository, personalDataRepository, userRepository, reviewRepository)
-	err = clientService.CreateClient(tu.TestInitClientData)
+	err = clientService.CreateClient(tu.TestInitClientData, "")
 	if err != nil {
 		t.Fatalf("Error inserting client: %v", err)
 	}
