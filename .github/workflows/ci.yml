@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches: [main, master, lab1, lab2, lab_4]
-  # pull_request:
-  #   branches: [main, master, lab1, lab2, lab_4]
 
 jobs:
   unit-tests:
@@ -151,6 +149,7 @@ jobs:
     if: ${{ needs.integration-tests.outputs.tests_ok == 'true' }}
     runs-on: ubuntu-latest
     continue-on-error: true
+    environment: ci_envs  
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -160,8 +159,66 @@ jobs:
           docker version
           docker compose version
 
-      - name: Build and run e2e stack (new pipeline)
+      - name: Build and run e2e stack with secrets
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
+
+          USER_TABLE_NAME: ${{ secrets.USER_TABLE_NAME }}
+          PERSONAL_DATA_TABLE_NAME: ${{ secrets.PERSONAL_DATA_TABLE_NAME }}
+          AUTH_TABLE_NAME: ${{ secrets.AUTH_TABLE_NAME }}
+          CHAT_TABLE_NAME: ${{ secrets.CHAT_TABLE_NAME }}
+          MESSAGE_TABLE_NAME: ${{ secrets.MESSAGE_TABLE_NAME }}
+          DEPARTMENT_TABLE_NAME: ${{ secrets.DEPARTMENT_TABLE_NAME }}
+          HIRE_INFO_TABLE_NAME: ${{ secrets.HIRE_INFO_TABLE_NAME }}
+          CLIENT_TABLE_NAME: ${{ secrets.CLIENT_TABLE_NAME }}
+          TRANSACTION_TABLE_NAME: ${{ secrets.TRANSACTION_TABLE_NAME }}
+          REPEATITOR_TABLE_NAME: ${{ secrets.REPEATITOR_TABLE_NAME }}
+          RESUME_TABLE_NAME: ${{ secrets.RESUME_TABLE_NAME }}
+          REVIEW_TABLE_NAME: ${{ secrets.REVIEW_TABLE_NAME }}
+          CONTRACT_TABLE_NAME: ${{ secrets.CONTRACT_TABLE_NAME }}
+          ADMIN_TABLE_NAME: ${{ secrets.ADMIN_TABLE_NAME }}
+          MODERATOR_TABLE_NAME: ${{ secrets.MODERATOR_TABLE_NAME }}
+          PENDING_CONTRACT_PAYMENT_TRANSACTIONS: ${{ secrets.PENDING_CONTRACT_PAYMENT_TRANSACTIONS }}
+          LESSON_TABLE_NAME: ${{ secrets.LESSON_TABLE_NAME }}
+          SEQUENCE_NAME: ${{ secrets.SEQUENCE_NAME }}
+          
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          
+          IMAP_HOST: ${{ secrets.IMAP_HOST }}
+          IMAP_PORT: ${{ secrets.IMAP_PORT }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          
+          SENDER_SMTP_HOST: ${{ secrets.SENDER_SMTP_HOST }}
+          SENDER_SMTP_PORT: ${{ secrets.SENDER_SMTP_PORT }}
+          SENDER_SMTP_USER: ${{ secrets.SENDER_SMTP_USER }}
+          SENDER_SMTP_PASSWORD: ${{ secrets.SENDER_SMTP_PASSWORD }}
+          SENDER_SMTP_FROM_EMAIL: ${{ secrets.SENDER_SMTP_FROM_EMAIL }}
+          SENDER_SMTP_FROM_NAME: ${{ secrets.SENDER_SMTP_FROM_NAME }}
+          
+          BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
         run: |
+          # Экспортируем все переменные чтобы docker compose их увидел
+          export DATABASE_HOST DATABASE_PORT DATABASE_USER DATABASE_PASSWORD DATABASE_NAME
+          export USER_TABLE_NAME PERSONAL_DATA_TABLE_NAME AUTH_TABLE_NAME
+          export CHAT_TABLE_NAME MESSAGE_TABLE_NAME DEPARTMENT_TABLE_NAME
+          export HIRE_INFO_TABLE_NAME CLIENT_TABLE_NAME TRANSACTION_TABLE_NAME
+          export REPEATITOR_TABLE_NAME RESUME_TABLE_NAME REVIEW_TABLE_NAME
+          export CONTRACT_TABLE_NAME ADMIN_TABLE_NAME MODERATOR_TABLE_NAME
+          export PENDING_CONTRACT_PAYMENT_TRANSACTIONS LESSON_TABLE_NAME SEQUENCE_NAME
+          export JWT_TOKEN JWT_SECRET
+          export IMAP_HOST IMAP_PORT IMAP_USER IMAP_PASSWORD
+          export SENDER_SMTP_HOST SENDER_SMTP_PORT SENDER_SMTP_USER SENDER_SMTP_PASSWORD
+          export SENDER_SMTP_FROM_EMAIL SENDER_SMTP_FROM_NAME
+          export BACKEND_PORT
+          
+          # Запускаем docker compose
           docker compose -f docker-compose.e2e.yml -p e2e-tests up --build --abort-on-container-exit
 
       - name: Show logs (on failure)

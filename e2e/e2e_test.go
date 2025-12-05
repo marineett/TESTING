@@ -294,7 +294,7 @@ func (s *APISuite) TestCreateUsers(t provider.T) {
 		imapUser := os.Getenv("IMAP_USER")
 		sx.Require().NotEmpty(imapUser)
 
-		login = createLogin("client", 8)
+		login = createLogin("client", 8) // ARRANGE 
 		password = createPassword(12)
 	})
 
@@ -319,9 +319,9 @@ func (s *APISuite) TestCreateUsers(t provider.T) {
 		resp, err := s.c.makeRequestWithBody(ctx, "POST", "/api/v2/registration", body)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusCreated, resp.StatusCode)
+		sx.Require().Equal(http.StatusCreated, resp.StatusCode) //act created
 
-		clientAuthToken, err := getTokenFromEmail()
+		clientAuthToken, err := getTokenFromEmail() // извлекаем "Token:XXX"
 		sx.Require().NoError(err, "Failed to get token from email for client")
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
@@ -369,7 +369,7 @@ func (s *APISuite) TestWrongAccess(t provider.T) {
 	})
 
 	t.WithNewStep("Act: 3 wrong token attempts then check lock", func(sx provider.StepCtx) {
-		wrongToken := "definitely_wrong_token"
+		wrongToken := "definitely_wrong_token" //ACT
 
 		for i := 0; i < 3; i++ {
 			resp, err := s.c.applyToken(ctx, wrongToken, login)
@@ -381,14 +381,14 @@ func (s *APISuite) TestWrongAccess(t provider.T) {
 		resp, err := s.c.applyToken(ctx, wrongToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "4th wrong attempt must return 429")
+		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "4th wrong attempt must return 429") // БЛОКИРОВКА
 
 		clientAuthToken, err := getTokenFromEmail()
 		sx.Require().NoError(err, "Failed to get token from email for client in lock test")
 		resp, err = s.c.applyToken(ctx, clientAuthToken, login)
 		sx.Require().NoError(err)
 		defer resp.Body.Close()
-		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "correct token must also return 429 after lock")
+		sx.Require().Equal(http.StatusTooManyRequests, resp.StatusCode, "correct token must also return 429 after lock") // Все равно блокировка
 	})
 
 	t.WithNewStep("Assert", func(sx provider.StepCtx) {})
