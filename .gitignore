@@ -8,3 +8,5 @@ path/
 backend_debug.log
 .DS_Store
 .venv/
+.env
+**/.env
