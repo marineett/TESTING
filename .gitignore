@@ -1,1 +1,10 @@
 backend/go1.24.7.linux-amd64.tar.gz
+allure-report*/
+allure-results*/
+**/allure-results/
+*.pcap
+logs/
+path/
+backend_debug.log
+.DS_Store
+.venv/
